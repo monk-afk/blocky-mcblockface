@@ -1,7 +1,7 @@
 SquareOne Core
 ==============
 
-![Build Status](https://github.com/monk-afk/luanti/actions/workflows/build.yml/badge.svg?branch=squareone-core)
+![Build Status](https://github.com/monk-afk/squareone-core/actions/workflows/build.yml/badge.svg)
 [![License](https://img.shields.io/badge/license-LGPLv3.0%2B-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0.en.html)
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/license-CC_BY--SA_4.0-orange.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 
