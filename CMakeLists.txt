@@ -158,7 +158,28 @@ if(NOT CUSTOM_LOCALEDIR STREQUAL "")
 endif()
 
 
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/builtin" DESTINATION "${SHAREDIR}")
+if(BUILD_CLIENT)
+	install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/builtin" DESTINATION "${SHAREDIR}")
+else()
+	install(DIRECTORY
+		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/async"
+		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/game"
+		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/profiler"
+		DESTINATION "${SHAREDIR}/builtin")
+	install(FILES
+		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/after.lua"
+		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/chatcommands.lua"
+		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/information_formspecs.lua"
+		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/misc_helpers.lua"
+		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/serialize.lua"
+		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/strict.lua"
+		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/vector.lua"
+		DESTINATION "${SHAREDIR}/builtin/common")
+	install(FILES
+		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/init.lua"
+		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/settingtypes.txt"
+		DESTINATION "${SHAREDIR}/builtin")
+endif()
 if(RUN_IN_PLACE)
 	install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/mods/mods_here.txt" DESTINATION "${SHAREDIR}/mods")
 	install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/textures/texture_packs_here.txt" DESTINATION "${SHAREDIR}/textures")
@@ -181,11 +202,16 @@ endif()
 
 install(FILES "README.md" DESTINATION "${DOCDIR}" COMPONENT "Docs")
 install(FILES "doc/lua_api.txt" DESTINATION "${DOCDIR}" COMPONENT "Docs")
-install(FILES "doc/client_lua_api.txt" DESTINATION "${DOCDIR}" COMPONENT "Docs")
-install(FILES "doc/menu_lua_api.txt" DESTINATION "${DOCDIR}" COMPONENT "Docs")
-install(FILES "doc/texture_packs.txt" DESTINATION "${DOCDIR}" COMPONENT "Docs")
 install(FILES "doc/world_format.txt" DESTINATION "${DOCDIR}" COMPONENT "Docs")
 install(FILES "squareone.conf.example" DESTINATION "${EXAMPLE_CONF_DIR}")
+
+if(BUILD_CLIENT)
+	install(FILES
+		"doc/client_lua_api.txt"
+		"doc/menu_lua_api.txt"
+		"doc/texture_packs.txt"
+		DESTINATION "${DOCDIR}" COMPONENT "Docs")
+endif()
 
 if(UNIX AND NOT APPLE)
 	install(FILES "doc/squareone.6" "doc/squareoneserver.6" DESTINATION "${MANDIR}/man6")
