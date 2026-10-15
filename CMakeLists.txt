@@ -46,8 +46,8 @@ set(RUN_IN_PLACE ${DEFAULT_RUN_IN_PLACE} CACHE BOOL
 	"Run directly in source directory structure")
 
 
-set(BUILD_CLIENT TRUE CACHE BOOL "Build client")
-set(BUILD_SERVER FALSE CACHE BOOL "Build server")
+set(BUILD_CLIENT FALSE CACHE BOOL "Build client")
+set(BUILD_SERVER TRUE CACHE BOOL "Build server")
 set(BUILD_UNITTESTS FALSE CACHE BOOL "Build unittests")
 
 
