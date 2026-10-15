@@ -254,13 +254,11 @@ add_custom_target(GenerateVersion
 add_subdirectory(threading)
 add_subdirectory(content)
 add_subdirectory(database)
-add_subdirectory(gui)
 add_subdirectory(mapgen)
 add_subdirectory(network)
 add_subdirectory(script)
 add_subdirectory(unittest)
 add_subdirectory(util)
-add_subdirectory(irrlicht_changes)
 add_subdirectory(server)
 
 set(common_SRCS
@@ -363,26 +361,6 @@ if(WIN32)
 endif()
 
 
-# Client sources
-if (BUILD_CLIENT)
-	add_subdirectory(client)
-endif(BUILD_CLIENT)
-
-set(client_SRCS
-	${client_SRCS}
-	${common_SRCS}
-	${gui_SRCS}
-	${client_network_SRCS}
-	${client_irrlicht_changes_SRCS}
-	${client_SCRIPT_SRCS}
-)
-
-if(BUILD_UNITTESTS)
-	set(client_SRCS ${client_SRCS} ${UNITTEST_CLIENT_SRCS})
-endif()
-
-list(SORT client_SRCS)
-
 # Server sources
 set(server_SRCS
 	${common_SRCS}
@@ -392,7 +370,6 @@ list(SORT server_SRCS)
 # Avoid source_group on broken CMake version.
 # see issue #7074 #7075
 if (CMAKE_VERSION VERSION_GREATER 3.8.1)
-	source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "Source Files" FILES ${client_SRCS})
 	source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "Source Files" FILES ${server_SRCS})
 endif()
 
@@ -419,119 +396,6 @@ endif()
 
 
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/bin")
-
-
-if(BUILD_CLIENT)
-	add_executable(${PROJECT_NAME} ${client_SRCS} ${extra_windows_SRCS})
-	add_dependencies(${PROJECT_NAME} GenerateVersion)
-	target_link_libraries(
-		${PROJECT_NAME}
-		${ZLIB_LIBRARIES}
-		${IRRLICHT_LIBRARY}
-		${JPEG_LIBRARIES}
-		${BZIP2_LIBRARIES}
-		${PNG_LIBRARIES}
-		${X11_LIBRARIES}
-		${SOUND_LIBRARIES}
-		${SQLITE3_LIBRARY}
-		${LUA_LIBRARY}
-		${GMP_LIBRARY}
-		${JSON_LIBRARY}
-		${PLATFORM_LIBS}
-		${CLIENT_PLATFORM_LIBS}
-		luautf8
-		luachacha
-		chacha
-	)
-	if(NOT USE_LUAJIT)
-		set_target_properties(${PROJECT_NAME} PROPERTIES
-			# This is necessary for dynamic Lua modules
-			# to work when Lua is statically linked (issue #10806)
-			ENABLE_EXPORTS 1
-		)
-	endif()
-
-	if(USE_SDL)
-		target_link_libraries(
-			${PROJECT_NAME}
-			${SDL2_LIBRARIES}
-		)
-		if(USE_STATIC_BUILD AND WIN32)
-			target_link_libraries(
-				${PROJECT_NAME}
-				winmm
-				imm32
-				setupapi
-				opengl32
-			)
-		endif()
-	endif()
-	if(ENABLE_GLES)
-		target_link_libraries(
-			${PROJECT_NAME}
-			${OPENGLES2_LIBRARIES}
-			${EGL_LIBRARIES}
-		)
-	else()
-		target_link_libraries(
-			${PROJECT_NAME}
-			${OPENGL_LIBRARIES}
-		)
-	endif()
-	if(USE_GETTEXT)
-		target_link_libraries(
-			${PROJECT_NAME}
-			${GETTEXT_LIBRARY}
-		)
-		if(USE_STATIC_BUILD)
-			target_link_libraries(
-				${PROJECT_NAME}
-				${GETTEXT_ICONV_LIBRARY}
-			)
-		endif()
-	endif()
-	if(USE_CURL)
-		target_link_libraries(
-			${PROJECT_NAME}
-			${CURL_LIBRARY}
-		)
-		if(USE_STATIC_BUILD)
-			if(WIN32)
-				target_link_libraries(${PROJECT_NAME} bcrypt crypt32 ws2_32)
-			endif()
-		endif()
-	endif()
-	if(USE_FREETYPE)
-		if(FREETYPE_PKGCONFIG_FOUND)
-			set_target_properties(${PROJECT_NAME}
-				PROPERTIES
-				COMPILE_FLAGS "${FREETYPE_CFLAGS_STR}"
-			)
-		endif()
-		target_link_libraries(
-			${PROJECT_NAME}
-			${FREETYPE_LIBRARY}
-		)
-	endif()
-	if (USE_CURSES)
-		target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARIES})
-	endif()
-	if (USE_POSTGRESQL)
-		target_link_libraries(${PROJECT_NAME} ${PostgreSQL_LIBRARIES})
-	endif()
-	if (USE_LEVELDB)
-		target_link_libraries(${PROJECT_NAME} ${LEVELDB_LIBRARY})
-	endif()
-	if (USE_REDIS)
-		target_link_libraries(${PROJECT_NAME} ${REDIS_LIBRARY})
-	endif()
-	if (USE_PROMETHEUS)
-		target_link_libraries(${PROJECT_NAME} ${PROMETHEUS_LIBRARIES})
-	endif()
-	if (USE_SPATIAL)
-		target_link_libraries(${PROJECT_NAME} ${SPATIAL_LIBRARY})
-	endif()
-endif(BUILD_CLIENT)
 
 
 if(BUILD_SERVER)
@@ -728,28 +592,11 @@ if(WIN32)
 				FILES_MATCHING PATTERN "*.dll")
 	else()
 		# Use the old-style way to install dll's
-		if(USE_SOUND)
-			if(OPENAL_DLL)
-				install(FILES ${OPENAL_DLL} DESTINATION ${BINDIR})
-			endif()
-			if(OGG_DLL)
-				install(FILES ${OGG_DLL} DESTINATION ${BINDIR})
-			endif()
-			if(VORBIS_DLL)
-				install(FILES ${VORBIS_DLL} DESTINATION ${BINDIR})
-			endif()
-			if(VORBISFILE_DLL)
-				install(FILES ${VORBISFILE_DLL} DESTINATION ${BINDIR})
-			endif()
-		endif()
 		if(CURL_DLL)
 			install(FILES ${CURL_DLL} DESTINATION ${BINDIR})
 		endif()
 		if(ZLIB_DLL)
 			install(FILES ${ZLIB_DLL} DESTINATION ${BINDIR})
-		endif()
-		if(FREETYPE_DLL)
-			install(FILES ${FREETYPE_DLL} DESTINATION ${BINDIR})
 		endif()
 		if(SQLITE3_DLL)
 			install(FILES ${SQLITE3_DLL} DESTINATION ${BINDIR})
@@ -762,55 +609,6 @@ if(WIN32)
 		endif()
 	endif()
 endif()
-
-if(BUILD_CLIENT)
-	install(TARGETS ${PROJECT_NAME}
-		RUNTIME DESTINATION ${BINDIR}
-		LIBRARY DESTINATION ${BINDIR}
-		ARCHIVE DESTINATION ${BINDIR}
-		BUNDLE DESTINATION .
-	)
-
-	if(APPLE)
-		install(CODE "
-			set(BU_CHMOD_BUNDLE_ITEMS ON)
-			include(BundleUtilities)
-			fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/${BUNDLE_PATH}\" \"\" \"\${CMAKE_INSTALL_PREFIX}/${BINDIR}\")
-		" COMPONENT Runtime)
-	endif()
-
-	if(USE_GETTEXT)
-		foreach(LOCALE ${GETTEXT_USED_LOCALES})
-			set_mo_paths(MO_BUILD_PATH MO_DEST_PATH ${LOCALE})
-			set(MO_BUILD_PATH "${MO_BUILD_PATH}/minetest.mo")
-			install(FILES ${MO_BUILD_PATH} DESTINATION ${MO_DEST_PATH})
-		endforeach()
-	endif()
-
-	if(USE_FREETYPE)
-		install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../fonts" DESTINATION "${SHAREDIR}"
-				FILES_MATCHING PATTERN "*.ttf" PATTERN "*.txt")
-	else()
-		install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../fonts" DESTINATION "${SHAREDIR}"
-				FILES_MATCHING PATTERN "*.png" PATTERN "*.xml")
-	endif()
-
-	if(WIN32)
-		if(NOT VCPKG_APPLOCAL_DEPS)
-			if(DEFINED IRRLICHT_DLL)
-				install(FILES ${IRRLICHT_DLL} DESTINATION ${BINDIR})
-			endif()
-			if(USE_GETTEXT)
-				if(DEFINED GETTEXT_DLL)
-					install(FILES ${GETTEXT_DLL} DESTINATION ${BINDIR})
-				endif()
-				if(DEFINED GETTEXT_ICONV_DLL)
-					install(FILES ${GETTEXT_ICONV_DLL} DESTINATION ${BINDIR})
-				endif()
-			endif()
-		endif()
-	endif()
-endif(BUILD_CLIENT)
 
 if(BUILD_SERVER)
 	install(TARGETS ${PROJECT_NAME}server DESTINATION ${BINDIR})
