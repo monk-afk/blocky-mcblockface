@@ -37,7 +37,7 @@ set (UNITTEST_SRCS
 	PARENT_SCOPE)
 
 set (TEST_WORLDDIR ${CMAKE_CURRENT_SOURCE_DIR}/test_world)
-set (TEST_SUBGAME_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../games/devtest)
+set (TEST_SUBGAME_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../games)
 
 configure_file(
 	"${CMAKE_CURRENT_SOURCE_DIR}/test_config.h.in"
