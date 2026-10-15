@@ -67,7 +67,7 @@ jobs:
 
       - name: Test
         run: |
-          ./bin/squareone --run-unittests
+          ./bin/squareoneserver --run-unittests
 
   # This is our minor clang compiler
 #  clang_3_9:
@@ -111,7 +111,7 @@ jobs:
 
       - name: Test
         run: |
-          ./bin/squareone --run-unittests
+          ./bin/squareoneserver --run-unittests
 
 #     - name: Valgrind
 #       run: |
@@ -236,6 +236,8 @@ jobs:
           -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}\vcpkg\scripts\buildsystems\vcpkg.cmake"  `
           -DCMAKE_BUILD_TYPE=Release  `
           -DENABLE_POSTGRESQL=OFF  `
+          -DBUILD_CLIENT=FALSE  `
+          -DBUILD_SERVER=TRUE  `
           -DRUN_IN_PLACE=${{ contains(matrix.type, 'portable') }} .
 
       - name: Build
