@@ -9,19 +9,14 @@ COPY squareone.conf.example /usr/src/squareone-core/squareone.conf.example
 COPY builtin /usr/src/squareone-core/builtin
 COPY cmake /usr/src/squareone-core/cmake
 COPY doc /usr/src/squareone-core/doc
-COPY fonts /usr/src/squareone-core/fonts
 COPY lib /usr/src/squareone-core/lib
-COPY misc /usr/src/squareone-core/misc
 COPY po /usr/src/squareone-core/po
 COPY src /usr/src/squareone-core/src
-COPY textures /usr/src/squareone-core/textures
 
 WORKDIR /usr/src/squareone-core
 
-RUN apk add --no-cache git build-base irrlicht-dev cmake bzip2-dev libpng-dev \
-		jpeg-dev libxxf86vm-dev mesa-dev sqlite-dev libogg-dev \
-		libvorbis-dev openal-soft-dev curl-dev freetype-dev zlib-dev \
-		gmp-dev jsoncpp-dev postgresql-dev luajit-dev ca-certificates && \
+RUN apk add --no-cache git build-base irrlicht-dev cmake sqlite-dev curl-dev \
+		zlib-dev gmp-dev jsoncpp-dev postgresql-dev luajit-dev ca-certificates && \
 	git clone --depth=1 -b ${MINETEST_GAME_VERSION} https://github.com/luanti-org/minetest_game.git ./games/minetest_game && \
 	rm -fr ./games/minetest_game/.git
 
