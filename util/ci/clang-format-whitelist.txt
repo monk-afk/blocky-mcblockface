@@ -300,7 +300,6 @@ src/unittest/test.cpp
 src/unittest/test_filepath.cpp
 src/unittest/test.h
 src/unittest/test_inventory.cpp
-src/unittest/test_keycode.cpp
 src/unittest/test_map_settings_manager.cpp
 src/unittest/test_noderesolver.cpp
 src/unittest/test_noise.cpp
