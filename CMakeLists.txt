@@ -92,9 +92,6 @@ elseif(UNIX) # Linux, BSD etc
 		set(DOCDIR "doc")
 		set(EXAMPLE_CONF_DIR ".")
 		set(MANDIR "unix/man")
-		set(XDG_APPS_DIR "unix/applications")
-		set(APPDATADIR "unix/metainfo")
-		set(ICONDIR "unix/icons")
 		set(LOCALEDIR "locale")
 	else()
 		set(SHAREDIR "${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}")
@@ -102,9 +99,6 @@ elseif(UNIX) # Linux, BSD etc
 		set(DOCDIR "${CMAKE_INSTALL_PREFIX}/share/doc/${PROJECT_NAME}")
 		set(MANDIR "${CMAKE_INSTALL_PREFIX}/share/man")
 		set(EXAMPLE_CONF_DIR ${DOCDIR})
-		set(XDG_APPS_DIR "${CMAKE_INSTALL_PREFIX}/share/applications")
-		set(APPDATADIR "${CMAKE_INSTALL_PREFIX}/share/metainfo")
-		set(ICONDIR "${CMAKE_INSTALL_PREFIX}/share/icons")
 		set(LOCALEDIR "${CMAKE_INSTALL_PREFIX}/share/locale")
 	endif()
 endif()
@@ -142,18 +136,6 @@ if(NOT CUSTOM_EXAMPLE_CONF_DIR STREQUAL "")
 	message(STATUS "Using EXAMPLE_CONF_DIR=${EXAMPLE_CONF_DIR}")
 endif()
 
-set(CUSTOM_XDG_APPS_DIR "" CACHE STRING "Directory to install .desktop files into")
-if(NOT CUSTOM_XDG_APPS_DIR STREQUAL "")
-	set(XDG_APPS_DIR "${CUSTOM_XDG_APPS_DIR}")
-	message(STATUS "Using XDG_APPS_DIR=${XDG_APPS_DIR}")
-endif()
-
-set(CUSTOM_ICONDIR "" CACHE STRING "Directory to install icons into")
-if(NOT CUSTOM_ICONDIR STREQUAL "")
-	set(ICONDIR "${CUSTOM_ICONDIR}")
-	message(STATUS "Using ICONDIR=${ICONDIR}")
-endif()
-
 set(CUSTOM_LOCALEDIR "" CACHE STRING "Directory to install l10n files into")
 if(NOT CUSTOM_LOCALEDIR STREQUAL "")
 	set(LOCALEDIR "${CUSTOM_LOCALEDIR}")
@@ -161,31 +143,26 @@ if(NOT CUSTOM_LOCALEDIR STREQUAL "")
 endif()
 
 
-if(BUILD_CLIENT)
-	install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/builtin" DESTINATION "${SHAREDIR}")
-else()
-	install(DIRECTORY
-		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/async"
-		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/game"
-		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/profiler"
-		DESTINATION "${SHAREDIR}/builtin")
-	install(FILES
-		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/after.lua"
-		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/chatcommands.lua"
-		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/information_formspecs.lua"
-		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/misc_helpers.lua"
-		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/serialize.lua"
-		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/strict.lua"
-		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/vector.lua"
-		DESTINATION "${SHAREDIR}/builtin/common")
-	install(FILES
-		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/init.lua"
-		"${CMAKE_CURRENT_SOURCE_DIR}/builtin/settingtypes.txt"
-		DESTINATION "${SHAREDIR}/builtin")
-endif()
+install(DIRECTORY
+	"${CMAKE_CURRENT_SOURCE_DIR}/builtin/async"
+	"${CMAKE_CURRENT_SOURCE_DIR}/builtin/game"
+	"${CMAKE_CURRENT_SOURCE_DIR}/builtin/profiler"
+	DESTINATION "${SHAREDIR}/builtin")
+install(FILES
+	"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/after.lua"
+	"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/chatcommands.lua"
+	"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/information_formspecs.lua"
+	"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/misc_helpers.lua"
+	"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/serialize.lua"
+	"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/strict.lua"
+	"${CMAKE_CURRENT_SOURCE_DIR}/builtin/common/vector.lua"
+	DESTINATION "${SHAREDIR}/builtin/common")
+install(FILES
+	"${CMAKE_CURRENT_SOURCE_DIR}/builtin/init.lua"
+	"${CMAKE_CURRENT_SOURCE_DIR}/builtin/settingtypes.txt"
+	DESTINATION "${SHAREDIR}/builtin")
 if(RUN_IN_PLACE)
 	install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/mods/mods_here.txt" DESTINATION "${SHAREDIR}/mods")
-	install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/textures/texture_packs_here.txt" DESTINATION "${SHAREDIR}/textures")
 endif()
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/games/minetest_game" DESTINATION "${SHAREDIR}/games/"
@@ -193,49 +170,13 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/games/minetest_game" DESTINATION 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/games/devtest" DESTINATION "${SHAREDIR}/games/"
 	COMPONENT "SUBGAME_MINIMAL" OPTIONAL PATTERN ".git*" EXCLUDE )
 
-if(BUILD_CLIENT)
-	install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/client/shaders" DESTINATION "${SHAREDIR}/client")
-	install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/textures/base/pack" DESTINATION "${SHAREDIR}/textures/base")
-	install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/fonts" DESTINATION "${SHAREDIR}")
-	if(RUN_IN_PLACE)
-		install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/clientmods" DESTINATION "${SHAREDIR}")
-		install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/client/serverlist" DESTINATION "${SHAREDIR}/client")
-	endif()
-endif()
-
 install(FILES "README.md" DESTINATION "${DOCDIR}" COMPONENT "Docs")
 install(FILES "doc/lua_api.txt" DESTINATION "${DOCDIR}" COMPONENT "Docs")
 install(FILES "doc/world_format.txt" DESTINATION "${DOCDIR}" COMPONENT "Docs")
 install(FILES "squareone.conf.example" DESTINATION "${EXAMPLE_CONF_DIR}")
 
-if(BUILD_CLIENT)
-	install(FILES
-		"doc/client_lua_api.txt"
-		"doc/menu_lua_api.txt"
-		"doc/texture_packs.txt"
-		DESTINATION "${DOCDIR}" COMPONENT "Docs")
-endif()
-
 if(UNIX AND NOT APPLE)
 	install(FILES "doc/squareoneserver.6" DESTINATION "${MANDIR}/man6")
-	if(BUILD_CLIENT)
-		install(FILES "doc/squareone.6" DESTINATION "${MANDIR}/man6")
-		install(FILES "misc/io.github.monk_afk.squareone.desktop" DESTINATION "${XDG_APPS_DIR}")
-		install(FILES "misc/io.github.monk_afk.squareone.metainfo.xml" DESTINATION "${APPDATADIR}")
-		install(FILES "misc/minetest.svg" DESTINATION "${ICONDIR}/hicolor/scalable/apps"
-			RENAME "squareone.svg")
-		install(FILES "misc/squareone-xorg-icon-128.png"
-			DESTINATION "${ICONDIR}/hicolor/128x128/apps"
-			RENAME "squareone.png")
-		if(RUN_IN_PLACE)
-			install(FILES "misc/squareone-xorg-icon-128.png" DESTINATION "${SHAREDIR}/misc")
-		endif()
-	endif()
-endif()
-
-if(APPLE AND BUILD_CLIENT)
-	install(FILES "misc/minetest-icon.icns" DESTINATION "${SHAREDIR}")
-	install(FILES "misc/Info.plist" DESTINATION "${BUNDLE_PATH}/Contents")
 endif()
 
 # Library pack
