@@ -13,11 +13,6 @@ install_linux_deps() {
 # Mac OSX build only
 install_macosx_deps() {
 	brew update
-	brew install freetype gettext hiredis irrlicht leveldb libogg libvorbis luajit
-	if brew ls | grep -q jpeg; then
-		brew upgrade jpeg
-	else
-		brew install jpeg
-	fi
+	brew install gettext gmp hiredis irrlicht leveldb luajit
 	#brew upgrade postgresql
 }
