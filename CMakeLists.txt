@@ -215,19 +215,21 @@ endif()
 
 if(UNIX AND NOT APPLE)
 	install(FILES "doc/squareone.6" "doc/squareoneserver.6" DESTINATION "${MANDIR}/man6")
-	install(FILES "misc/io.github.monk_afk.squareone.desktop" DESTINATION "${XDG_APPS_DIR}")
-	install(FILES "misc/io.github.monk_afk.squareone.metainfo.xml" DESTINATION "${APPDATADIR}")
-	install(FILES "misc/minetest.svg" DESTINATION "${ICONDIR}/hicolor/scalable/apps"
-		RENAME "squareone.svg")
-	install(FILES "misc/squareone-xorg-icon-128.png"
-		DESTINATION "${ICONDIR}/hicolor/128x128/apps"
-		RENAME "squareone.png")
-	if(RUN_IN_PLACE)
-		install(FILES "misc/squareone-xorg-icon-128.png" DESTINATION "${SHAREDIR}/misc")
+	if(BUILD_CLIENT)
+		install(FILES "misc/io.github.monk_afk.squareone.desktop" DESTINATION "${XDG_APPS_DIR}")
+		install(FILES "misc/io.github.monk_afk.squareone.metainfo.xml" DESTINATION "${APPDATADIR}")
+		install(FILES "misc/minetest.svg" DESTINATION "${ICONDIR}/hicolor/scalable/apps"
+			RENAME "squareone.svg")
+		install(FILES "misc/squareone-xorg-icon-128.png"
+			DESTINATION "${ICONDIR}/hicolor/128x128/apps"
+			RENAME "squareone.png")
+		if(RUN_IN_PLACE)
+			install(FILES "misc/squareone-xorg-icon-128.png" DESTINATION "${SHAREDIR}/misc")
+		endif()
 	endif()
 endif()
 
-if(APPLE)
+if(APPLE AND BUILD_CLIENT)
 	install(FILES "misc/minetest-icon.icns" DESTINATION "${SHAREDIR}")
 	install(FILES "misc/Info.plist" DESTINATION "${BUNDLE_PATH}/Contents")
 endif()
