@@ -200,7 +200,6 @@ src/script/cpp_api/s_async.cpp
 src/script/cpp_api/s_async.h
 src/script/cpp_api/s_base.cpp
 src/script/cpp_api/s_base.h
-src/script/cpp_api/s_client.cpp
 src/script/cpp_api/s_entity.cpp
 src/script/cpp_api/s_entity.h
 src/script/cpp_api/s_env.cpp
@@ -210,7 +209,6 @@ src/script/cpp_api/s_inventory.cpp
 src/script/cpp_api/s_inventory.h
 src/script/cpp_api/s_item.cpp
 src/script/cpp_api/s_item.h
-src/script/cpp_api/s_mainmenu.h
 src/script/cpp_api/s_node.cpp
 src/script/cpp_api/s_node.h
 src/script/cpp_api/s_nodemeta.cpp
@@ -224,7 +222,6 @@ src/script/cpp_api/s_server.h
 src/script/lua_api/l_areastore.cpp
 src/script/lua_api/l_base.cpp
 src/script/lua_api/l_base.h
-src/script/lua_api/l_client.cpp
 src/script/lua_api/l_craft.cpp
 src/script/lua_api/l_craft.h
 src/script/lua_api/l_env.cpp
@@ -238,13 +235,9 @@ src/script/lua_api/l_item.cpp
 src/script/lua_api/l_item.h
 src/script/lua_api/l_itemstackmeta.cpp
 src/script/lua_api/l_itemstackmeta.h
-src/script/lua_api/l_localplayer.cpp
-src/script/lua_api/l_mainmenu.cpp
-src/script/lua_api/l_mainmenu.h
 src/script/lua_api/l_mapgen.cpp
 src/script/lua_api/l_mapgen.h
 src/script/lua_api/l_metadata.cpp
-src/script/lua_api/l_minimap.cpp
 src/script/lua_api/l_nodemeta.cpp
 src/script/lua_api/l_nodemeta.h
 src/script/lua_api/l_nodetimer.cpp
@@ -253,19 +246,13 @@ src/script/lua_api/l_object.cpp
 src/script/lua_api/l_object.h
 src/script/lua_api/l_particles.cpp
 src/script/lua_api/l_particles.h
-src/script/lua_api/l_particles_local.cpp
 src/script/lua_api/l_rollback.cpp
 src/script/lua_api/l_rollback.h
 src/script/lua_api/l_server.cpp
 src/script/lua_api/l_settings.cpp
-src/script/lua_api/l_sound.cpp
 src/script/lua_api/l_storage.cpp
 src/script/lua_api/l_util.cpp
 src/script/lua_api/l_vmanip.cpp
-src/script/scripting_client.cpp
-src/script/scripting_client.h
-src/script/scripting_mainmenu.cpp
-src/script/scripting_mainmenu.h
 src/script/scripting_server.cpp
 src/script/scripting_server.h
 src/serialization.cpp
