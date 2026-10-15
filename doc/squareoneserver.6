@@ -1,1 +1,114 @@
-.so man6/squareone.6
+.TH SQUAREONESERVER 6 "14 October 2026" "SquareOne Core 1.0.6" "Games"
+
+.SH NAME
+squareoneserver \- SquareOne Core dedicated server
+
+.SH SYNOPSIS
+.B squareoneserver
+[\fIOPTIONS\fR]
+[\fIWORLD PATH\fR]
+
+.SH DESCRIPTION
+SquareOne Core is a voxel game server based on MultiCraft 2.0.6 and Minetest.
+It supports Minetest 0.4 and 5.x clients and Lua mods.
+
+.SH OPTIONS
+.TP
+.B \-\-help
+Print allowed options and exit.
+.TP
+.B \-\-version
+Print version and build information and exit.
+.TP
+.BI \-\-config " path"
+Load configuration from the specified file.
+.TP
+.BI \-\-logfile " path"
+Write logs to the specified file. An empty value disables file logging.
+.TP
+.B \-\-info
+Print more information to the console.
+.TP
+.B \-\-verbose
+Print additional information to the console.
+.TP
+.B \-\-trace
+Print trace-level information to the console.
+.TP
+.B \-\-quiet
+Print only errors to the console.
+.TP
+.BI \-\-color " value"
+Set colored logging to
+.BR always ,
+.BR never ,
+or
+.BR auto .
+.TP
+.BI \-\-gameid " value"
+Select a game. Use
+.B \-\-gameid list
+to list available games.
+.TP
+.BI \-\-world " path"
+Use the world at the specified path.
+.TP
+.BI \-\-worldname " name"
+Use a world by name.
+.TP
+.BI \-\-worldlist " mode"
+List worlds and exit. The mode is
+.BR path ,
+.BR name ,
+or
+.BR both .
+.TP
+.BI \-\-map\-dir " path"
+Deprecated alias for
+.BR \-\-world .
+.TP
+.BI \-\-port " value"
+Set the UDP server port.
+.TP
+.BI \-\-migrate " backend"
+Migrate the selected world's map database to another backend.
+.TP
+.BI \-\-migrate\-auth " backend"
+Migrate the selected world's authentication database to another backend.
+.TP
+.BI \-\-migrate\-players " backend"
+Migrate the selected world's player database to another backend.
+.TP
+.B \-\-terminal
+Run with an interactive ncurses console when terminal support is compiled in.
+.TP
+.B \-\-run\-unittests
+Run the unit tests and exit.
+
+.SH FILES
+.TP
+.B ~/.squareone/
+Default user-data directory for an installed Unix build.
+.TP
+.B squareone.conf
+Read from the user-data directory or its parent. Run-in-place builds also
+search the grandparent directory. If it is absent,
+.B minetest.conf
+is tried in the same locations. Use
+.B \-\-config
+to select an explicit file.
+
+.SH ENVIRONMENT
+.TP
+.B MINETEST_SUBGAME_PATH
+Colon-delimited list of directories to search for games.
+
+.SH BUGS
+Report bugs at https://github.com/monk-afk/squareone-core/issues.
+
+.SH AUTHOR
+SquareOne Core contributors, the MultiCraft Development Team,
+Perttu Ahola, and Minetest contributors.
+
+.SH WWW
+https://github.com/monk-afk/squareone-core

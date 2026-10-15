@@ -214,8 +214,9 @@ if(BUILD_CLIENT)
 endif()
 
 if(UNIX AND NOT APPLE)
-	install(FILES "doc/squareone.6" "doc/squareoneserver.6" DESTINATION "${MANDIR}/man6")
+	install(FILES "doc/squareoneserver.6" DESTINATION "${MANDIR}/man6")
 	if(BUILD_CLIENT)
+		install(FILES "doc/squareone.6" DESTINATION "${MANDIR}/man6")
 		install(FILES "misc/io.github.monk_afk.squareone.desktop" DESTINATION "${XDG_APPS_DIR}")
 		install(FILES "misc/io.github.monk_afk.squareone.metainfo.xml" DESTINATION "${APPDATADIR}")
 		install(FILES "misc/minetest.svg" DESTINATION "${ICONDIR}/hicolor/scalable/apps"
