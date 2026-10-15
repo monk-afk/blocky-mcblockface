@@ -43,10 +43,8 @@ RUN mkdir build && \
 	cmake .. \
 		-DCMAKE_INSTALL_PREFIX=/usr/local \
 		-DCMAKE_BUILD_TYPE=Release \
-		-DBUILD_SERVER=TRUE \
 		-DENABLE_PROMETHEUS=TRUE \
-		-DBUILD_UNITTESTS=FALSE \
-		-DBUILD_CLIENT=FALSE && \
+		-DBUILD_UNITTESTS=FALSE && \
 	make -j2 && \
 	make install
 

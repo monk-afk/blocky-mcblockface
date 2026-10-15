@@ -50,7 +50,6 @@ if(BUILD_CLIENT)
 	message(FATAL_ERROR "SquareOne Core is server-only; client builds are no longer supported")
 endif()
 set(BUILD_CLIENT FALSE)
-set(BUILD_SERVER TRUE)
 set(BUILD_UNITTESTS FALSE CACHE BOOL "Build unittests")
 
 

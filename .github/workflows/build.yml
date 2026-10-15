@@ -236,8 +236,6 @@ jobs:
           -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}\vcpkg\scripts\buildsystems\vcpkg.cmake"  `
           -DCMAKE_BUILD_TYPE=Release  `
           -DENABLE_POSTGRESQL=OFF  `
-          -DBUILD_CLIENT=FALSE  `
-          -DBUILD_SERVER=TRUE  `
           -DRUN_IN_PLACE=${{ contains(matrix.type, 'portable') }} .
 
       - name: Build

@@ -398,59 +398,57 @@ endif()
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/bin")
 
 
-if(BUILD_SERVER)
-	add_executable(${PROJECT_NAME}server ${server_SRCS} ${extra_windows_SRCS})
-	add_dependencies(${PROJECT_NAME}server GenerateVersion)
+add_executable(${PROJECT_NAME}server ${server_SRCS} ${extra_windows_SRCS})
+add_dependencies(${PROJECT_NAME}server GenerateVersion)
+target_link_libraries(
+	${PROJECT_NAME}server
+	${ZLIB_LIBRARIES}
+	${SQLITE3_LIBRARY}
+	${JSON_LIBRARY}
+	${LUA_LIBRARY}
+	${GMP_LIBRARY}
+	${PLATFORM_LIBS}
+	luautf8
+	luachacha
+	chacha
+)
+set_target_properties(${PROJECT_NAME}server PROPERTIES
+	COMPILE_DEFINITIONS "SERVER")
+if(NOT USE_LUAJIT)
+	set_target_properties(${PROJECT_NAME}server PROPERTIES
+		# This is necessary for dynamic Lua modules
+		# to work when Lua is statically linked (issue #10806)
+		ENABLE_EXPORTS 1
+	)
+endif()
+
+if (USE_GETTEXT)
+	target_link_libraries(${PROJECT_NAME}server ${GETTEXT_LIBRARY})
+endif()
+if (USE_CURSES)
+	target_link_libraries(${PROJECT_NAME}server ${CURSES_LIBRARIES})
+endif()
+if (USE_POSTGRESQL)
+	target_link_libraries(${PROJECT_NAME}server ${PostgreSQL_LIBRARIES})
+endif()
+if (USE_LEVELDB)
+	target_link_libraries(${PROJECT_NAME}server ${LEVELDB_LIBRARY})
+endif()
+if (USE_REDIS)
+	target_link_libraries(${PROJECT_NAME}server ${REDIS_LIBRARY})
+endif()
+if (USE_PROMETHEUS)
+	target_link_libraries(${PROJECT_NAME}server ${PROMETHEUS_LIBRARIES})
+endif()
+if (USE_SPATIAL)
+	target_link_libraries(${PROJECT_NAME}server ${SPATIAL_LIBRARY})
+endif()
+if(USE_CURL)
 	target_link_libraries(
 		${PROJECT_NAME}server
-		${ZLIB_LIBRARIES}
-		${SQLITE3_LIBRARY}
-		${JSON_LIBRARY}
-		${LUA_LIBRARY}
-		${GMP_LIBRARY}
-		${PLATFORM_LIBS}
-		luautf8
-		luachacha
-		chacha
+		${CURL_LIBRARY}
 	)
-	set_target_properties(${PROJECT_NAME}server PROPERTIES
-		COMPILE_DEFINITIONS "SERVER")
-	if(NOT USE_LUAJIT)
-		set_target_properties(${PROJECT_NAME}server PROPERTIES
-			# This is necessary for dynamic Lua modules
-			# to work when Lua is statically linked (issue #10806)
-			ENABLE_EXPORTS 1
-		)
-	endif()
-
-	if (USE_GETTEXT)
-		target_link_libraries(${PROJECT_NAME}server ${GETTEXT_LIBRARY})
-	endif()
-	if (USE_CURSES)
-		target_link_libraries(${PROJECT_NAME}server ${CURSES_LIBRARIES})
-	endif()
-	if (USE_POSTGRESQL)
-		target_link_libraries(${PROJECT_NAME}server ${PostgreSQL_LIBRARIES})
-	endif()
-	if (USE_LEVELDB)
-		target_link_libraries(${PROJECT_NAME}server ${LEVELDB_LIBRARY})
-	endif()
-	if (USE_REDIS)
-		target_link_libraries(${PROJECT_NAME}server ${REDIS_LIBRARY})
-	endif()
-	if (USE_PROMETHEUS)
-		target_link_libraries(${PROJECT_NAME}server ${PROMETHEUS_LIBRARIES})
-	endif()
-	if (USE_SPATIAL)
-		target_link_libraries(${PROJECT_NAME}server ${SPATIAL_LIBRARY})
-	endif()
-	if(USE_CURL)
-		target_link_libraries(
-			${PROJECT_NAME}server
-			${CURL_LIBRARY}
-		)
-	endif()
-endif(BUILD_SERVER)
+endif()
 
 # Blacklisted locales that don't work.
 # see issue #4638
@@ -610,9 +608,7 @@ if(WIN32)
 	endif()
 endif()
 
-if(BUILD_SERVER)
-	install(TARGETS ${PROJECT_NAME}server DESTINATION ${BINDIR})
-endif()
+install(TARGETS ${PROJECT_NAME}server DESTINATION ${BINDIR})
 
 if (USE_GETTEXT)
 	set(MO_FILES)
