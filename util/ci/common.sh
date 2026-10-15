@@ -2,10 +2,9 @@
 
 # Linux build only
 install_linux_deps() {
-	local pkgs=(libirrlicht-dev cmake libbz2-dev libpng-dev \
-		libjpeg-dev libxxf86vm-dev libgl1-mesa-dev libsqlite3-dev \
-		libhiredis-dev libogg-dev libgmp-dev libvorbis-dev libopenal-dev \
-		gettext libpq-dev libleveldb-dev libcurl4-openssl-dev)
+	local pkgs=(libirrlicht-dev cmake libsqlite3-dev libhiredis-dev \
+		libgmp-dev gettext libpq-dev libleveldb-dev \
+		libcurl4-openssl-dev zlib1g-dev)
 
 	sudo apt-get update
 	sudo apt-get install -y --no-install-recommends ${pkgs[@]} "$@"
