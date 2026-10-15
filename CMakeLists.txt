@@ -46,8 +46,11 @@ set(RUN_IN_PLACE ${DEFAULT_RUN_IN_PLACE} CACHE BOOL
 	"Run directly in source directory structure")
 
 
-set(BUILD_CLIENT FALSE CACHE BOOL "Build client")
-set(BUILD_SERVER TRUE CACHE BOOL "Build server")
+if(BUILD_CLIENT)
+	message(FATAL_ERROR "SquareOne Core is server-only; client builds are no longer supported")
+endif()
+set(BUILD_CLIENT FALSE)
+set(BUILD_SERVER TRUE)
 set(BUILD_UNITTESTS FALSE CACHE BOOL "Build unittests")
 
 
