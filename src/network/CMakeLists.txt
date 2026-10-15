@@ -8,11 +8,3 @@ set(common_network_SRCS
 	${CMAKE_CURRENT_SOURCE_DIR}/socket.cpp
 	PARENT_SCOPE
 )
-
-if (BUILD_CLIENT)
-	set(client_network_SRCS
-		${CMAKE_CURRENT_SOURCE_DIR}/clientopcodes.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/clientpackethandler.cpp
-		PARENT_SCOPE
-	)
-endif()

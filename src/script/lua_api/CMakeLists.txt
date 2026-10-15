@@ -24,14 +24,3 @@ set(common_SCRIPT_LUA_API_SRCS
 	${CMAKE_CURRENT_SOURCE_DIR}/l_util.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/l_vmanip.cpp
 	PARENT_SCOPE)
-
-set(client_SCRIPT_LUA_API_SRCS
-	${CMAKE_CURRENT_SOURCE_DIR}/l_camera.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/l_client.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/l_localplayer.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/l_mainmenu.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/l_minimap.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/l_particles_local.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/l_sound.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/l_storage.cpp
-	PARENT_SCOPE)

@@ -36,13 +36,6 @@ set (UNITTEST_SRCS
 	${CMAKE_CURRENT_SOURCE_DIR}/test_voxelmanipulator.cpp
 	PARENT_SCOPE)
 
-set (UNITTEST_CLIENT_SRCS
-	${CMAKE_CURRENT_SOURCE_DIR}/test_clientactiveobjectmgr.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/test_eventmanager.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/test_gameui.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/test_keycode.cpp
-	PARENT_SCOPE)
-
 set (TEST_WORLDDIR ${CMAKE_CURRENT_SOURCE_DIR}/test_world)
 set (TEST_SUBGAME_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../games/devtest)
 
