@@ -1,94 +1,19 @@
-License of MultiCraft textures and sounds
----------------------------------------
+License of media files
+----------------------
 
-This applies to textures and sounds contained in the main MultiCraft
-distribution.
+This applies to media files contained in the main distribution.
 
 Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
 http://creativecommons.org/licenses/by-sa/3.0/
-
-Textures by Zughy & MultiCraft Development Team are under CC BY-SA 4.0
-https://creativecommons.org/licenses/by-sa/4.0/
 
 Authors of media files
 -----------------------
 Everything not listed in here:
 Copyright (C) 2010-2012 celeron55, Perttu Ahola <celeron55@gmail.com>
 
-MultiCraft Development Team:
-  textures/base/pack/gui/*.png
-  textures/base/pack/attention.png
-  textures/base/pack/bg_common.png
-  textures/base/pack/btn_play.png
-  textures/base/pack/btn_play_hover.png
-  textures/base/pack/camera_btn.png
-  textures/base/pack/chat_btn.png
-  textures/base/pack/crack_anylength_touch.png
-  textures/base/pack/creative_bg.png
-  textures/base/pack/cursor.png
-  textures/base/pack/error_screenshot.png
-  textures/base/pack/desc_bg.png
-  textures/base/pack/down_btn.png
-  textures/base/pack/drop_btn.png
-  textures/base/pack/escape_btn.png
-  textures/base/pack/hunger_*.png
-  textures/base/pack/inventory_btn.png
-  textures/base/pack/joystick_*.png
-  textures/base/pack/jump_btn.png
-  textures/base/pack/loading_screenshot.png
-  textures/base/pack/logo.png
-  textures/base/pack/minimap_btn.png
-  textures/base/pack/minimap_mask_*.png
-  textures/base/pack/minimap_overlay_*.png
-  textures/base/pack/player_marker.png
-  textures/base/pack/progress_bar.png
-  textures/base/pack/progress_bar_*.png
-  textures/base/pack/rangeview_btn.png
-  textures/base/pack/refresh.png
-  textures/base/pack/server_flags_creative.png
-  textures/base/pack/server_flags_damage.png
-  textures/base/pack/server_flags_favorite.png
-  textures/base/pack/server_flags_mc.png
-  textures/base/pack/server_flags_mt.png
-  textures/base/pack/server_flags_pvp.png
-  textures/base/pack/server_ping_*.png
-  textures/base/pack/switch_local_*.png
-  textures/base/pack/trash.png
-  textures/base/pack/trash_pressed.png
-  textures/base/pack/worldlist_bg.png
-
-ShadowNinja:
-  textures/base/pack/smoke_puff.png
-
-paramat:
-  textures/base/pack/next_icon.png
-  textures/base/pack/prev_icon.png
-  textures/base/pack/clear.png
-
-rubenwardy, paramat:
-  textures/base/pack/start_icon.png
-  textures/base/pack/end_icon.png
-
 erlehmann:
   misc/minetest-icon-24x24.png
-  misc/minetest-icon.ico
   misc/minetest.svg
-
-srifqi
-  textures/base/pack/chat_hide_btn.png
-  textures/base/pack/chat_show_btn.png
-
-Zughy:
-  textures/base/pack/cdb_add.png
-  textures/base/pack/cdb_clear.png
-  textures/base/pack/cdb_downloading.png
-  textures/base/pack/cdb_queued.png
-  textures/base/pack/cdb_update.png
-  textures/base/pack/cdb_viewonline.png
-
-KevDoy, An0n3m0us:
-  textures/base/pack/heart.png
-  textures/base/pack/heart_gone.png
 
 License of Minetest source code
 -------------------------------
@@ -190,7 +115,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
 luautf8
 ---------------
 Copyright (c) 2018 Xavier Wang
@@ -234,41 +158,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
-Fonts
----------------
-
-Bitstream Vera Fonts Copyright:
-
-  Copyright (c) 2003 by Bitstream, Inc. All Rights Reserved. Bitstream Vera is
-  a trademark of Bitstream, Inc.
-
-Arimo - Apache License, version 2.0
-  Digitized data copyright (c) 2010-2012 Google Corporation.
-
-Cousine - Apache License, version 2.0
-  Digitized data copyright (c) 2010-2012 Google Corporation.
-
-DroidSansFallBackFull:
-
-  Copyright (C) 2008 The Android Open Source Project
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-
-MultiCraft Font:
-
-  Copyright (C) 2021-2022 MultiCraft Development Team
-
-  Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)
-
-     https://creativecommons.org/licenses/by-nc-nd/4.0/
