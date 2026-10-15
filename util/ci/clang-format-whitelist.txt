@@ -145,9 +145,6 @@ src/minimap.h
 src/mods.cpp
 src/mods.h
 src/network/address.cpp
-src/network/clientopcodes.cpp
-src/network/clientopcodes.h
-src/network/clientpackethandler.cpp
 src/network/connection.cpp
 src/network/mt_connection.h
 src/network/connectionthreads.cpp
