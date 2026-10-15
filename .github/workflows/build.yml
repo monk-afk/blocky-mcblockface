@@ -184,7 +184,7 @@ jobs:
     env:
       VCPKG_VERSION: ddf0518c31a259dcc359fd4c7bcb1ce8a27e9855
 #                    2026.08.15
-      vcpkg_packages: irrlicht zlib curl[ssl] openal-soft libvorbis libogg sqlite3 freetype luajit gmp jsoncpp
+      vcpkg_packages: irrlicht zlib curl[ssl] sqlite3 luajit gmp jsoncpp
     strategy:
       fail-fast: false
       matrix:
