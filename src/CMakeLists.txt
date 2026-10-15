@@ -26,28 +26,6 @@ set(CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING
 mark_as_advanced(EXECUTABLE_OUTPUT_PATH LIBRARY_OUTPUT_PATH)
 
 
-if(NOT (BUILD_CLIENT OR BUILD_SERVER))
-	message(WARNING "Neither BUILD_CLIENT nor BUILD_SERVER is set! Setting BUILD_SERVER=true")
-	set(BUILD_SERVER TRUE)
-endif()
-
-option(USE_SDL "Use SDL2 for window management" FALSE)
-option(USE_STATIC_BUILD "Link additional libraries needed for static build" FALSE)
-
-if(USE_SDL)
-	if(NOT USE_STATIC_BUILD)
-		find_package(SDL2)
-	else()
-		set(SDL2_FOUND TRUE)
-	endif()
-	if (SDL2_FOUND)
-		message(STATUS "SDL2 found.")
-		include_directories(${SDL2_INCLUDE_DIR})
-	else()
-		message(FATAL_ERROR "SDL2 not found.")
-	endif()
-endif()
-
 option(ENABLE_CURL "Enable cURL support for fetching media" TRUE)
 set(USE_CURL FALSE)
 
@@ -62,12 +40,7 @@ else()
 endif()
 
 if(NOT USE_CURL)
-	if(BUILD_CLIENT)
-		message(WARNING "cURL is required to load the server list")
-	endif()
-	if(BUILD_SERVER)
-		message(WARNING "cURL is required to announce to the server list")
-	endif()
+	message(WARNING "cURL is required to announce to the server list")
 endif()
 
 
@@ -90,66 +63,6 @@ else()
 	message(STATUS "GetText disabled.")
 endif()
 
-
-option(ENABLE_SOUND "Enable sound" TRUE)
-set(USE_SOUND FALSE)
-
-if(BUILD_CLIENT AND ENABLE_SOUND)
-	# Sound libraries
-	find_package(OpenAL)
-	find_package(Vorbis)
-	if(NOT OPENAL_FOUND)
-		message(STATUS "Sound enabled, but OpenAL not found!")
-		mark_as_advanced(CLEAR OPENAL_LIBRARY OPENAL_INCLUDE_DIR)
-	endif()
-	if(NOT VORBIS_FOUND)
-		message(STATUS "Sound enabled, but Vorbis libraries not found!")
-		mark_as_advanced(CLEAR OGG_INCLUDE_DIR VORBIS_INCLUDE_DIR OGG_LIBRARY VORBIS_LIBRARY VORBISFILE_LIBRARY)
-	endif()
-	if(OPENAL_FOUND AND VORBIS_FOUND)
-		set(USE_SOUND TRUE)
-		message(STATUS "Sound enabled.")
-	else()
-		message(FATAL_ERROR "Sound enabled, but cannot be used.\n"
-			"To continue, either fill in the required paths or disable sound. (-DENABLE_SOUND=0)")
-	endif()
-endif()
-
-
-option(ENABLE_GLES "Use OpenGL ES instead of OpenGL" FALSE)
-mark_as_advanced(ENABLE_GLES)
-
-option(ENABLE_TOUCH "Enable Touchscreen support" FALSE)
-if(ENABLE_TOUCH)
-	add_definitions(-DHAVE_TOUCHSCREENGUI)
-endif()
-
-if(BUILD_CLIENT)
-	if(ENABLE_GLES)
-		find_package(OpenGLES2 REQUIRED)
-	else()
-		# transitive dependency from Irrlicht (see longer explanation below)
-		if(NOT WIN32)
-			set(OPENGL_GL_PREFERENCE "LEGACY" CACHE STRING
-				"See CMake Policy CMP0072 for reference. GLVND is broken on some nvidia setups")
-			set(OpenGL_GL_PREFERENCE ${OPENGL_GL_PREFERENCE})
-
-			find_package(OpenGL REQUIRED)
-		endif()
-	endif()
-endif()
-
-
-option(ENABLE_FREETYPE "Enable FreeType2 (TrueType fonts and basic unicode support)" TRUE)
-set(USE_FREETYPE FALSE)
-
-if(ENABLE_FREETYPE)
-	find_package(Freetype)
-	if(FREETYPE_FOUND)
-		message(STATUS "Freetype enabled.")
-		set(USE_FREETYPE TRUE)
-	endif()
-endif(ENABLE_FREETYPE)
 
 option(ENABLE_CURSES "Enable ncurses console" TRUE)
 set(USE_CURSES FALSE)
@@ -289,12 +202,6 @@ if(WIN32)
 	# Dll's are automatically copied to the output directory by vcpkg when VCPKG_APPLOCAL_DEPS=ON
 	if(NOT VCPKG_APPLOCAL_DEPS)
 		find_file(ZLIB_DLL NAMES "zlib.dll" "zlib1.dll" DOC "Path to zlib.dll for installation (optional)")
-		if(ENABLE_SOUND)
-			set(OPENAL_DLL "" CACHE FILEPATH "Path to OpenAL32.dll for installation (optional)")
-			set(OGG_DLL "" CACHE FILEPATH "Path to libogg.dll for installation (optional)")
-			set(VORBIS_DLL "" CACHE FILEPATH "Path to libvorbis.dll for installation (optional)")
-			set(VORBISFILE_DLL "" CACHE FILEPATH "Path to libvorbisfile.dll for installation (optional)")
-		endif()
 		if(USE_LUAJIT)
 			set(LUA_DLL "" CACHE FILEPATH "Path to luajit-5.1.dll for installation (optional)")
 		endif()
@@ -302,39 +209,6 @@ if(WIN32)
 
 else()
 	# Unix probably
-	if(BUILD_CLIENT)
-		if(NOT HAIKU AND NOT APPLE)
-			find_package(X11 REQUIRED)
-		endif(NOT HAIKU AND NOT APPLE)
-
-		##
-		# The following dependencies are transitive dependencies from Irrlicht.
-		# Minetest itself does not use them, but we link them so that statically
-		# linking Irrlicht works.
-		if(NOT HAIKU AND NOT APPLE)
-			# This way Xxf86vm is found on OpenBSD too
-			find_library(XXF86VM_LIBRARY Xxf86vm)
-			mark_as_advanced(XXF86VM_LIBRARY)
-			set(CLIENT_PLATFORM_LIBS ${CLIENT_PLATFORM_LIBS} ${XXF86VM_LIBRARY})
-		endif(NOT HAIKU AND NOT APPLE)
-
-		find_package(JPEG REQUIRED)
-		find_package(BZip2 REQUIRED)
-		find_package(PNG REQUIRED)
-		if(APPLE)
-			find_library(CARBON_LIB Carbon REQUIRED)
-			find_library(COCOA_LIB Cocoa REQUIRED)
-			find_library(IOKIT_LIB IOKit REQUIRED)
-			mark_as_advanced(
-				CARBON_LIB
-				COCOA_LIB
-				IOKIT_LIB
-			)
-			SET(CLIENT_PLATFORM_LIBS ${CLIENT_PLATFORM_LIBS} ${CARBON_LIB} ${COCOA_LIB} ${IOKIT_LIB})
-		endif(APPLE)
-		##
-	endif(BUILD_CLIENT)
-
 	find_package(ZLIB REQUIRED)
 	set(PLATFORM_LIBS -lpthread ${CMAKE_DL_LIBS})
 	if(APPLE)
@@ -527,23 +401,16 @@ include_directories(
 	${PROJECT_SOURCE_DIR}
 	${IRRLICHT_INCLUDE_DIR}
 	${ZLIB_INCLUDE_DIR}
-	${PNG_INCLUDE_DIR}
-	${SOUND_INCLUDE_DIRS}
 	${SQLITE3_INCLUDE_DIR}
 	${LUA_INCLUDE_DIR}
 	${CHACHA_INCLUDE_DIR}
 	${GMP_INCLUDE_DIR}
 	${JSON_INCLUDE_DIR}
-	${X11_INCLUDE_DIR}
 	${PROJECT_SOURCE_DIR}/script
 )
 
 if(USE_GETTEXT)
 	include_directories(${GETTEXT_INCLUDE_DIR})
-endif()
-
-if(USE_FREETYPE)
-	include_directories(${FREETYPE_INCLUDE_DIRS})
 endif()
 
 if(USE_CURL)
