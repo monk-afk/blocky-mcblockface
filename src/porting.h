@@ -40,10 +40,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "constants.h"
 #include "gettime.h"
 
-#ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
-#include <SDL.h>
-#endif
-
 #ifdef _MSC_VER
 	#define SWPRINTF_CHARSTRING L"%S"
 #else
@@ -349,12 +345,6 @@ bool open_url(const std::string &url);
  * @param path Path to directory
  * @return true on success, false on failure
  */
-
-/**
- * Get total device memory
- */
-
-float getTotalSystemMemory();
 
 bool open_directory(const std::string &path);
 

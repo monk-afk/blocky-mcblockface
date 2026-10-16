@@ -55,10 +55,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	#include <FindDirectory.h>
 #endif
 
-#ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
-	#include <SDL.h>
-#endif
-
 #include "config.h"
 #include "debug.h"
 #include "filesys.h"
@@ -717,16 +713,6 @@ bool open_url(const std::string &url)
 	}
 
 	return open_uri(url);
-}
-
-float getTotalSystemMemory()
-{
-#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
-	static const float retval = SDL_GetSystemRAM();
-	return retval;
-#else
-	return 0;
-#endif
 }
 
 bool open_directory(const std::string &path)
