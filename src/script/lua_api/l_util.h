@@ -100,22 +100,9 @@ private:
 
 	// sha1(string, raw)
 	static int l_sha1(lua_State *L);
-
-#ifndef SERVER
-	// upgrade(string)
-	static int l_upgrade(lua_State *L);
-
-	// get_secret_key(string)
-	static int l_get_secret_key(lua_State *L);
-
-	static int l_get_screen_info(lua_State *L);
-#endif
-
 public:
 	static void Initialize(lua_State *L, int top);
 	static void InitializeAsync(lua_State *L, int top);
-	static void InitializeClient(lua_State *L, int top);
-	static void InitializeMainMenu(lua_State *L, int top);
 
 	static void InitializeAsync(AsyncEngine &engine);
 };

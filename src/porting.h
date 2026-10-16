@@ -351,8 +351,6 @@ bool open_url(const std::string &url);
  */
 
 #if defined(__APPLE__)
-std::string getSecretKey(const std::string &key);
-
 float getScreenScale();
 #endif
 
