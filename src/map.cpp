@@ -355,8 +355,6 @@ struct TimeOrderedMapBlock {
 void Map::timerUpdate(float dtime, float unload_timeout, u32 max_loaded_blocks,
 		std::vector<v3s16> *unloaded_blocks)
 {
-	bool save_before_unloading = (mapType() == MAPTYPE_SERVER);
-
 	// Profile modified reasons
 	Profiler modprofiler;
 
@@ -385,8 +383,7 @@ void Map::timerUpdate(float dtime, float unload_timeout, u32 max_loaded_blocks,
 					v3s16 p = block->getPos();
 
 					// Save if modified
-					if (block->getModified() != MOD_STATE_CLEAN
-							&& save_before_unloading) {
+					if (block->getModified() != MOD_STATE_CLEAN) {
 						modprofiler.add(block->getModifiedReasonString(), 1);
 						if (!saveBlock(block))
 							continue;
@@ -438,7 +435,7 @@ void Map::timerUpdate(float dtime, float unload_timeout, u32 max_loaded_blocks,
 			v3s16 p = block->getPos();
 
 			// Save if modified
-			if (block->getModified() != MOD_STATE_CLEAN && save_before_unloading) {
+			if (block->getModified() != MOD_STATE_CLEAN) {
 				modprofiler.add(block->getModifiedReasonString(), 1);
 				if (!saveBlock(block))
 					continue;
@@ -471,15 +468,14 @@ void Map::timerUpdate(float dtime, float unload_timeout, u32 max_loaded_blocks,
 
 	if(deleted_blocks_count != 0)
 	{
-		PrintInfo(infostream); // ServerMap/ClientMap:
+		PrintInfo(infostream);
 		infostream<<"Unloaded "<<deleted_blocks_count
-				<<" blocks from memory";
-		if(save_before_unloading)
-			infostream<<", of which "<<saved_blocks_count<<" were written";
+				<<" blocks from memory"
+				<<", of which "<<saved_blocks_count<<" were written";
 		infostream<<", "<<block_count_all<<" blocks in memory";
 		infostream<<"."<<std::endl;
 		if(saved_blocks_count != 0){
-			PrintInfo(infostream); // ServerMap/ClientMap:
+			PrintInfo(infostream);
 			infostream<<"Blocks modified by: "<<std::endl;
 			modprofiler.print(infostream);
 		}
@@ -1682,7 +1678,7 @@ void ServerMap::save(ModifiedState save_level)
 				<< block_count << " blocks"
 				<< ", " << block_count_all << " blocks in memory."
 				<< std::endl;
-		PrintInfo(infostream); // ServerMap/ClientMap:
+		PrintInfo(infostream);
 		infostream<<"Blocks modified by: "<<std::endl;
 		modprofiler.print(infostream);
 	}

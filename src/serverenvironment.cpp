@@ -481,8 +481,7 @@ ServerEnvironment::~ServerEnvironment()
 	// Convert all objects to static and delete the active objects
 	deactivateFarObjects(true);
 
-	// Drop/delete map
-	m_map->drop();
+	delete m_map;
 
 	// Delete ActiveBlockModifiers
 	for (ABMWithState &m_abm : m_abms) {

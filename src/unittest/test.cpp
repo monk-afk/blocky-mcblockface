@@ -48,14 +48,8 @@ public:
 	IItemDefManager *getItemDefManager() { return m_itemdef; }
 	const NodeDefManager *getNodeDefManager() { return m_nodedef; }
 	ICraftDefManager *getCraftDefManager() { return m_craftdef; }
-	ITextureSource *getTextureSource() { return m_texturesrc; }
-	IShaderSource *getShaderSource() { return m_shadersrc; }
-	scene::ISceneManager *getSceneManager() { return m_scenemgr; }
 	IRollbackManager *getRollbackManager() { return m_rollbackmgr; }
-	EmergeManager *getEmergeManager() { return m_emergemgr; }
 
-	scene::IAnimatedMesh *getMesh(const std::string &filename) { return NULL; }
-	bool checkLocalPrivilege(const std::string &priv) { return false; }
 	u16 allocateUnknownNodeId(const std::string &name) { return 0; }
 
 	void defineSomeNodes();
@@ -81,11 +75,7 @@ private:
 	IItemDefManager *m_itemdef = nullptr;
 	const NodeDefManager *m_nodedef = nullptr;
 	ICraftDefManager *m_craftdef = nullptr;
-	ITextureSource *m_texturesrc = nullptr;
-	IShaderSource *m_shadersrc = nullptr;
-	scene::ISceneManager *m_scenemgr = nullptr;
 	IRollbackManager *m_rollbackmgr = nullptr;
-	EmergeManager *m_emergemgr = nullptr;
 	std::unique_ptr<ModChannelMgr> m_modchannel_mgr;
 };
 

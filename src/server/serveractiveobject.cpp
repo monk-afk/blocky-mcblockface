@@ -58,9 +58,8 @@ std::string ServerActiveObject::generateUpdateInfantCommand(u16 infant_id, u16 p
 	writeU16(os, infant_id);
 	writeU8(os, getSendType());
 	if (protocol_version < 38) {
-		// Clients since 4aa9a66 so no longer need this data
+		// Clients since 4aa9a66 no longer need this data.
 		// Version 38 is the first bump after that commit.
-		// See also: ClientEnvironment::addActiveObject
 		os << serializeString32(getClientInitializationData(protocol_version));
 	}
 	return os.str();

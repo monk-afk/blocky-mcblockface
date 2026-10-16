@@ -40,7 +40,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 class Settings;
 class MapDatabase;
-class ClientMap;
 class MapSector;
 class ServerMapSector;
 class MapBlock;
@@ -55,10 +54,6 @@ struct BlockMakeData;
 /*
 	MapEditEvent
 */
-
-#define MAPTYPE_BASE 0
-#define MAPTYPE_SERVER 1
-#define MAPTYPE_CLIENT 2
 
 enum MapEditEventType{
 	// Node added (changed from air or something else to something)
@@ -129,19 +124,6 @@ public:
 	virtual ~Map();
 	DISABLE_CLASS_COPY(Map);
 
-	virtual s32 mapType() const
-	{
-		return MAPTYPE_BASE;
-	}
-
-	/*
-		Drop (client) or delete (server) the map.
-	*/
-	virtual void drop()
-	{
-		delete this;
-	}
-
 	void addEventReceiver(MapEventReceiver *event_receiver);
 	void removeEventReceiver(MapEventReceiver *event_receiver);
 	// event shall be deleted by caller after the call.
@@ -151,12 +133,6 @@ public:
 	MapSector * getSectorNoGenerateNoLock(v2s16 p2d);
 	// Same as the above (there exists no lock anymore)
 	MapSector * getSectorNoGenerate(v2s16 p2d);
-
-	/*
-		This is overloaded by ClientMap and ServerMap to allow
-		their differing fetch methods.
-	*/
-	virtual MapSector * emergeSector(v2s16 p){ return NULL; }
 
 	// Returns InvalidPositionException if not found
 	MapBlock * getBlockNoCreate(v3s16 p);
@@ -205,21 +181,20 @@ public:
 
 	virtual void save(ModifiedState save_level) { FATAL_ERROR("FIXME"); }
 
-	// Server implements these.
-	// Client leaves them as no-op.
+	// ServerMap implements these for the map database.
 	virtual bool saveBlock(MapBlock *block) { return false; }
 	virtual bool deleteBlock(v3s16 blockpos) { return false; }
 
 	/*
 		Updates usage timers and unloads unused blocks and sectors.
-		Saves modified blocks before unloading on MAPTYPE_SERVER.
+		Saves modified blocks before unloading.
 	*/
 	void timerUpdate(float dtime, float unload_timeout, u32 max_loaded_blocks,
 			std::vector<v3s16> *unloaded_blocks=NULL);
 
 	/*
 		Unloads all blocks with a zero refCount().
-		Saves modified blocks before unloading on MAPTYPE_SERVER.
+		Saves modified blocks before unloading.
 	*/
 	void unloadUnreferencedBlocks(std::vector<v3s16> *unloaded_blocks=NULL);
 
@@ -228,7 +203,7 @@ public:
 	// If deleted sector is in sector cache, clears cache
 	void deleteSectors(std::vector<v2s16> &list);
 
-	// For debug printing. Prints "Map: ", "ServerMap: " or "ClientMap: "
+	// For debug printing.
 	virtual void PrintInfo(std::ostream &out);
 
 	void transformLiquids(std::map<v3s16, MapBlock*> & modified_blocks,
@@ -324,11 +299,6 @@ public:
 	*/
 	ServerMap(const std::string &savedir, IGameDef *gamedef, EmergeManager *emerge, MetricsBackend *mb);
 	~ServerMap();
-
-	s32 mapType() const
-	{
-		return MAPTYPE_SERVER;
-	}
 
 	/*
 		Get a sector from somewhere.

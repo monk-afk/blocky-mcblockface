@@ -26,18 +26,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 class IItemDefManager;
 class NodeDefManager;
 class ICraftDefManager;
-class ITextureSource;
-class IShaderSource;
 class IRollbackManager;
-class EmergeManager;
-class Camera;
 class ModChannel;
 class ModMetadata;
-
-namespace irr { namespace scene {
-	class IAnimatedMesh;
-	class ISceneManager;
-}}
 
 struct ModSpec;
 /*

@@ -76,7 +76,7 @@ enum ActiveObjectCommand {
 };
 
 /*
-	Parent class for ServerActiveObject and ClientActiveObject
+	Base class for server-side active objects.
 */
 class ActiveObject
 {

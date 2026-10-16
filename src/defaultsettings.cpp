@@ -84,7 +84,6 @@ void set_default_settings()
 	settings->setDefault("active_object_send_range_blocks", "8");
 	settings->setDefault("active_block_range", "4");
 	//settings->setDefault("max_simultaneous_block_sends_per_client", "1");
-	// This causes frametime jitter on client side, or does it?
 	settings->setDefault("max_block_send_distance", "12");
 	settings->setDefault("block_send_optimize_distance", "4");
 	settings->setDefault("server_side_occlusion_culling", "true");
