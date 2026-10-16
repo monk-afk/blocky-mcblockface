@@ -48,13 +48,6 @@ extern "C" {
 #endif
 }
 
-#if !defined(SERVER) && \
-	(IRRLICHT_VERSION_MAJOR == 1) && \
-	(IRRLICHT_VERSION_MINOR == 8) && \
-	(IRRLICHT_VERSION_REVISION == 2)
-	#error "Irrlicht 1.8.2 is known to be broken - please update Irrlicht to version >= 1.8.3"
-#endif
-
 #define DEBUGFILE "debug.txt"
 #define DEFAULT_SERVER_PORT 30000
 
@@ -269,28 +262,6 @@ static void set_allowed_options(OptionList *allowed_options)
 		_("Migrate from current auth backend to another (Only works when using squareoneserver or with --server)"))));
 	allowed_options->insert(std::make_pair("terminal", ValueSpec(VALUETYPE_FLAG,
 			_("Feature an interactive terminal (Only works when using squareoneserver or with --server)"))));
-#ifndef SERVER
-	allowed_options->insert(std::make_pair("videomodes", ValueSpec(VALUETYPE_FLAG,
-			_("Show available video modes"))));
-	allowed_options->insert(std::make_pair("speedtests", ValueSpec(VALUETYPE_FLAG,
-			_("Run speed tests"))));
-	allowed_options->insert(std::make_pair("address", ValueSpec(VALUETYPE_STRING,
-			_("Address to connect to. ('' = local game)"))));
-	allowed_options->insert(std::make_pair("random-input", ValueSpec(VALUETYPE_FLAG,
-			_("Enable random user input, for testing"))));
-	allowed_options->insert(std::make_pair("server", ValueSpec(VALUETYPE_FLAG,
-			_("Run dedicated server"))));
-	allowed_options->insert(std::make_pair("name", ValueSpec(VALUETYPE_STRING,
-			_("Set player name"))));
-	allowed_options->insert(std::make_pair("password", ValueSpec(VALUETYPE_STRING,
-			_("Set password"))));
-	allowed_options->insert(std::make_pair("password-file", ValueSpec(VALUETYPE_STRING,
-			_("Set password from contents of file"))));
-	allowed_options->insert(std::make_pair("go", ValueSpec(VALUETYPE_FLAG,
-			_("Disable main menu"))));
-	allowed_options->insert(std::make_pair("console", ValueSpec(VALUETYPE_FLAG,
-		_("Starts with the console (Windows only)"))));
-#endif
 
 }
 
@@ -321,9 +292,6 @@ static void print_version()
 {
 	std::cout << PROJECT_NAME_C " " << g_version_hash
 		<< " (" << porting::getPlatformName() << ")" << std::endl;
-#ifndef SERVER
-	std::cout << "Using Irrlicht " IRRLICHT_SDK_VERSION << std::endl;
-#endif
 #if USE_LUAJIT
 	std::cout << "Using " << LUAJIT_VERSION << std::endl;
 #else
@@ -420,15 +388,6 @@ static bool create_userdata_path()
 	return fs::CreateDir(porting::path_user);
 }
 
-#if !defined(_MSC_VER) && !defined(SERVER)
-static void language_setting_changed(const std::string &name, void *userdata)
-{
-	init_gettext(porting::path_locale.c_str(),
-		g_settings->get("language"), 0, nullptr);
-	g_client_translations->clear();
-}
-#endif
-
 static bool init_common(const Settings &cmd_args, int argc, char *argv[])
 {
 	startup_message();
@@ -455,9 +414,6 @@ static bool init_common(const Settings &cmd_args, int argc, char *argv[])
 
 	init_gettext(porting::path_locale.c_str(),
 		g_settings->get("language"), argc, argv);
-#if !defined(_MSC_VER) && !defined(SERVER)
-	g_settings->registerChangedCallback("language", language_setting_changed, nullptr);
-#endif
 
 	return true;
 }
