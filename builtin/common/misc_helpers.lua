@@ -525,52 +525,6 @@ function table.shuffle(t, from, to, random)
 end
 
 
---------------------------------------------------------------------------------
--- mainmenu only functions
---------------------------------------------------------------------------------
-if INIT == "mainmenu" then
-	function core.get_game(index)
-		local games = core.get_games()
-
-		if index > 0 and index <= #games then
-			return games[index]
-		end
-
-		return nil
-	end
-end
-
-if INIT == "client" or INIT == "mainmenu" then
-	function fgettext_ne(text, ...)
-		text = core.gettext(text)
-		local arg = {n=select('#', ...), ...}
-		if arg.n >= 1 then
-			-- Insert positional parameters ($1, $2, ...)
-			local result = ''
-			local pos = 1
-			while pos <= text:len() do
-				local newpos = text:find('[$]', pos)
-				if newpos == nil then
-					result = result .. text:sub(pos)
-					pos = text:len() + 1
-				else
-					local paramindex =
-						tonumber(text:sub(newpos+1, newpos+1))
-					result = result .. text:sub(pos, newpos-1)
-						.. tostring(arg[paramindex])
-					pos = newpos + 2
-				end
-			end
-			text = result
-		end
-		return text
-	end
-
-	function fgettext(text, ...)
-		return core.formspec_escape(fgettext_ne(text, ...))
-	end
-end
-
 local ESCAPE_CHAR = string.char(0x1b)
 
 function core.get_color_escape_sequence(color)
