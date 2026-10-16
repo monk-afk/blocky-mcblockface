@@ -26,10 +26,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "mapgen/mapgen.h" // Mapgen::setDefaultSettings
 #include "util/string.h"
 
-#ifndef SERVER
-#include "client/renderingengine.h"
-#endif
-
 void set_default_settings()
 {
 	Settings *settings = Settings::getLayer(SL_DEFAULTS);
@@ -484,10 +480,6 @@ void set_default_settings()
 	settings->setDefault("enable_console", "false");
 	settings->setDefault("screen_dpi", "72");
 	settings->setDefault("display_density_factor", "1");
-
-#ifndef SERVER
-	settings->setDefault("device_is_tablet", std::to_string(RenderingEngine::isTablet()));
-#endif
 
 	// Altered settings for macOS
 #if defined(__MACH__) && defined(__APPLE__)
