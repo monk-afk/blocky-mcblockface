@@ -287,7 +287,6 @@ set(common_SRCS
 	inventorymanager.cpp
 	itemdef.cpp
 	itemstackmetadata.cpp
-	light.cpp
 	log.cpp
 	main.cpp
 	map.cpp

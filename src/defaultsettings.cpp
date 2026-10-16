@@ -61,12 +61,6 @@ void set_default_settings()
 	settings->setDefault("enable_register_confirmation", "true");
 
 	// Visuals
-	settings->setDefault("lighting_alpha", "0.0");
-	settings->setDefault("lighting_beta", "1.5");
-	settings->setDefault("display_gamma", "1.0");
-	settings->setDefault("lighting_boost", "0.2");
-	settings->setDefault("lighting_boost_center", "0.5");
-	settings->setDefault("lighting_boost_spread", "0.2");
 	settings->setDefault("texture_path", "");
 	settings->setDefault("recent_chat_messages", "10");
 #if ENABLE_GLES

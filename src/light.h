@@ -35,40 +35,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 // This brightness is reserved for sunlight
 #define LIGHT_SUN 15
 
-#ifndef SERVER
-
-/**
- * \internal
- *
- * \warning DO NOT USE this directly; it is here simply so that decode_light()
- * can be inlined.
- *
- * Array size is #LIGHTMAX+1
- *
- * The array is a lookup table to convert the internal representation of light
- * (brightness) to the display brightness.
- *
- */
-extern const u8 *light_decode_table;
-
-// 0 <= light <= LIGHT_SUN
-// 0 <= return value <= 255
-inline u8 decode_light(u8 light)
-{
-	// assert(light <= LIGHT_SUN);
-	if (light > LIGHT_SUN)
-		light = LIGHT_SUN;
-	return light_decode_table[light];
-}
-
-// 0.0 <= light <= 1.0
-// 0.0 <= return value <= 1.0
-float decode_light_f(float light_f);
-
-void set_light_table(float gamma);
-
-#endif // ifndef SERVER
-
 // 0 <= daylight_factor <= 1000
 // 0 <= lightday, lightnight <= LIGHT_SUN
 // 0 <= return value <= LIGHT_SUN
