@@ -17,11 +17,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include <IrrCompileConfig.h>
 #include "settings.h"
 #include "config.h"
 #include "mapgen/mapgen.h" // Mapgen::setDefaultSettings
-#include "util/string.h"
 
 void set_default_settings()
 {
@@ -63,11 +61,6 @@ void set_default_settings()
 	// Visuals
 	settings->setDefault("texture_path", "");
 	settings->setDefault("recent_chat_messages", "10");
-#if ENABLE_GLES
-	settings->setDefault("enable_shaders", "false");
-#else
-	settings->setDefault("enable_shaders", "true");
-#endif
 
 	// Server
 	settings->setDefault("compat_player_model", "character.b3d,3d_armor_character.b3d,skinsdb_3d_armor_character_5.b3d");
