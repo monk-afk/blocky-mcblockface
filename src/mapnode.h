@@ -250,7 +250,7 @@ struct MapNode
 	u8 getNeighbors(v3s16 p, Map *map) const;
 
 	/*
-		Gets list of node boxes (used for rendering (NDT_NODEBOX))
+		Gets the node boxes defined for NDT_NODEBOX nodes.
 	*/
 	void getNodeBoxes(const NodeDefManager *nodemgr, std::vector<aabb3f> *boxes,
 		u8 neighbors = 0) const;

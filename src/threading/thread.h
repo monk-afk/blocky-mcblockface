@@ -25,10 +25,6 @@ DEALINGS IN THE SOFTWARE.
 
 #pragma once
 
-#include "IrrCompileConfig.h"
-
-#ifndef _IRR_COMPILE_WITH_SDL_DEVICE_
-
 #include "util/basic_macros.h"
 
 #include <string>
@@ -161,5 +157,3 @@ private:
 	tid_t m_kernel_thread_id;
 #endif
 };
-
-#endif

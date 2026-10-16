@@ -19,8 +19,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "threading/semaphore.h"
 
-#ifndef _IRR_COMPILE_WITH_SDL_DEVICE_
-
 #include <iostream>
 #include <cstdlib>
 #include <cassert>
@@ -161,5 +159,3 @@ bool Semaphore::wait(unsigned int time_ms)
 	return !ret;
 #endif
 }
-
-#endif

@@ -24,8 +24,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "tileanimation.h"
 #include "mapnode.h"
 
-// This file defines the particle-related structures that both the server and
-// client need. The ParticleManager and rendering is in client/particles.h
+// Particle parameters serialized by the server for connected clients.
 
 struct CommonParticleParams {
 	bool collisiondetection = false;

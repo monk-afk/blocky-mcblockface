@@ -32,9 +32,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <iomanip>
 #include <map>
 
-#ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
-	#include <SDL.h>
-#elif !defined(_WIN32)
+#if !defined(_WIN32)
 	#include <iconv.h>
 #else
 	#define _WIN32_WINNT 0x0501
@@ -56,49 +54,7 @@ const char *DEFAULT_ENCODING = "UTF-32LE";
 const char *DEFAULT_ENCODING = "WCHAR_T";
 #endif
 
-#ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
-
-std::wstring utf8_to_wide(const std::string &input)
-{
-#if defined(__APPLE__)
-	SANITY_CHECK(sizeof(wchar_t) == 4);
-#endif
-
-	const char *inbuf = input.c_str();
-	size_t inbuf_size = input.size() + 1;
-
-	char *outbuf = SDL_iconv_string(DEFAULT_ENCODING, "UTF-8", inbuf, inbuf_size);
-
-	if (!outbuf)
-		return L"";
-
-	std::wstring out((wchar_t*)outbuf);
-	SDL_free(outbuf);
-
-	return out;
-}
-
-std::string wide_to_utf8(const std::wstring &input)
-{
-#if defined(__APPLE__)
-	SANITY_CHECK(sizeof(wchar_t) == 4);
-#endif
-
-	const char *inbuf = (const char*)(input.c_str());
-	size_t inbuf_size = (input.size() + 1) * sizeof(wchar_t);
-
-	char *outbuf = SDL_iconv_string("UTF-8", DEFAULT_ENCODING, inbuf, inbuf_size);
-
-	if (!outbuf)
-		return "";
-
-	std::string out(outbuf);
-	SDL_free(outbuf);
-
-	return out;
-}
-
-#elif !defined(_WIN32)
+#if !defined(_WIN32)
 
 static bool convert(const char *to, const char *from, char *outbuf,
 		size_t *outbuf_size, char *inbuf, size_t inbuf_size)

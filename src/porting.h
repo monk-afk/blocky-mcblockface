@@ -317,35 +317,11 @@ inline const char *getPlatformName()
 	;
 }
 
-// Touchscreen device specific function
-bool hasRealKeyboard();
-
 bool secure_rand_fill_buf(void *buf, size_t len);
 
 // This attaches to the parents process console, or creates a new one if it doesnt exist.
 void attachOrCreateConsole();
 
 int mt_snprintf(char *buf, const size_t buf_size, const char *fmt, ...);
-
-/**
- * Opens URL in default web browser
- *
- * Must begin with http:// or https://, and not contain any new lines
- *
- * @param url The URL
- * @return true on success, false on failure
- */
-bool open_url(const std::string &url);
-
-/**
- * Opens a directory in the default file manager
- *
- * The directory must exist.
- *
- * @param path Path to directory
- * @return true on success, false on failure
- */
-
-bool open_directory(const std::string &path);
 
 } // namespace porting

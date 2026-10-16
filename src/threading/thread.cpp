@@ -28,8 +28,6 @@ DEALINGS IN THE SOFTWARE.
 #include "log.h"
 #include "porting.h"
 
-#ifndef _IRR_COMPILE_WITH_SDL_DEVICE_
-
 // for setName
 #if defined(__linux__)
 	#include <sys/prctl.h>
@@ -336,5 +334,3 @@ bool Thread::setPriority(int prio)
 
 #endif
 }
-
-#endif

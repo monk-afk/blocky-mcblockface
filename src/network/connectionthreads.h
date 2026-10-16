@@ -20,14 +20,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #pragma once
 
-#include "IrrCompileConfig.h"
-
 #include <cassert>
-#ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
-#include "threading/sdl_thread.h"
-#else
 #include "threading/thread.h"
-#endif
 #include "mt_connection.h"
 
 namespace con

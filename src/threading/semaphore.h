@@ -19,10 +19,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #pragma once
 
-#include "IrrCompileConfig.h"
-
-#ifndef _IRR_COMPILE_WITH_SDL_DEVICE_
-
 #if defined(_WIN32)
 #include <windows.h>
 #elif defined(__MACH__) && defined(__APPLE__)
@@ -54,5 +50,3 @@ private:
 	sem_t semaphore;
 #endif
 };
-
-#endif

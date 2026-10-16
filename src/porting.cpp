@@ -28,29 +28,20 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #if defined(__FreeBSD__)  || defined(__NetBSD__) || defined(__DragonFly__) || defined(__OpenBSD__)
 	#include <sys/types.h>
 	#include <sys/sysctl.h>
-	extern char **environ;
 #elif defined(_WIN32)
 	#include <windows.h>
 	#include <wincrypt.h>
 	#include <algorithm>
 	#include <shlwapi.h>
-	#include <shellapi.h>
 #endif
 #if !defined(_WIN32)
 	#include <unistd.h>
 	#include <sys/utsname.h>
-	#include <spawn.h>
 #endif
 #if defined(__hpux)
 	#define _PSTAT64
 	#include <sys/pstat.h>
 #endif
-#if defined(__APPLE__)
-	// For _NSGetEnviron()
-	// Related: https://gitlab.haskell.org/ghc/ghc/issues/2458
-	#include <crt_externs.h>
-#endif
-
 #if defined(__HAIKU__)
 	#include <FindDirectory.h>
 #endif
@@ -606,12 +597,6 @@ void initializePaths()
 #endif  // USE_GETTEXT
 }
 
-// Dummy for other OS
-bool hasRealKeyboard()
-{
-	return true;
-}
-
 ////
 //// OS-specific Secure Random
 ////
@@ -684,45 +669,6 @@ int mt_snprintf(char *buf, const size_t buf_size, const char *fmt, ...)
 #endif // _MSC_VER
 	va_end(args);
 	return c;
-}
-
-static bool open_uri(const std::string &uri)
-{
-	if (uri.find_first_of("\r\n") != std::string::npos) {
-		errorstream << "Unable to open URI as it is invalid, contains new line: " << uri << std::endl;
-		return false;
-	}
-
-#if defined(_WIN32)
-	return (intptr_t)ShellExecuteA(NULL, NULL, uri.c_str(), NULL, NULL, SW_SHOWNORMAL) > 32;
-#elif defined(__APPLE__)
-	const char *argv[] = {"open", uri.c_str(), NULL};
-	return posix_spawnp(NULL, "open", NULL, NULL, (char**)argv,
-		(*_NSGetEnviron())) == 0;
-#else
-	const char *argv[] = {"xdg-open", uri.c_str(), NULL};
-	return posix_spawnp(NULL, "xdg-open", NULL, NULL, (char**)argv, environ) == 0;
-#endif
-}
-
-bool open_url(const std::string &url)
-{
-	if (url.substr(0, 7) != "http://" && url.substr(0, 8) != "https://") {
-		errorstream << "Unable to open browser as URL is missing schema: " << url << std::endl;
-		return false;
-	}
-
-	return open_uri(url);
-}
-
-bool open_directory(const std::string &path)
-{
-	if (!fs::IsDir(path)) {
-		errorstream << "Unable to open directory as it does not exist: " << path << std::endl;
-		return false;
-	}
-
-	return open_uri(path);
 }
 
 // Load performance counter frequency only once at startup
