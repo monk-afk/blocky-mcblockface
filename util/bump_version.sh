@@ -48,7 +48,7 @@ back_to_devel() {
 	git commit -m "Continue with $NEXT_VERSION-dev"
 }
 ##################################
-# Switch to top minetest directory
+# Switch to the top-level source directory
 ##################################
 
 cd ${0%/*}/..

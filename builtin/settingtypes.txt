@@ -81,16 +81,16 @@ enable_console (Enable console window) bool false
 prometheus_listener_address (Prometheus listener address) string 127.0.0.1:30000
 
 #    Name of the server, to be displayed when players join and in the serverlist.
-server_name (Server name) string Minetest server
+server_name (Server name) string
 
 #    Description of server, to be displayed when players join and in the serverlist.
-server_description (Server description) string mine here
+server_description (Server description) string
 
 #    Domain name of server, to be displayed in the serverlist.
-server_address (Server address) string game.minetest.net
+server_address (Server address) string
 
 #    Homepage of server, to be displayed in the serverlist.
-server_url (Server URL) string https://minetest.net
+server_url (Server URL) string
 
 #    Automatically report to the serverlist.
 server_announce (Announce server) bool false
@@ -155,7 +155,7 @@ map_compression_level_net (Map Compression Level for Network Transfer) int -1 -1
 [*Game]
 
 #    Default game when creating a new world.
-default_game (Default game) string minetest
+default_game (Default game) string default
 
 #    Message of the day displayed to players connecting.
 motd (Message of the day) string

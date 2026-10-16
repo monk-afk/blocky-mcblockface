@@ -38,19 +38,19 @@
 
 #    Name of the server, to be displayed when players join and in the serverlist.
 #    type: string
-# server_name = Minetest server
+# server_name =
 
 #    Description of server, to be displayed when players join and in the serverlist.
 #    type: string
-# server_description = mine here
+# server_description =
 
 #    Domain name of server, to be displayed in the serverlist.
 #    type: string
-# server_address = game.minetest.net
+# server_address =
 
 #    Homepage of server, to be displayed in the serverlist.
 #    type: string
-# server_url = https://minetest.net
+# server_url =
 
 #    Automatically report to the serverlist.
 #    type: bool
@@ -128,7 +128,7 @@
 
 #    Default game when creating a new world.
 #    type: string
-# default_game = minetest
+# default_game = default
 
 #    Message of the day displayed to players connecting.
 #    type: string
