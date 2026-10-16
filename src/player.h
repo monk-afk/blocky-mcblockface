@@ -96,24 +96,6 @@ struct PlayerControl
 	float forw_move_joystick_axis = 0.0f;
 };
 
-struct PlayerSettings
-{
-	bool free_move = false;
-	bool pitch_move = false;
-	bool fast_move = false;
-	bool continuous_forward = false;
-	bool always_fly_fast = false;
-	bool aux1_descends = false;
-	bool noclip = false;
-	bool autojump = false;
-
-	const std::string setting_names[8] = {
-		"free_move", "pitch_move", "fast_move", "continuous_forward", "always_fly_fast",
-		"aux1_descends", "noclip", "autojump"
-	};
-	void readGlobalSettings();
-};
-
 class Map;
 struct CollisionInfo;
 struct HudElement;
@@ -182,8 +164,6 @@ public:
 
 	PlayerControl control;
 	const PlayerControl& getPlayerControl() { return control; }
-	PlayerSettings &getPlayerSettings() { return m_player_settings; }
-	static void settingsChangedCallback(const std::string &name, void *data);
 
 	// Returns non-empty `selected` ItemStack. `hand` is a fallback, if specified
 	ItemStack &getWieldedItem(ItemStack *selected, ItemStack *hand) const;
@@ -222,5 +202,4 @@ private:
 	// hud for example can be modified by EmergeThread
 	// and ServerThread
 	std::mutex m_mutex;
-	PlayerSettings m_player_settings;
 };
