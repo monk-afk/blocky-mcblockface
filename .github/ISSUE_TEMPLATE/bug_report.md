@@ -8,9 +8,9 @@ assignees: ''
 
 ##### SquareOne Core version
 <!--
-Paste SquareOne Core version between quotes below
+Paste the SquareOne Core version in the block below.
 If you are on a devel version, please add git commit hash
-You can use `minetest --version` to find it.
+You can use `squareoneserver --version` to find it.
 -->
 ```
 
@@ -20,10 +20,6 @@ You can use `minetest --version` to find it.
 <!-- General information about your hardware and operating system -->
 Operating system:
 CPU:
-
-<!-- For graphical issues only -->
-GPU model:
-OpenGL version:
 
 ##### Summary
 <!-- Describe your problem here -->
