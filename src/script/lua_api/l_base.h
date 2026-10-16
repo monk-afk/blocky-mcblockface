@@ -30,11 +30,6 @@ extern "C" {
 #include <lauxlib.h>
 }
 
-#ifndef SERVER
-class Client;
-class GUIEngine;
-#endif
-
 class ScriptApiBase;
 class Server;
 class Environment;
@@ -45,10 +40,6 @@ public:
 	static ScriptApiBase*   getScriptApiBase(lua_State *L);
 	static Server*          getServer(lua_State *L);
 	static ServerInventoryManager *getServerInventoryMgr(lua_State *L);
-	#ifndef SERVER
-	static Client*          getClient(lua_State *L);
-	static GUIEngine*       getGuiEngine(lua_State *L);
-	#endif // !SERVER
 
 	static IGameDef*        getGameDef(lua_State *L);
 

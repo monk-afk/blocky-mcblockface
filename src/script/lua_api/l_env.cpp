@@ -42,9 +42,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "server/player_sao.h"
 #include "util/string.h"
 #include "translation.h"
-#ifndef SERVER
-#include "client/client.h"
-#endif
 
 struct EnumString ModApiEnvMod::es_ClearObjectsMode[] =
 {
@@ -144,18 +141,13 @@ int LuaRaycast::l_next(lua_State *L)
 {
 	GET_PLAIN_ENV_PTR;
 
-	bool csm = false;
-#ifndef SERVER
-	csm = getClient(L) != nullptr;
-#endif
-
 	LuaRaycast *o = checkobject(L, 1);
 	PointedThing pointed;
 	env->continueRaycast(&o->state, &pointed);
 	if (pointed.type == POINTEDTHING_NOTHING)
 		lua_pushnil(L);
 	else
-		push_pointed_thing(L, pointed, csm, true);
+		push_pointed_thing(L, pointed, false, true);
 
 	return 1;
 }
@@ -861,12 +853,6 @@ int ModApiEnvMod::l_find_node_near(lua_State *L)
 
 	int start_radius = (lua_isboolean(L, 4) && readParam<bool>(L, 4)) ? 0 : 1;
 
-#ifndef SERVER
-	// Client API limitations
-	if (Client *client = getClient(L))
-		radius = client->CSMClampRadius(pos, radius);
-#endif
-
 	for (int d = start_radius; d <= radius; d++) {
 		const std::vector<v3s16> &list = FacePositionCache::getFacePositions(d);
 		for (const v3s16 &i : list) {
@@ -907,13 +893,6 @@ int ModApiEnvMod::l_find_nodes_in_area(lua_State *L)
 
 	const NodeDefManager *ndef = env->getGameDef()->ndef();
 	Map &map = env->getMap();
-
-#ifndef SERVER
-	if (Client *client = getClient(L)) {
-		minp = client->CSMClampPos(minp);
-		maxp = client->CSMClampPos(maxp);
-	}
-#endif
 
 	checkArea(minp, maxp);
 
@@ -1012,13 +991,6 @@ int ModApiEnvMod::l_find_nodes_in_area_under_air(lua_State *L)
 
 	const NodeDefManager *ndef = env->getGameDef()->ndef();
 	Map &map = env->getMap();
-
-#ifndef SERVER
-	if (Client *client = getClient(L)) {
-		minp = client->CSMClampPos(minp);
-		maxp = client->CSMClampPos(maxp);
-	}
-#endif
 
 	checkArea(minp, maxp);
 
