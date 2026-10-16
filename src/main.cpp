@@ -118,11 +118,7 @@ FileLogOutput file_log_output;
 
 static OptionList allowed_options;
 
-#if defined(__ANDROID__) || defined(__IOS__)
-int real_main(int argc, char *argv[])
-#else
 int main(int argc, char *argv[])
-#endif
 {
 	int retval;
 	debug_set_exception_handler();
@@ -156,10 +152,6 @@ int main(int argc, char *argv[])
 		return 1;
 
 	porting::signal_handler_init();
-
-#ifdef __ANDROID__
-	porting::initAndroid();
-#endif
 	porting::initializePaths();
 
 	if (!create_userdata_path()) {
@@ -480,16 +472,8 @@ static bool setup_log_params(const Settings &cmd_args)
 
 static bool create_userdata_path()
 {
-	bool success;
-#if defined(__ANDROID__) || defined(__IOS__)
-	if (fs::PathExists(porting::path_user))
-		success = true;
-#else
 	// Create user data directory
-	success = fs::CreateDir(porting::path_user);
-#endif
-
-	return success;
+	return fs::CreateDir(porting::path_user);
 }
 
 #if !defined(_MSC_VER) && !defined(SERVER)

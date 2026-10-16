@@ -22,9 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "threading/mutex_auto_lock.h"
 #include "debug.h"
 #include "gettime.h"
-#include "porting.h"
 #include "settings.h"
-#include "config.h"
 #include "exceptions.h"
 #include "util/numeric.h"
 #include "log.h"
@@ -105,43 +103,6 @@ std::ostream warningstream(&warning_buf);
 std::ostream actionstream(&action_buf);
 std::ostream infostream(&info_buf);
 std::ostream verbosestream(&verbose_buf);
-
-// Android
-#ifdef __ANDROID__
-
-static unsigned int g_level_to_android[] = {
-	ANDROID_LOG_INFO,     // LL_NONE
-	//ANDROID_LOG_FATAL,
-	ANDROID_LOG_ERROR,    // LL_ERROR
-	ANDROID_LOG_WARN,     // LL_WARNING
-	ANDROID_LOG_WARN,     // LL_ACTION
-	//ANDROID_LOG_INFO,
-	ANDROID_LOG_DEBUG,    // LL_INFO
-	ANDROID_LOG_VERBOSE,  // LL_VERBOSE
-};
-
-class AndroidSystemLogOutput : public ICombinedLogOutput {
-	public:
-		AndroidSystemLogOutput()
-		{
-			g_logger.addOutput(this);
-		}
-		~AndroidSystemLogOutput()
-		{
-			g_logger.removeOutput(this);
-		}
-		void logRaw(LogLevel lev, const std::string &line)
-		{
-			STATIC_ASSERT(ARRLEN(g_level_to_android) == LL_MAX,
-				mismatch_between_android_and_internal_loglevels);
-			__android_log_print(g_level_to_android[lev],
-				PROJECT_NAME_C, "%s", line.c_str());
-		}
-};
-
-AndroidSystemLogOutput g_android_log_output;
-
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 
