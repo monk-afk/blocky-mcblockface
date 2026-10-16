@@ -26,7 +26,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "log.h"
 #include "content/subgames.h"
 #include "settings.h"
-#include "porting.h"
 #include "convert_json.h"
 
 bool parseDependsString(std::string &dep, std::unordered_set<char> &symbols)
@@ -380,20 +379,6 @@ void ModConfiguration::resolveDependencies()
 	// Step 4: write back list of unsatisfied mods
 	m_unsatisfied_mods.assign(unsatisfied.begin(), unsatisfied.end());
 }
-
-#ifndef SERVER
-ClientModConfiguration::ClientModConfiguration(const std::string &path) :
-		ModConfiguration(path)
-{
-	std::set<std::string> paths;
-	std::string path_user = porting::path_user + DIR_DELIM + "clientmods";
-	paths.insert(path);
-	paths.insert(path_user);
-
-	std::string settings_path = path_user + DIR_DELIM + "mods.conf";
-	addModsFromConfig(settings_path, paths);
-}
-#endif
 
 ModMetadata::ModMetadata(const std::string &mod_name) : m_mod_name(mod_name)
 {

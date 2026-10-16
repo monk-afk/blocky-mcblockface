@@ -132,14 +132,6 @@ private:
 	ModConfiguration() = default;
 };
 
-#ifndef SERVER
-class ClientModConfiguration : public ModConfiguration
-{
-public:
-	ClientModConfiguration(const std::string &path);
-};
-#endif
-
 class ModMetadata : public Metadata
 {
 public:
