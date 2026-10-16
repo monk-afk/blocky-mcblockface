@@ -33,36 +33,15 @@ void set_default_settings()
 	settings->setDefault("bind_address", "");
 	settings->setDefault("serverlist_url", "https://servers.luanti.org");
 
-	// Client
-	settings->setDefault("address", "");
-	settings->setDefault("enable_sound", "true");
-	settings->setDefault("sound_volume", "1.0");
-	settings->setDefault("mute_sound", "false");
-	settings->setDefault("mesh_generation_interval", "0");
-	settings->setDefault("meshgen_block_cache_size", "20");
-	settings->setDefault("enable_vbo", "true");
-	settings->setDefault("noclip", "false");
-	settings->setDefault("screenshot_path", "screenshots");
-	settings->setDefault("screenshot_format", "png");
-	settings->setDefault("screenshot_quality", "0");
-	settings->setDefault("client_unload_unused_data_timeout", "600");
-	settings->setDefault("client_mapblock_limit", "7500");
-	settings->setDefault("enable_build_where_you_stand", "false");
+	// HTTP
 	settings->setDefault("curl_timeout", "5000");
 	settings->setDefault("curl_parallel_limit", "8");
-	settings->setDefault("curl_file_download_timeout", "300000");
 	settings->setDefault("curl_verify_cert", "true");
-	settings->setDefault("enable_remote_media_server", "true");
-	settings->setDefault("enable_client_modding", "true");
-	settings->setDefault("max_out_chat_queue_size", "20");
-	settings->setDefault("pause_on_lost_focus", "true");
-	settings->setDefault("enable_register_confirmation", "true");
-
-	// Visuals
-	settings->setDefault("texture_path", "");
-	settings->setDefault("recent_chat_messages", "10");
 
 	// Server
+	settings->setDefault("noclip", "false");
+	settings->setDefault("texture_path", "");
+	settings->setDefault("recent_chat_messages", "10");
 	settings->setDefault("compat_player_model", "character.b3d,3d_armor_character.b3d,skinsdb_3d_armor_character_5.b3d");
 	settings->setDefault("compat_send_original_model", "true");
 	settings->setDefault("disable_texture_packs", "false");
@@ -181,9 +160,6 @@ void set_default_settings()
 	settings->setDefault("server_name", "");
 	settings->setDefault("server_description", "");
 
-	settings->setDefault("high_precision_fpu", "true");
 	settings->setDefault("enable_console", "false");
-	settings->setDefault("screen_dpi", "72");
-	settings->setDefault("display_density_factor", "1");
 
 }
