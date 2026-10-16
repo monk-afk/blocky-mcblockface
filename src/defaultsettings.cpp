@@ -40,7 +40,6 @@ void set_default_settings()
 	settings->setDefault("enable_sound", "true");
 	settings->setDefault("sound_volume", "1.0");
 	settings->setDefault("mute_sound", "false");
-	settings->setDefault("enable_mesh_cache", "false");
 	settings->setDefault("mesh_generation_interval", "0");
 	settings->setDefault("meshgen_block_cache_size", "20");
 	settings->setDefault("enable_vbo", "true");
@@ -62,11 +61,6 @@ void set_default_settings()
 	settings->setDefault("enable_register_confirmation", "true");
 
 	// Visuals
-	settings->setDefault("world_aligned_mode", "enable");
-	settings->setDefault("autoscale_mode", "disable");
-	settings->setDefault("leaves_style", "fancy");
-	settings->setDefault("connected_glass", "false");
-	settings->setDefault("smooth_lighting", "true");
 	settings->setDefault("lighting_alpha", "0.0");
 	settings->setDefault("lighting_beta", "1.5");
 	settings->setDefault("display_gamma", "1.0");
@@ -74,15 +68,12 @@ void set_default_settings()
 	settings->setDefault("lighting_boost_center", "0.5");
 	settings->setDefault("lighting_boost_spread", "0.2");
 	settings->setDefault("texture_path", "");
-	settings->setDefault("opaque_water", "false");
 	settings->setDefault("recent_chat_messages", "10");
-	settings->setDefault("texture_min_size", "0");
 #if ENABLE_GLES
 	settings->setDefault("enable_shaders", "false");
 #else
 	settings->setDefault("enable_shaders", "true");
 #endif
-	settings->setDefault("enable_minimap", "true");
 
 	// Server
 	settings->setDefault("compat_player_model", "character.b3d,3d_armor_character.b3d,skinsdb_3d_armor_character_5.b3d");

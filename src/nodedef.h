@@ -42,7 +42,6 @@ static const u8 CONTENTFEATURES_VERSION = 13;
 class IItemDefManager;
 class ITextureSource;
 class IShaderSource;
-class IGameDef;
 class NodeResolver;
 
 enum ContentParamType
@@ -162,8 +161,6 @@ public:
 	bool enable_minimap;
 
 	TextureSettings() = default;
-
-	void readSettings();
 };
 
 enum NodeDrawType
@@ -652,19 +649,6 @@ public:
 	 * @param overrides the texture overrides
 	 */
 	void applyTextureOverrides(const std::vector<TextureOverride> &overrides);
-
-	/*!
-	 * Only the client uses this. Loads textures and shaders required for
-	 * rendering the nodes.
-	 * @param gamedef must be a Client.
-	 * @param progress_cbk called each time a node is loaded. Arguments:
-	 * `progress_cbk_args`, number of loaded ContentFeatures, number of
-	 * total ContentFeatures.
-	 * @param progress_cbk_args passed to the callback function
-	 */
-	void updateTextures(IGameDef *gamedef,
-		void (*progress_cbk)(void *progress_args, u32 progress, u32 max_progress),
-		void *progress_cbk_args);
 
 	/*!
 	 * Writes the content of this manager to the given output stream.

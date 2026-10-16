@@ -29,15 +29,14 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <IMeshManipulator.h>
 #endif
 #include "log.h"
-#include "settings.h"
 #include "nameidmapping.h"
 #include "util/numeric.h"
 #include "util/serialize.h"
 #include "exceptions.h"
 #include "debug.h"
-#include "gamedef.h"
 #include "mapnode.h"
 #include <fstream> // Used in applyTextureOverrides()
+#include <sstream>
 #include <algorithm>
 #include <cmath>
 
@@ -308,47 +307,6 @@ void TileDef::deSerialize(std::istream &is, u8 contentfeatures_version,
 		align_style = static_cast<AlignStyle>(readU8(is));
 	else
 		align_style = ALIGN_STYLE_NODE;
-}
-
-void TextureSettings::readSettings()
-{
-	connected_glass                = g_settings->getBool("connected_glass");
-	opaque_water                   = g_settings->getBool("opaque_water");
-	bool smooth_lighting           = g_settings->getBool("smooth_lighting");
-	enable_mesh_cache              = g_settings->getBool("enable_mesh_cache");
-	enable_minimap                 = g_settings->getBool("enable_minimap");
-	node_texture_size              = g_settings->getU16("texture_min_size");
-	std::string leaves_style_str   = g_settings->get("leaves_style");
-	std::string world_aligned_mode_str = g_settings->get("world_aligned_mode");
-	std::string autoscale_mode_str = g_settings->get("autoscale_mode");
-
-	// Mesh cache is not supported in combination with smooth lighting
-	if (smooth_lighting)
-		enable_mesh_cache = false;
-
-	if (leaves_style_str == "fancy") {
-		leaves_style = LEAVES_FANCY;
-	} else if (leaves_style_str == "simple") {
-		leaves_style = LEAVES_SIMPLE;
-	} else {
-		leaves_style = LEAVES_OPAQUE;
-	}
-
-	if (world_aligned_mode_str == "enable")
-		world_aligned_mode = WORLDALIGN_ENABLE;
-	else if (world_aligned_mode_str == "force_solid")
-		world_aligned_mode = WORLDALIGN_FORCE;
-	else if (world_aligned_mode_str == "force_nodebox")
-		world_aligned_mode = WORLDALIGN_FORCE_NODEBOX;
-	else
-		world_aligned_mode = WORLDALIGN_DISABLE;
-
-	if (autoscale_mode_str == "enable")
-		autoscale_mode = AUTOSCALE_ENABLE;
-	else if (autoscale_mode_str == "force")
-		autoscale_mode = AUTOSCALE_FORCE;
-	else
-		autoscale_mode = AUTOSCALE_DISABLE;
 }
 
 /*
@@ -1583,32 +1541,6 @@ void NodeDefManager::applyTextureOverrides(const std::vector<TextureOverride> &o
 		if (texture_override.hasTarget(OverrideTarget::SPECIAL_6))
 			nodedef.tiledef_special[5].name = texture_override.texture;
 	}
-}
-
-void NodeDefManager::updateTextures(IGameDef *gamedef,
-	void (*progress_callback)(void *progress_args, u32 progress, u32 max_progress),
-	void *progress_callback_args)
-{
-#ifndef SERVER
-	infostream << "NodeDefManager::updateTextures(): Updating "
-		"textures in node definitions" << std::endl;
-
-	Client *client = (Client *)gamedef;
-	ITextureSource *tsrc = client->tsrc();
-	IShaderSource *shdsrc = client->getShaderSource();
-	scene::IMeshManipulator *meshmanip =
-		RenderingEngine::get_scene_manager()->getMeshManipulator();
-	TextureSettings tsettings;
-	tsettings.readSettings();
-
-	u32 size = m_content_features.size();
-
-	for (u32 i = 0; i < size; i++) {
-		ContentFeatures *f = &(m_content_features[i]);
-		f->updateTextures(tsrc, shdsrc, meshmanip, client, tsettings);
-		progress_callback(progress_callback_args, i, size);
-	}
-#endif
 }
 
 void NodeDefManager::serialize(std::ostream &os, u16 protocol_version) const
