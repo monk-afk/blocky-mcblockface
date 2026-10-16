@@ -22,9 +22,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "filesys.h"
 #include "porting.h"
 #include "server.h"
-#ifndef SERVER
-#include "client/client.h"
-#endif
 #include "settings.h"
 
 #include <cerrno>
@@ -337,118 +334,6 @@ void ScriptApiSecurity::initializeSecurity()
 	FATAL_ERROR_IF(sanity_check_top != lua_gettop(L), "unbalanced stack");
 }
 
-void ScriptApiSecurity::initializeSecurityClient()
-{
-	static const char *whitelist[] = {
-		"assert",
-		"core",
-		"collectgarbage",
-		"DIR_DELIM",
-		"PLATFORM",
-		"error",
-		"ipairs",
-		"next",
-		"pairs",
-		"pcall",
-		"print",
-		"rawequal",
-		"rawget",
-		"rawset",
-		"select",
-		"setfenv",
-		// getmetatable can be used to escape the sandbox
-		"setmetatable",
-		"tonumber",
-		"tostring",
-		"type",
-		"unpack",
-		"_VERSION",
-		"xpcall",
-		// Completely safe libraries
-		"chacha",
-		"coroutine",
-		"string",
-		"table",
-		"math",
-		"utf8",
-		"bit",
-	};
-	static const char *os_whitelist[] = {
-		"clock",
-		"date",
-		"difftime",
-		"time"
-	};
-	static const char *debug_whitelist[] = {
-		"getinfo",
-		"traceback"
-	};
-
-#if USE_LUAJIT
-	static const char *jit_whitelist[] = {
-		"arch",
-		"flush",
-		"off",
-		"on",
-		"opt",
-		"os",
-		"status",
-		"version",
-		"version_num",
-	};
-#endif
-
-	m_secure = true;
-
-	lua_State *L = getStack();
-	int thread = getThread(L);
-
-	// create an empty environment
-	createEmptyEnv(L);
-
-	// Copy safe base functions
-	lua_getglobal(L, "_G");
-	lua_getfield(L, -2, "_G");
-	copy_safe(L, whitelist, sizeof(whitelist));
-
-	// And replace unsafe ones
-	SECURE_API(g, dofile);
-	SECURE_API(g, load);
-	SECURE_API(g, loadfile);
-	SECURE_API(g, loadstring);
-	SECURE_API(g, require);
-	lua_pop(L, 2);
-
-
-
-	// Copy safe OS functions
-	lua_getglobal(L, "os");
-	lua_newtable(L);
-	copy_safe(L, os_whitelist, sizeof(os_whitelist));
-	lua_setfield(L, -3, "os");
-	lua_pop(L, 1);  // Pop old OS
-
-
-	// Copy safe debug functions
-	lua_getglobal(L, "debug");
-	lua_newtable(L);
-	copy_safe(L, debug_whitelist, sizeof(debug_whitelist));
-	lua_setfield(L, -3, "debug");
-	lua_pop(L, 1);  // Pop old debug
-
-#if USE_LUAJIT
-	// Copy safe jit functions, if they exist
-	lua_getglobal(L, "jit");
-	lua_newtable(L);
-	copy_safe(L, jit_whitelist, sizeof(jit_whitelist));
-	lua_setfield(L, -3, "jit");
-	lua_pop(L, 1);  // Pop old jit
-#endif
-
-	// Set the environment to the one we created earlier
-	setLuaEnv(L, thread);
-}
-
 int ScriptApiSecurity::getThread(lua_State *L)
 {
 #if LUA_VERSION_NUM <= 501
@@ -482,12 +367,6 @@ void ScriptApiSecurity::setLuaEnv(lua_State *L, int thread)
 
 bool ScriptApiSecurity::isSecure(lua_State *L)
 {
-#ifndef SERVER
-	auto script = ModApiBase::getScriptApiBase(L);
-	// CSM keeps no globals backup but is always secure
-	if (script->getType() == ScriptingType::Client)
-		return true;
-#endif
 	lua_rawgeti(L, LUA_REGISTRYINDEX, CUSTOM_RIDX_GLOBALS_BACKUP);
 	bool secure = !lua_isnil(L, -1);
 	lua_pop(L, 1);
@@ -748,37 +627,6 @@ int ScriptApiSecurity::sl_g_load(lua_State *L)
 
 int ScriptApiSecurity::sl_g_loadfile(lua_State *L)
 {
-#ifndef SERVER
-	lua_rawgeti(L, LUA_REGISTRYINDEX, CUSTOM_RIDX_SCRIPTAPI);
-#if INDIRECT_SCRIPTAPI_RIDX
-	ScriptApiBase *script = (ScriptApiBase *) *(void**)(lua_touserdata(L, -1));
-#else
-	ScriptApiBase *script = (ScriptApiBase *) lua_touserdata(L, -1);
-#endif
-	lua_pop(L, 1);
-
-	// Client implementation
-	if (script->getType() == ScriptingType::Client) {
-		std::string path = readParam<std::string>(L, 1);
-		const std::string *contents = script->getClient()->getModFile(path);
-		if (!contents) {
-			std::string error_msg = "Coudln't find script called: " + path;
-			lua_pushnil(L);
-			lua_pushstring(L, error_msg.c_str());
-			return 2;
-		}
-
-		std::string chunk_name = "@" + path;
-		if (!safeLoadString(L, *contents, chunk_name.c_str())) {
-			lua_pushnil(L);
-			lua_insert(L, -2);
-			return 2;
-		}
-		return 1;
-	}
-#endif
-
-	// Server implementation
 	const char *path = NULL;
 	if (lua_isstring(L, 1)) {
 		path = lua_tostring(L, 1);

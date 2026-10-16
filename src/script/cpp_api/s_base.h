@@ -58,41 +58,21 @@ extern "C" {
 #define setOriginFromTable(index) \
 	setOriginFromTableRaw(index, __FUNCTION__)
 
-enum class ScriptingType: u8 {
-	Async,
-	Client,
-	MainMenu,
-	Server
-};
-
 class Server;
-#ifndef SERVER
-class Client;
-#endif
 class IGameDef;
 class Environment;
-class GUIEngine;
 class ServerActiveObject;
 struct PlayerHPChangeReason;
 
 class ScriptApiBase : protected LuaHelper {
 public:
-	ScriptApiBase(ScriptingType type);
-	// fake constructor to allow script API classes (e.g ScriptApiEnv) to virtually inherit from this one.
-	ScriptApiBase()
-	{
-		FATAL_ERROR("ScriptApiBase created without ScriptingType!");
-	}
+	ScriptApiBase();
 	virtual ~ScriptApiBase();
 	DISABLE_CLASS_COPY(ScriptApiBase);
 
 	// These throw a ModError on failure
 	void loadMod(const std::string &script_path, const std::string &mod_name);
 	void loadScript(const std::string &script_path);
-
-#ifndef SERVER
-	void loadModFromMemory(const std::string &mod_name);
-#endif
 
 	void runCallbacksRaw(int nargs,
 		RunCallbacksMode mode, const char *fxn);
@@ -103,16 +83,10 @@ public:
 
 	IGameDef *getGameDef() { return m_gamedef; }
 	Server* getServer();
-	ScriptingType getType() { return m_type; }
-#ifndef SERVER
-	Client* getClient();
-#endif
 
 	std::string getOrigin() { return m_last_run_mod; }
 	void setOriginDirect(const char *origin);
 	void setOriginFromTableRaw(int index, const char *fxn);
-
-	void clientOpenLibs(lua_State *L);
 
 protected:
 	friend class LuaABM;
@@ -136,11 +110,6 @@ protected:
 	Environment* getEnv() { return m_environment; }
 	void setEnv(Environment* env) { m_environment = env; }
 
-#ifndef SERVER
-	GUIEngine* getGuiEngine() { return m_guiengine; }
-	void setGuiEngine(GUIEngine* guiengine) { m_guiengine = guiengine; }
-#endif
-
 	void objectrefGetOrCreate(lua_State *L, ServerActiveObject *cobj);
 
 	void pushPlayerHPChangeReason(lua_State *L, const PlayerHPChangeReason& reason);
@@ -160,8 +129,4 @@ private:
 
 	IGameDef       *m_gamedef = nullptr;
 	Environment    *m_environment = nullptr;
-#ifndef SERVER
-	GUIEngine      *m_guiengine = nullptr;
-#endif
-	ScriptingType  m_type;
 };

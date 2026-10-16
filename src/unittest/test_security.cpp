@@ -24,7 +24,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 class TestSecurityScript : public ScriptApiSecurity
 {
 public:
-	explicit TestSecurityScript(ScriptingType type) : ScriptApiBase(type) {}
+	TestSecurityScript() : ScriptApiBase() {}
 
 	lua_State *getLuaState() { return getStack(); }
 };
@@ -38,7 +38,6 @@ public:
 	void runTests(IGameDef *gamedef);
 
 	void testSecureFunctionEnvironments();
-	void testClientGetfenvRemoved();
 };
 
 static TestSecurity g_test_instance;
@@ -46,7 +45,6 @@ static TestSecurity g_test_instance;
 void TestSecurity::runTests(IGameDef *gamedef)
 {
 	TEST(testSecureFunctionEnvironments);
-	TEST(testClientGetfenvRemoved);
 }
 
 static bool runLua(lua_State *L, const char *code, std::string *error)
@@ -67,7 +65,7 @@ static bool runLua(lua_State *L, const char *code, std::string *error)
 
 void TestSecurity::testSecureFunctionEnvironments()
 {
-	TestSecurityScript script(ScriptingType::Server);
+	TestSecurityScript script;
 	script.initializeSecurity();
 	lua_State *L = script.getLuaState();
 
@@ -96,18 +94,4 @@ void TestSecurity::testSecureFunctionEnvironments()
 			    "assert(io.popen == nil)\n";
 	std::string error;
 	UTEST(runLua(L, probe, &error), "Sandbox probe failed: %s", error.c_str());
-}
-
-void TestSecurity::testClientGetfenvRemoved()
-{
-	TestSecurityScript script(ScriptingType::Client);
-	script.initializeSecurityClient();
-
-	std::string error;
-	UTEST(runLua(script.getLuaState(),
-			      "assert(getfenv == nil)\n"
-			      "assert(type(setfenv) == 'function')\n"
-			      "assert(os.execute == nil)\n",
-			      &error),
-			"Client sandbox probe failed: %s", error.c_str());
 }

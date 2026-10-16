@@ -28,9 +28,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "porting.h"
 #include "util/string.h"
 #include "server.h"
-#ifndef SERVER
-#include "client/client.h"
-#endif
 
 
 extern "C" {
@@ -73,8 +70,7 @@ public:
 	ScriptApiBase
 */
 
-ScriptApiBase::ScriptApiBase(ScriptingType type):
-		m_type(type)
+ScriptApiBase::ScriptApiBase()
 {
 #ifdef SCRIPTAPI_LOCK_DEBUG
 	m_lock_recursion_count = 0;
@@ -85,10 +81,7 @@ ScriptApiBase::ScriptApiBase(ScriptingType type):
 
 	lua_atpanic(m_luastack, &luaPanic);
 
-	if (m_type == ScriptingType::Client)
-		clientOpenLibs(m_luastack);
-	else
-		luaL_openlibs(m_luastack);
+	luaL_openlibs(m_luastack);
 
 	lua_pushcfunction(m_luastack, luaopen_utf8);
 	lua_call(m_luastack, 0, 0);
@@ -113,16 +106,6 @@ ScriptApiBase::ScriptApiBase(ScriptingType type):
 
 	// Pop package, package.preload, and package.preload["string.buffer"]
 	lua_pop(m_luastack, 3);
-
-	// Delete references to package on the client (as they're no longer needed)
-	if (m_type == ScriptingType::Client) {
-		lua_pushnil(m_luastack);
-		lua_setglobal(m_luastack, "module");
-		lua_pushnil(m_luastack);
-		lua_setglobal(m_luastack, "require");
-		lua_pushnil(m_luastack);
-		lua_setglobal(m_luastack, "package");
-	}
 
 	// Make the ScriptApiBase* accessible to ModApiBase
 #if INDIRECT_SCRIPTAPI_RIDX
@@ -150,10 +133,7 @@ ScriptApiBase::ScriptApiBase(ScriptingType type):
 	lua_newtable(m_luastack);
 	lua_setglobal(m_luastack, "core");
 
-	if (m_type == ScriptingType::Client)
-		lua_pushstring(m_luastack, "/");
-	else
-		lua_pushstring(m_luastack, DIR_DELIM);
+	lua_pushstring(m_luastack, DIR_DELIM);
 	lua_setglobal(m_luastack, "DIR_DELIM");
 
 	lua_pushstring(m_luastack, porting::getPlatformName());
@@ -176,28 +156,6 @@ int ScriptApiBase::luaPanic(lua_State *L)
 	FATAL_ERROR(oss.str().c_str());
 	// NOTREACHED
 	return 0;
-}
-
-void ScriptApiBase::clientOpenLibs(lua_State *L)
-{
-	static const std::vector<std::pair<std::string, lua_CFunction>> m_libs = {
-		{ "", luaopen_base },
-		{ LUA_TABLIBNAME,  luaopen_table   },
-		{ LUA_OSLIBNAME,   luaopen_os      },
-		{ LUA_STRLIBNAME,  luaopen_string  },
-		{ LUA_MATHLIBNAME, luaopen_math    },
-		{ LUA_DBLIBNAME,   luaopen_debug   },
-		{ LUA_LOADLIBNAME, luaopen_package },
-#if USE_LUAJIT
-		{ LUA_JITLIBNAME,  luaopen_jit     },
-#endif
-	};
-
-	for (const std::pair<std::string, lua_CFunction> &lib : m_libs) {
-	    lua_pushcfunction(L, lib.second);
-	    lua_pushstring(L, lib.first.c_str());
-	    lua_call(L, 1, 0);
-	}
 }
 
 void ScriptApiBase::loadMod(const std::string &script_path,
@@ -234,41 +192,6 @@ void ScriptApiBase::loadScript(const std::string &script_path)
 	lua_pop(L, 1); // Pop error handler
 }
 
-#ifndef SERVER
-void ScriptApiBase::loadModFromMemory(const std::string &mod_name)
-{
-	ModNameStorer mod_name_storer(getStack(), mod_name);
-
-	sanity_check(m_type == ScriptingType::Client);
-
-	const std::string init_filename = mod_name + ":init.lua";
-	const std::string chunk_name = "@" + init_filename;
-
-	const std::string *contents = getClient()->getModFile(init_filename);
-	if (!contents)
-		throw ModError("Mod \"" + mod_name + "\" lacks init.lua");
-
-	verbosestream << "Loading and running script " << chunk_name << std::endl;
-
-	lua_State *L = getStack();
-
-	int error_handler = PUSH_ERROR_HANDLER(L);
-
-	bool ok = ScriptApiSecurity::safeLoadString(L, *contents, chunk_name.c_str());
-	if (ok)
-		ok = !lua_pcall(L, 0, 0, error_handler);
-	if (!ok) {
-		const char *error_msg = lua_tostring(L, -1);
-		if (!error_msg)
-			error_msg = "(error object is not a string)";
-		lua_pop(L, 2); // Pop error message and error handler
-		throw ModError("Failed to load and run mod \"" +
-				mod_name + "\":\n" + error_msg);
-	}
-	lua_pop(L, 1); // Pop error handler
-}
-#endif
-
 // Push the list of callbacks (a lua table).
 // Then push nargs arguments.
 // Then call this function, which
@@ -280,13 +203,6 @@ void ScriptApiBase::loadModFromMemory(const std::string &mod_name)
 void ScriptApiBase::runCallbacksRaw(int nargs,
 		RunCallbacksMode mode, const char *fxn)
 {
-#ifndef SERVER
-	// Hard fail for bad guarded callbacks
-	// Only run callbacks when the scripting enviroment is loaded
-	FATAL_ERROR_IF(m_type == ScriptingType::Client &&
-			!getClient()->modsLoaded(), fxn);
-#endif
-
 #ifdef SCRIPTAPI_LOCK_DEBUG
 	assert(m_lock_recursion_count > 0);
 #endif
@@ -483,9 +399,3 @@ Server* ScriptApiBase::getServer()
 {
 	return dynamic_cast<Server *>(m_gamedef);
 }
-#ifndef SERVER
-Client* ScriptApiBase::getClient()
-{
-	return dynamic_cast<Client *>(m_gamedef);
-}
-#endif
