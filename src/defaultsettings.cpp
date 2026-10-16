@@ -481,13 +481,4 @@ void set_default_settings()
 	settings->setDefault("screen_dpi", "72");
 	settings->setDefault("display_density_factor", "1");
 
-#ifdef HAVE_TOUCHSCREENGUI
-	settings->setDefault("touchtarget", "true");
-	settings->setDefault("touchscreen_threshold", "20");
-	settings->setDefault("touch_sensitivity", "0.2");
-	settings->setDefault("fixed_virtual_joystick", "true");
-	settings->setDefault("virtual_joystick_triggers_aux", "false");
-	settings->setDefault("fast_move", "true");
-#endif
-
 }
