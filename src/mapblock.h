@@ -35,7 +35,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 class Map;
 class NodeMetadataList;
 class IGameDef;
-class MapBlockMesh;
 class VoxelManipulator;
 
 #define BLOCK_TIMESTAMP_UNDEFINED 0xffffffff
@@ -509,10 +508,6 @@ public:
 	/*
 		Public member variables
 	*/
-
-#ifndef SERVER // Only on client
-	MapBlockMesh *mesh = nullptr;
-#endif
 
 	NodeMetadataList m_node_metadata;
 	NodeTimerList m_node_timers;

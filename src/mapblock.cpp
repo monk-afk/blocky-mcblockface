@@ -30,9 +30,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "content_mapnode.h" // For legacy name-id mapping
 #include "content_nodemeta.h" // For legacy deserialization
 #include "serialization.h"
-#ifndef SERVER
-#include "client/mapblock_mesh.h"
-#endif
 #include "porting.h"
 #include "util/string.h"
 #include "util/serialize.h"
@@ -78,13 +75,6 @@ MapBlock::MapBlock(Map *parent, v3s16 pos, IGameDef *gamedef, bool dummy):
 
 MapBlock::~MapBlock()
 {
-#ifndef SERVER
-	{
-		delete mesh;
-		mesh = nullptr;
-	}
-#endif
-
 	delete[] data;
 }
 
