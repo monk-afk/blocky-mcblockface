@@ -1,20 +1,23 @@
-Minetest Lua Modding API Reference
-==================================
+SquareOne Core Lua Server Modding API Reference
+================================================
 
-* More information at <http://www.minetest.net/>
-* Developer Wiki: <http://dev.minetest.net/>
-* (Unofficial) Minetest Modding Book by rubenwardy: <https://rubenwardy.com/minetest_modding_book/>
+This API retains compatibility with the Minetest and MultiCraft server APIs on
+which SquareOne Core is based. SquareOne Core does not provide a graphical
+client or a main-menu Lua environment.
+
+* Source and issues: <https://github.com/monk-afk/squareone-core>
+* Minetest Modding Book by rubenwardy: <https://rubenwardy.com/minetest_modding_book/>
 
 Introduction
 ------------
 
-Content and functionality can be added to Minetest using Lua scripting
+Content and functionality can be added to SquareOne Core using Lua scripting
 in run-time loaded mods.
 
 A mod is a self-contained bunch of scripts, textures and other related
-things, which is loaded by and interfaces with Minetest.
+things, which is loaded by and interfaces with SquareOne Core.
 
-Mods are contained and ran solely on the server side. Definitions and media
+Mods are contained and run solely on the server side. Definitions and media
 files are automatically transferred to the client.
 
 If you see a deficiency in the API, feel free to attempt to add the
@@ -35,16 +38,15 @@ the `init.lua` scripts in a shared environment.
 Paths
 -----
 
-* `RUN_IN_PLACE=1` (Windows release, local build)
+* `RUN_IN_PLACE=1` (local build)
     * `$path_user`: `<build directory>`
     * `$path_share`: `<build directory>`
-* `RUN_IN_PLACE=0`: (Linux release)
-    * `$path_share`:
-        * Linux: `/usr/share/minetest`
-        * Windows: `<install directory>/minetest-0.4.x`
-    * `$path_user`:
-        * Linux: `$HOME/.minetest`
-        * Windows: `C:/users/<user>/AppData/minetest` (maybe)
+* `RUN_IN_PLACE=0` (installed Unix build)
+    * `$path_share`: `/usr/share/squareone` by default
+    * `$path_user`: `$HOME/.squareone`
+
+The detected paths are written to the startup log. Build-time installation
+options can change these defaults.
 
 
 
@@ -61,49 +63,13 @@ Where `<gameid>` is unique to each game.
 
 The game directory can contain the following files:
 
-* `game.conf`, with the following keys:
-    * `name`: Required, a human readable title to address the game, e.g. `name = Minetest`.
-    * `description`: Short description to be shown in the content tab
-    * `allowed_mapgens = <comma-separated mapgens>`
-      e.g. `allowed_mapgens = v5,v6,flat`
-      Mapgens not in this list are removed from the list of mapgens for the
-      game.
-      If not specified, all mapgens are allowed.
-    * `disallowed_mapgens = <comma-separated mapgens>`
-      e.g. `disallowed_mapgens = v5,v6,flat`
-      These mapgens are removed from the list of mapgens for the game.
-      When both `allowed_mapgens` and `disallowed_mapgens` are
-      specified, `allowed_mapgens` is applied before
-      `disallowed_mapgens`.
-    * `disallowed_mapgen_settings= <comma-separated mapgen settings>`
-      e.g. `disallowed_mapgen_settings = mgv5_spflags`
-      These settings are hidden for this game in the world creation
-      dialog and game start menu.
-    * `author`: The author of the game. It only appears when downloaded from
-                ContentDB.
-    * `release`: Ignore this: Should only ever be set by ContentDB, as it is
-                 an internal ID used to track versions.
-* `multicraft.conf`:
-  Used to set default settings when running this game.
-* `settingtypes.txt`:
-  In the same format as the one in builtin.
-  This settingtypes.txt will be parsed by the menu and the settings will be
-  displayed in the "Games" category in the advanced settings tab.
+* `game.conf`: Marks the directory as a game for game-ID discovery.
+* `squareone.conf`: Sets default settings when running this game.
+* `minetest.conf`: Legacy-compatible game defaults loaded before
+  `squareone.conf`.
 * If the game contains a folder called `textures` the server will load it as a
   texturepack, overriding mod textures.
   Any server texturepack will override mod textures and the game texturepack.
-
-Menu images
------------
-
-Games can provide custom main menu images. They are put inside a `menu`
-directory inside the game directory.
-
-The images are named `$identifier.png`, where `$identifier` is one of
-`overlay`, `background`, `footer`, `header`.
-If you want to specify multiple images for one identifier, add additional
-images named like `$identifier.$n.png`, with an ascending number $n starting
-with 1, and a random image will be chosen from the provided ones.
 
 
 
@@ -136,17 +102,8 @@ Modpacks
 
 Mods can be put in a subdirectory, if the parent directory, which otherwise
 should be a mod, contains a file named `modpack.conf`.
-The file is a key-value store of modpack details.
-
-* `name`: The modpack name. Allows Minetest to determine the modpack name even
-          if the folder is wrongly named.
-* `description`: Description of mod to be shown in the Mods tab of the main
-                 menu.
-* `author`: The author of the modpack. It only appears when downloaded from
-            ContentDB.
-* `release`: Ignore this: Should only ever be set by ContentDB, as it is an
-             internal ID used to track versions.
-* `title`: A human-readable title to address the modpack.
+Its presence marks the directory as a modpack; SquareOne Core does not consume
+client-facing display metadata from this file.
 
 Note: to support 0.4.x, please also create an empty modpack.txt file.
 
@@ -156,8 +113,6 @@ Mod directory structure
     mods
     ├── modname
     │   ├── mod.conf
-    │   ├── screenshot.png
-    │   ├── settingtypes.txt
     │   ├── init.lua
     │   ├── models
     │   ├── textures
@@ -185,24 +140,12 @@ A `Settings` file that provides meta information about the mod.
 
 * `name`: The mod name. Allows Minetest to determine the mod name even if the
           folder is wrongly named.
-* `description`: Description of mod to be shown in the Mods tab of the main
-                 menu.
 * `depends`: A comma separated list of dependencies. These are mods that must be
              loaded before this mod.
 * `optional_depends`: A comma separated list of optional dependencies.
                       Like a dependency, but no error if the mod doesn't exist.
-* `author`: The author of the mod. It only appears when downloaded from
-            ContentDB.
-* `release`: Ignore this: Should only ever be set by ContentDB, as it is an
-             internal ID used to track versions.
-* `title`: A human-readable title to address the mod.
 
 Note: to support 0.4.x, please also provide depends.txt.
-
-### `screenshot.png`
-
-A screenshot shown in the mod manager within the main menu. It should
-have an aspect ratio of 3:2 and a minimum size of 300×200 pixels.
 
 ### `depends.txt`
 
@@ -217,20 +160,6 @@ A single line contains a single modname.
 Optional dependencies can be defined by appending a question mark
 to a single modname. This means that if the specified mod
 is missing, it does not prevent this mod from being loaded.
-
-### `description.txt`
-
-**Deprecated:** you should use mod.conf instead.
-
-This file is used if there is no description in mod.conf.
-
-A file containing a description to be shown in the Mods tab of the main menu.
-
-### `settingtypes.txt`
-
-The format is documented in `builtin/settingtypes.txt`.
-It is parsed by the main menu settings dialogue to list mod-specific
-settings in the "Mods" category.
 
 ### `init.lua`
 
@@ -2499,7 +2428,7 @@ Elements
 * Index to be selected within textlist
 * `true`/`false`: draw transparent background
 * See also `minetest.explode_textlist_event`
-  (main menu: `core.explode_textlist_event`).
+  for decoding the submitted value.
 
 ### `tabheader[<X>,<Y>;<name>;<caption 1>,<caption 2>,...,<caption n>;<current_tab>;<transparent>;<draw_border>]`
 
@@ -2599,7 +2528,7 @@ Elements
 * Fieldname data is transferred to Lua
 * Value of this trackbar is set to (`0`-`1000`) by default
 * See also `minetest.explode_scrollbar_event`
-  (main menu: `core.explode_scrollbar_event`).
+  for decoding the submitted value.
 
 ### `scrollbaroptions[opt1;opt2;...]`
 * Sets options for all following `scrollbar[]` elements
@@ -2633,7 +2562,7 @@ Elements
 * `cell 1`...`cell n`: cell contents given in row-major order
 * `selected idx`: index of row to be selected within table (first row = `1`)
 * See also `minetest.explode_table_event`
-  (main menu: `core.explode_table_event`).
+  for decoding the submitted value.
 
 ### `tableoptions[<opt 1>;<opt 2>;...]`
 
@@ -3238,9 +3167,9 @@ angles in radians.
 SSCSM
 =====
 
-MultiCraft has a built-in SSCSM implementation that will load SSCSMs onto
-MultiCraft clients, as well as non-MultiCraft clients if they have the correct
-CSM installed.
+SquareOne Core has a built-in SSCSM implementation that distributes client-side
+Lua to compatible connected clients. The receiving client supplies the runtime;
+SquareOne Core does not include one.
 
 
 Server-side API
@@ -3295,7 +3224,7 @@ along with an extra `sscsm` namespace:
 
 This namespace has the following constants:
 * `sscsm.restriction_flags`:
-    * The `csm_restriction_flags` setting set in the server's `multicraft.conf`.
+    * The `csm_restriction_flags` setting set in the server configuration.
 * `sscsm.restrictions`: A table based on `csm_restriction_flags`:
     * `chat_messages`: When `true`, SSCSMs can't send chat messages or run
        server chatcommands.
@@ -4353,7 +4282,7 @@ Callbacks:
 * `on_step(self, dtime)`
     * Called on every server tick, after movement and collision processing.
       `dtime` is usually 0.1 seconds, as per the `dedicated_server_step` setting
-      in `multicraft.conf`.
+      in the server configuration.
 * `on_punch(self, puncher, time_from_last_punch, tool_capabilities, dir, damage)`
     * Called when somebody punches the object.
     * Note that you probably want to handle most punches using the automatic
@@ -4471,16 +4400,19 @@ Utilities
 * `minetest.get_current_modname()`: returns the currently loading mod's name,
   when loading a mod.
 * `minetest.get_modpath(modname)`: returns the directory path for a mod,
-  e.g. `"/home/user/.minetest/usermods/modname"`.
+  e.g. `"/home/user/.squareone/worlds/world/worldmods/modname"`.
     * Returns nil if the mod is not enabled or does not exist (not installed).
     * Works regardless of whether the mod has been loaded yet.
     * Useful for loading additional `.lua` modules or static data from a mod,
   or checking if a mod is enabled.
 * `minetest.get_modnames()`: returns a list of enabled mods, sorted alphabetically.
     * Does not include disabled mods, even if they are installed.
-* `minetest.get_worldpath()`: returns e.g. `"/home/user/.minetest/world"`
+* `minetest.get_worldpath()`: returns e.g.
+  `"/home/user/.squareone/worlds/world"`
     * Useful for storing custom data
 * `minetest.is_singleplayer()`
+    * Always returns `false` in SquareOne Core. The function is retained for
+      compatibility with server mods shared with client-capable engines.
 * `minetest.features`: Table containing API feature flags
 
       {
@@ -4685,10 +4617,11 @@ Call these functions only at load time!
 * `minetest.register_privilege(name, definition)`
     * `definition` can be a description or a definition table (see [Privilege
       definition]).
-    * If it is a description, the priv will be granted to singleplayer and admin
-      by default.
+    * If it is a description, `give_to_admin` defaults to `true` through the
+      legacy `give_to_singleplayer` default. SquareOne Core has no embedded
+      singleplayer mode.
     * To allow players with `basic_privs` to grant, see the `basic_privs`
-      multicraft.conf setting.
+      server setting.
 * `minetest.register_authentication_handler(authentication handler definition)`
     * Registers an auth handler that overrides the builtin one.
     * This function can be called by a single mod once only.
@@ -4901,7 +4834,7 @@ Setting-related
 ---------------
 
 * `minetest.settings`: Settings object containing all of the settings from the
-  main config file (`multicraft.conf`).
+  active server configuration.
 * `minetest.setting_get_pos(name)`: Loads a setting from the main settings and
   parses it as a position (in the format `(1,2,3)`). Returns a position or nil.
 
@@ -5152,14 +5085,14 @@ Environment access
     * `flags` contains a comma-delimited string of flags to set, or if the
       prefix `"no"` is attached, clears instead.
     * `flags` is in the same format and has the same options as `mg_flags` in
-      `multicraft.conf`.
+      the server configuration.
 * `minetest.get_mapgen_setting(name)`
     * Gets the *active* mapgen setting (or nil if none exists) in string
       format with the following order of precedence:
         1) Settings loaded from map_meta.txt or overrides set during mod
            execution.
         2) Settings set by mods without a metafile override
-        3) Settings explicitly set in the user config file, multicraft.conf
+        3) Settings explicitly set in the user configuration file
         4) Settings set as the user config default
 * `minetest.get_mapgen_setting_noiseparams(name)`
     * Same as above, but returns the value as a NoiseParams table if the
@@ -5306,7 +5239,7 @@ Environment access
       full-node biome 'dust' nodes.
  * `minetest.set_world_spawnpoint([pos])`
     * Sets the world-specific spawnpoint to pos (or `nil` to reset).
-    * If `static_spawnpoint` is specified in multicraft.conf, the
+    * If `static_spawnpoint` is specified in the server configuration, the
       world-specific spawnpoint will be ignored.
  * `minetest.get_world_spawnpoint()`
     * Returns the world-specific spawnpoint.
@@ -6923,7 +6856,7 @@ secure random device cannot be found on the system.
 `Settings`
 ----------
 
-An interface to read config files in the format of `multicraft.conf`.
+An interface to read SquareOne Core setting files.
 
 It can be created via `Settings(filename)`.
 
@@ -8306,7 +8239,8 @@ Used by `minetest.register_privilege`.
         -- Privilege description
 
         give_to_singleplayer = true,
-        -- Whether to grant the privilege to singleplayer.
+        -- Compatibility field. SquareOne Core has no embedded singleplayer
+        -- mode, but this remains the default source for give_to_admin.
 
         give_to_admin = true,
         -- Whether to grant the privilege to the server admin.
@@ -8435,7 +8369,7 @@ Used by `minetest.add_particle`.
         texture = "image.png",
         -- The texture of the particle
 
-        playername = "singleplayer",
+        playername = "example_player",
         -- Optional, if specified spawns particle only on the player's client
 
         animation = {Tile Animation definition},
@@ -8511,7 +8445,7 @@ Used by `minetest.add_particlespawner`.
         texture = "image.png",
         -- The texture of the particle
 
-        playername = "singleplayer",
+        playername = "example_player",
         -- Optional, if specified spawns particles only on the player's client
 
         animation = {Tile Animation definition},
