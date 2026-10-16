@@ -36,10 +36,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define PATH_DELIM ":"
 #endif
 
-namespace irr { namespace io {
-class IFileSystem;
-}}
-
 namespace fs
 {
 
@@ -133,12 +129,6 @@ std::string AbsolutePathPartial(const std::string &path);
 const char *GetFilenameFromPath(const char *path);
 
 bool safeWriteToFile(const std::string &path, const std::string &content);
-
-#ifndef SERVER
-bool extractZipFile(irr::io::IFileSystem *fs, const char *filename,
-		const std::string &destination, const char *password = "",
-		std::string *errorMessage = nullptr);
-#endif
 
 bool ReadFile(const std::string &path, std::string &out);
 

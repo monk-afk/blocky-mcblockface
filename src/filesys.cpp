@@ -27,9 +27,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "log.h"
 #include "config.h"
 #include "porting.h"
-#ifndef SERVER
-#include "irr_ptr.h"
-#endif
 
 namespace fs
 {
@@ -788,83 +785,6 @@ bool safeWriteToFile(const std::string &path, const std::string &content)
 
 	return true;
 }
-
-#ifndef SERVER
-bool extractZipFile(io::IFileSystem *fs, const char *filename,
-		const std::string &destination, const char *password, std::string *errorMessage)
-{
-	// Be careful here not to touch the global file hierarchy in Irrlicht
-	// since this function needs to be thread-safe!
-
-	io::IArchiveLoader *zip_loader = nullptr;
-	for (u32 i = 0; i < fs->getArchiveLoaderCount(); i++) {
-		if (fs->getArchiveLoader(i)->isALoadableFileFormat(io::EFAT_ZIP)) {
-			zip_loader = fs->getArchiveLoader(i);
-			break;
-		}
-	}
-	if (!zip_loader) {
-		warningstream << "fs::extractZipFile(): Irrlicht said it doesn't support ZIPs." << std::endl;
-		return false;
-	}
-
-	irr_ptr<io::IFileArchive> opened_zip(zip_loader->createArchive(filename, false, false));
-	if (opened_zip.get() == nullptr) {
-		if (errorMessage != nullptr)
-			*errorMessage = "failed to open zip file";
-		return false;
-	}
-
-	opened_zip->Password = core::stringc(password);
-	const io::IFileList* files_in_zip = opened_zip->getFileList();
-
-	for (u32 i = 0; i < files_in_zip->getFileCount(); i++) {
-		std::string fullpath = destination + DIR_DELIM;
-		fullpath += files_in_zip->getFullFileName(i).c_str();
-		std::string fullpath_dir = fs::RemoveLastPathComponent(fullpath);
-
-		if (files_in_zip->isDirectory(i))
-			continue; // ignore, we create dirs as necessary
-
-		if (!fs::PathExists(fullpath_dir) && !fs::CreateAllDirs(fullpath_dir))
-			return false;
-
-		irr_ptr<io::IReadFile> toread(opened_zip->createAndOpenFile(i));
-
-		if (toread.get() == nullptr) {
-			// Wrong password
-			fs->removeFileArchive(fs->getFileArchiveCount()-1);
-			if (errorMessage != nullptr)
-				*errorMessage = "invalid password";
-			return false;
-		}
-
-		std::ofstream os(fullpath.c_str(), std::ios::binary);
-		if (!os.good())
-			return false;
-
-		char buffer[4096];
-		long total_read = 0;
-
-		while (total_read < toread->getSize()) {
-			long bytes_read = toread->read(buffer, sizeof(buffer));
-			bool error = true;
-			if (bytes_read != 0) {
-				os.write(buffer, bytes_read);
-				error = os.fail();
-			}
-			if (error) {
-				os.close();
-				remove(fullpath.c_str());
-				return false;
-			}
-			total_read += bytes_read;
-		}
-	}
-
-	return true;
-}
-#endif
 
 bool ReadFile(const std::string &path, std::string &out)
 {
