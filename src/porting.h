@@ -286,9 +286,7 @@ inline u64 getDeltaMs(u64 old_time_ms, u64 new_time_ms)
 inline const char *getPlatformName()
 {
 	return
-#if defined(__ANDROID__)
-	"Android"
-#elif defined(__linux__)
+#if defined(__linux__)
 	"Linux"
 #elif defined(_WIN32) || defined(_WIN64)
 	"Windows"
@@ -296,13 +294,7 @@ inline const char *getPlatformName()
 		defined(__NetBSD__) || defined(__OpenBSD__)
 	"BSD"
 #elif defined(__APPLE__) && defined(__MACH__)
-	#if TARGET_OS_IPHONE
-		"iOS"
-	#elif TARGET_OS_MAC
-		"OSX"
-	#else
-		"Apple"
-	#endif
+	"OSX"
 #elif defined(_AIX)
 	"AIX"
 #elif defined(__hpux)
@@ -373,11 +365,3 @@ float getTotalSystemMemory();
 bool open_directory(const std::string &path);
 
 } // namespace porting
-
-#ifdef __ANDROID__
-#include "porting_android.h"
-#endif
-
-#ifdef __IOS__
-#include "porting_ios.h"
-#endif

@@ -39,16 +39,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #if !defined(_WIN32)
 	#include <unistd.h>
 	#include <sys/utsname.h>
-	#if !defined(__ANDROID__)
-		#include <spawn.h>
-	#endif
+	#include <spawn.h>
 #endif
 #if defined(__hpux)
 	#define _PSTAT64
 	#include <sys/pstat.h>
-#endif
-#if defined(__ANDROID__)
-	#include "porting_android.h"
 #endif
 #if defined(__APPLE__)
 	// For _NSGetEnviron()
@@ -433,11 +428,7 @@ bool setSystemPaths()
 	char buf[BUFSIZ];
 
 	if (!getCurrentExecPath(buf, sizeof(buf))) {
-#ifdef __ANDROID__
-		errorstream << "Unable to read bindir "<< std::endl;
-#else
 		FATAL_ERROR("Unable to read bindir");
-#endif
 		return false;
 	}
 
@@ -454,11 +445,6 @@ bool setSystemPaths()
 	trylist.push_back(bindir + DIR_DELIM ".." DIR_DELIM "share"
 		DIR_DELIM + PROJECT_NAME);
 	trylist.push_back(bindir + DIR_DELIM "..");
-
-#ifdef __ANDROID__
-	trylist.push_back(path_user);
-#endif
-
 	for (std::list<std::string>::const_iterator
 			i = trylist.begin(); i != trylist.end(); ++i) {
 		const std::string &trypath = *i;
@@ -478,11 +464,8 @@ bool setSystemPaths()
 		path_share = trypath;
 		break;
 	}
-
-#ifndef __ANDROID__
 	path_user = std::string(getHomeOrFail()) + DIR_DELIM "."
 		+ PROJECT_NAME;
-#endif
 
 	return true;
 }
@@ -524,7 +507,6 @@ bool setSystemPaths()
 
 #endif
 
-#if !defined(__ANDROID__) && !defined(__IOS__)
 void initializePaths()
 {
 #if RUN_IN_PLACE
@@ -633,7 +615,6 @@ bool hasRealKeyboard()
 {
 	return true;
 }
-#endif
 
 ////
 //// OS-specific Secure Random
@@ -718,18 +699,10 @@ static bool open_uri(const std::string &uri)
 
 #if defined(_WIN32)
 	return (intptr_t)ShellExecuteA(NULL, NULL, uri.c_str(), NULL, NULL, SW_SHOWNORMAL) > 32;
-#elif defined(__ANDROID__)
-	openURIAndroid(uri);
-	return true;
 #elif defined(__APPLE__)
-#ifdef __IOS__
-	ioswrap_open_url(uri.c_str());
-	return true;
-#else
 	const char *argv[] = {"open", uri.c_str(), NULL};
 	return posix_spawnp(NULL, "open", NULL, NULL, (char**)argv,
 		(*_NSGetEnviron())) == 0;
-#endif
 #else
 	const char *argv[] = {"xdg-open", uri.c_str(), NULL};
 	return posix_spawnp(NULL, "xdg-open", NULL, NULL, (char**)argv, environ) == 0;
