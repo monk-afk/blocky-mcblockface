@@ -52,12 +52,6 @@ void parseModContents(ModSpec &spec)
 	if (info.exists("name"))
 		spec.name = info.get("name");
 
-	if (info.exists("author"))
-		spec.author = info.get("author");
-
-	if (info.exists("release"))
-		spec.release = info.getS32("release");
-
 	spec.depends.clear();
 	spec.optdepends.clear();
 	spec.is_modpack = false;
@@ -124,15 +118,6 @@ void parseModContents(ModSpec &spec)
 					}
 				}
 			}
-		}
-
-		if (info.exists("description")) {
-			spec.desc = info.get("description");
-		} else {
-			std::ifstream is((spec.path + DIR_DELIM + "description.txt")
-							 .c_str());
-			spec.desc = std::string((std::istreambuf_iterator<char>(is)),
-					std::istreambuf_iterator<char>());
 		}
 	}
 }

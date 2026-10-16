@@ -373,7 +373,7 @@ void Server::init()
 	try {
 		loadGameConfAndInitWorld(m_path_world,
 				fs::GetFilenameFromPath(m_path_world.c_str()),
-				m_gamespec, false);
+				m_gamespec);
 	} catch (const BaseException &e) {
 		throw ServerError(std::string("Failed to initialize world: ") + e.what());
 	}

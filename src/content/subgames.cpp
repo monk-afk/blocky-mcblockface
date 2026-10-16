@@ -27,9 +27,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "mapgen/mapgen.h"   // for MapgenParams
 #include "util/string.h"
 
-// The maximum number of identical world names allowed
-#define MAX_WORLD_NAMES 100
-
 namespace
 {
 
@@ -117,35 +114,7 @@ SubgameSpec findSubgame(const std::string &id)
 	if (user != share || user_game)
 		mods_paths.insert(user + DIR_DELIM + "mods");
 
-	// Get meta
-	std::string conf_path = game_path + DIR_DELIM + "game.conf";
-	Settings conf;
-	conf.readConfigFile(conf_path.c_str());
-
-	std::string game_name;
-	if (conf.exists("name"))
-		game_name = conf.get("name");
-	else
-		game_name = id;
-
-	std::string game_author;
-	if (conf.exists("author"))
-		game_author = conf.get("author");
-
-	int game_release = 0;
-	if (conf.exists("release"))
-		game_release = conf.getS32("release");
-
-	bool moddable = true;
-	if (conf.exists("moddable"))
-		moddable = conf.getBool("moddable");
-
-	bool hide_game = false;
-	if (conf.exists("hide_game"))
-		hide_game = conf.getBool("hide_game");
-
-	return SubgameSpec(id, game_path, gamemod_path, mods_paths, game_name,
-			game_author, game_release, moddable, hide_game);
+	return SubgameSpec(id, game_path, gamemod_path, mods_paths);
 }
 
 SubgameSpec findWorldSubgame(const std::string &world_path)
@@ -158,15 +127,6 @@ SubgameSpec findWorldSubgame(const std::string &world_path)
 		gamespec.id = world_gameid;
 		gamespec.path = world_gamepath;
 		gamespec.gamemods_path = world_gamepath + DIR_DELIM + "mods";
-
-		Settings conf;
-		std::string conf_path = world_gamepath + DIR_DELIM + "game.conf";
-		conf.readConfigFile(conf_path.c_str());
-
-		if (conf.exists("name"))
-			gamespec.name = conf.get("name");
-		else
-			gamespec.name = world_gameid;
 
 		return gamespec;
 	}
@@ -211,16 +171,6 @@ std::set<std::string> getAvailableGameIds()
 		}
 	}
 	return gameids;
-}
-
-std::vector<SubgameSpec> getAvailableGames()
-{
-	std::vector<SubgameSpec> specs;
-	std::set<std::string> gameids = getAvailableGameIds();
-	specs.reserve(gameids.size());
-	for (const auto &gameid : gameids)
-		specs.push_back(findSubgame(gameid));
-	return specs;
 }
 
 #define LEGACY_GAMEID "minetest"
@@ -322,28 +272,13 @@ std::vector<WorldSpec> getAvailableWorlds()
 }
 
 void loadGameConfAndInitWorld(const std::string &path, const std::string &name,
-		const SubgameSpec &gamespec, bool create_world)
+		const SubgameSpec &gamespec)
 {
-	std::string final_path = path;
-
-	// If we're creating a new world, ensure that the path isn't already taken
-	if (create_world) {
-		int counter = 1;
-		while (fs::PathExists(final_path) && counter < MAX_WORLD_NAMES) {
-			final_path = path + "_" + std::to_string(counter);
-			counter++;
-		}
-
-		if (fs::PathExists(final_path)) {
-			throw BaseException("Too many similar filenames");
-		}
-	}
-
 	Settings *game_settings = Settings::getLayer(SL_GAME);
 	const bool new_game_settings = (game_settings == nullptr);
 	if (new_game_settings) {
-		// Called by main-menu without a Server instance running
-		// -> create and free manually
+		// Create the layer if world initialization occurs without a Server-owned
+		// game settings layer.
 		game_settings = Settings::createLayer(SL_GAME);
 	}
 
@@ -351,12 +286,12 @@ void loadGameConfAndInitWorld(const std::string &path, const std::string &name,
 	getGameMinetestConfig(gamespec.path, *game_settings, "squareone.conf");
 	game_settings->removeSecureSettings();
 
-	infostream << "Initializing world at " << final_path << std::endl;
+	infostream << "Initializing world at " << path << std::endl;
 
-	fs::CreateAllDirs(final_path);
+	fs::CreateAllDirs(path);
 
 	// Create world.mt if does not already exist
-	std::string worldmt_path = final_path + DIR_DELIM "world.mt";
+	std::string worldmt_path = path + DIR_DELIM "world.mt";
 	if (!fs::PathExists(worldmt_path)) {
 		Settings conf;
 
@@ -380,7 +315,7 @@ void loadGameConfAndInitWorld(const std::string &path, const std::string &name,
 	}
 
 	// Create map_meta.txt if does not already exist
-	std::string map_meta_path = final_path + DIR_DELIM + "map_meta.txt";
+	std::string map_meta_path = path + DIR_DELIM + "map_meta.txt";
 	if (!fs::PathExists(map_meta_path)) {
 		verbosestream << "Creating map_meta.txt (" << map_meta_path << ")"
 			      << std::endl;

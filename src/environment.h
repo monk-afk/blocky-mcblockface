@@ -89,8 +89,6 @@ public:
 	/*!
 	 * Gets the objects pointed by the shootline as
 	 * pointed things.
-	 * If this is a client environment, the local player
-	 * won't be returned.
 	 * @param[in]  shootline_on_map the shootline for
 	 * the test in world coordinates
 	 *

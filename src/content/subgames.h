@@ -28,26 +28,16 @@ class Settings;
 struct SubgameSpec
 {
 	std::string id;
-	std::string name;
-	std::string author;
-	int release;
 	std::string path;
 	std::string gamemods_path;
 	std::set<std::string> addon_mods_paths;
-	bool moddable;
-	bool hidden;
 
 	SubgameSpec(const std::string &id = "", const std::string &path = "",
 			const std::string &gamemods_path = "",
 			const std::set<std::string> &addon_mods_paths =
-					std::set<std::string>(),
-			const std::string &name = "",
-			const std::string &author = "", int release = 0,
-			const bool moddable = true, const bool hidden = false) :
-			id(id),
-			name(name), author(author), release(release), path(path),
-			gamemods_path(gamemods_path), addon_mods_paths(addon_mods_paths),
-			moddable(moddable), hidden(hidden)
+					std::set<std::string>()) :
+			id(id), path(path), gamemods_path(gamemods_path),
+			addon_mods_paths(addon_mods_paths)
 	{
 	}
 
@@ -58,7 +48,6 @@ SubgameSpec findSubgame(const std::string &id);
 SubgameSpec findWorldSubgame(const std::string &world_path);
 
 std::set<std::string> getAvailableGameIds();
-std::vector<SubgameSpec> getAvailableGames();
 
 bool getWorldExists(const std::string &world_path);
 //! Try to get the displayed name of a world
@@ -89,4 +78,4 @@ std::vector<WorldSpec> getAvailableWorlds();
 // loads the subgame's config and creates world directory
 // and world.mt if they don't exist
 void loadGameConfAndInitWorld(const std::string &path, const std::string &name,
-		const SubgameSpec &gamespec, bool create_world);
+		const SubgameSpec &gamespec);

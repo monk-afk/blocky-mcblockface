@@ -36,10 +36,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 struct ModSpec
 {
 	std::string name;
-	std::string author;
 	std::string path;
-	std::string desc;
-	int release = 0;
 
 	// if normal mod:
 	std::unordered_set<std::string> depends;
