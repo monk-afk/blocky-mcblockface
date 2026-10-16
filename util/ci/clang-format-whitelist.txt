@@ -226,7 +226,6 @@ src/server/serveractiveobject.cpp
 src/server/serveractiveobject.h
 src/settings.cpp
 src/settings.h
-src/settings_translation_file.cpp
 src/staticobject.cpp
 src/staticobject.h
 src/terminal_chat_console.cpp
