@@ -118,9 +118,6 @@ int main(int argc, char *argv[])
 		print_help(allowed_options);
 		return cmd_args_ok ? 0 : 1;
 	}
-	if (cmd_args.getFlag("console"))
-		porting::attachOrCreateConsole();
-
 	if (cmd_args.getFlag("version")) {
 		porting::attachOrCreateConsole();
 		print_version();
@@ -372,7 +369,7 @@ static bool setup_log_params(const Settings &cmd_args)
 
 	// In certain cases, output info level on stderr
 	if (cmd_args.getFlag("info") || cmd_args.getFlag("verbose") ||
-			cmd_args.getFlag("trace") || cmd_args.getFlag("speedtests"))
+			cmd_args.getFlag("trace"))
 		g_logger.addOutput(&stderr_output, LL_INFO);
 
 	// In certain cases, output verbose level on stderr
