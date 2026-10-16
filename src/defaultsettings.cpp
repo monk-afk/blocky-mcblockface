@@ -27,7 +27,7 @@ void set_default_settings()
 	if (settings == nullptr)
 		settings = Settings::createLayer(SL_DEFAULTS);
 
-	// Client and server
+	// General
 	settings->setDefault("language", "");
 	settings->setDefault("name", "");
 	settings->setDefault("bind_address", "");
@@ -39,7 +39,6 @@ void set_default_settings()
 	settings->setDefault("curl_verify_cert", "true");
 
 	// Server
-	settings->setDefault("noclip", "false");
 	settings->setDefault("texture_path", "");
 	settings->setDefault("recent_chat_messages", "10");
 	settings->setDefault("compat_player_model", "character.b3d,3d_armor_character.b3d,skinsdb_3d_armor_character_5.b3d");

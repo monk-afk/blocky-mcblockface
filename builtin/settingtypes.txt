@@ -1,4 +1,4 @@
-# This file contains all settings displayed in the settings menu.
+# This file documents the built-in SquareOne Core server settings.
 #
 # General format:
 #    name (Readable name) type type_args
@@ -13,7 +13,6 @@
 #    - enum
 #    - path
 #    - filepath
-#    - key (will be ignored in GUI, since a special key change dialog exists)
 #    - flags
 #    - noise_params_2d
 #    - noise_params_3d
@@ -63,962 +62,23 @@
 # There shouldn't be too much settings per category; settings that shouldn't be
 #  modified by the "average user" should be in (sub-)categories called "Advanced".
 
-[Controls]
-#    If enabled, you can place blocks at the position (feet + eye level) where you stand.
-#    This is helpful when working with nodeboxes in small areas.
-enable_build_where_you_stand (Build inside player) bool false
+[Server]
 
-#    Player is able to fly without being affected by gravity.
-#    This requires the "fly" privilege on the server.
-free_move (Flying) bool false
+#    Path to a texture directory whose override.txt is applied to media sent by the server.
+texture_path (Texture override path) path
 
-#    If enabled, makes move directions relative to the player's pitch when flying or swimming.
-pitch_move (Pitch move mode) bool false
+#    Maximum number of recent chat messages retained by the terminal console.
+recent_chat_messages (Recent terminal chat messages) int 6 2 20
 
-#    Fast movement (via the "special" key).
-#    This requires the "fast" privilege on the server.
-fast_move (Fast movement) bool false
-
-#    If enabled together with fly mode, player is able to fly through solid nodes.
-#    This requires the "noclip" privilege on the server.
-noclip (Noclip) bool false
-
-#    Smooths camera when looking around. Also called look or mouse smoothing.
-#    Useful for recording videos.
-cinematic (Cinematic mode) bool false
-
-#    Smooths rotation of camera. 0 to disable.
-camera_smoothing (Camera smoothing) float 0.0 0.0 0.99
-
-#    Smooths rotation of camera in cinematic mode. 0 to disable.
-cinematic_camera_smoothing (Camera smoothing in cinematic mode) float 0.7 0.0 0.99
-
-#    Invert vertical mouse movement.
-invert_mouse (Invert mouse) bool false
-
-#    Mouse sensitivity multiplier.
-mouse_sensitivity (Mouse sensitivity) float 0.2
-
-#    Touch sensitivity multiplier.
-touch_sensitivity (Touch sensitivity) float 0.2
-
-#    If enabled, "special" key instead of "sneak" key is used for climbing down and
-#    descending.
-aux1_descends (Special key for climbing/descending) bool false
-
-#    Double-tapping the jump key toggles fly mode.
-doubletap_jump (Double tap jump for fly) bool false
-
-#    If disabled, "special" key is used to fly fast if both fly and fast mode are
-#    enabled.
-always_fly_fast (Always fly and fast) bool true
-
-#    The time in seconds it takes between repeated node placements when holding
-#    the place button.
-repeat_place_time (Place repetition interval) float 0.25 0.001
-
-#    Automatically jump up single-node obstacles.
-autojump (Automatic jumping) bool false
-
-#    Prevent digging and placing from repeating when holding the mouse buttons.
-#    Enable this when you dig or place too often by accident.
-safe_dig_and_place (Safe digging and placing) bool false
-
-#    Enable random user input (only used for testing).
-random_input (Random input) bool false
-
-#    Continuous forward movement, toggled by autoforward key.
-#    Press the autoforward key again or the backwards movement to disable.
-continuous_forward (Continuous forward) bool false
-
-#    The length in pixels it takes for touch screen interaction to start.
-touchscreen_threshold (Touch screen threshold) int 20 0 100
-
-#    (Android) Fixes the position of virtual joystick.
-#    If disabled, virtual joystick will center to first-touch's position.
-fixed_virtual_joystick (Fixed virtual joystick) bool false
-
-#    (Android) Use virtual joystick to trigger "aux" button.
-#    If enabled, virtual joystick will also tap "aux" button when out of main circle.
-virtual_joystick_triggers_aux (Virtual joystick triggers aux button) bool false
-
-#    Enable joysticks
-enable_joysticks (Enable joysticks) bool true
-
-#    The identifier of the joystick to use
-joystick_id (Joystick ID) int 0
-
-#    The type of joystick
-joystick_type (Joystick type) enum auto auto,generic,xbox
-
-#    The time in seconds it takes between repeated events
-#    when holding down a joystick button combination.
-repeat_joystick_button_time (Joystick button repetition interval) float 0.17 0.001
-
-#    The deadzone of the joystick
-joystick_deadzone (Joystick deadzone) int 4096
-
-#    The sensitivity of the joystick axes for moving the
-#    ingame view frustum around.
-joystick_frustum_sensitivity (Joystick frustum sensitivity) float 170
-
-#    Key for moving the player forward.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_forward (Forward key) key KEY_KEY_W
-
-#    Key for moving the player backward.
-#    Will also disable autoforward, when active.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_backward (Backward key) key KEY_KEY_S
-
-#    Key for moving the player left.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_left (Left key) key KEY_KEY_A
-
-#    Key for moving the player right.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_right (Right key) key KEY_KEY_D
-
-#    Key for jumping.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_jump (Jump key) key KEY_SPACE
-
-#    Key for sneaking.
-#    Also used for climbing down and descending in water if aux1_descends is disabled.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_sneak (Sneak key) key KEY_LSHIFT
-
-#    Key for digging.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_dig (Dig key) key KEY_LBUTTON
-
-#    Key for placing.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_place (Place key) key KEY_RBUTTON
-
-#    Key for opening the inventory.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_inventory (Inventory key) key KEY_KEY_I
-
-#    Key for moving fast in fast mode.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_special1 (Special key) key KEY_KEY_E
-
-#    Key for opening the chat window.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_chat (Chat key) key KEY_KEY_T
-
-#    Key for opening the chat window to type commands.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_cmd (Command key) key /
-
-#    Key for opening the chat window to type local commands.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_cmd_local (Command key) key .
-
-#    Key for toggling unlimited view range.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_rangeselect (Range select key) key KEY_KEY_R
-
-#    Key for toggling flying.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_freemove (Fly key) key KEY_KEY_K
-
-#    Key for toggling pitch move mode.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_pitchmove (Pitch move key) key KEY_KEY_P
-
-#    Key for toggling fast mode.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_fastmove (Fast key) key KEY_KEY_J
-
-#    Key for toggling noclip mode.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_noclip (Noclip key) key KEY_KEY_H
-
-#    Key for selecting the next item in the hotbar.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_hotbar_next (Hotbar next key) key KEY_KEY_N
-
-#    Key for selecting the previous item in the hotbar.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_hotbar_previous (Hotbar previous key) key KEY_KEY_B
-
-#    Key for muting the game.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_mute (Mute key) key KEY_KEY_M
-
-#    Key for increasing the volume.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_increase_volume (Inc. volume key) key
-
-#    Key for decreasing the volume.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_decrease_volume (Dec. volume key) key
-
-#    Key for toggling autoforward.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_autoforward (Automatic forward key) key
-
-#    Key for toggling cinematic mode.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_cinematic (Cinematic mode key) key
-
-#    Key for toggling display of minimap.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_minimap (Minimap key) key KEY_KEY_V
-
-#    Key for taking screenshots.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_screenshot (Screenshot) key KEY_F12
-
-#    Key for dropping the currently selected item.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_drop (Drop item key) key KEY_KEY_Q
-
-#    Key to use view zoom when possible.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_zoom (View zoom key) key KEY_KEY_Z
-
-#    Key for selecting the first hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot1 (Hotbar slot 1 key) key KEY_KEY_1
-
-#    Key for selecting the second hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot2 (Hotbar slot 2 key) key KEY_KEY_2
-
-#    Key for selecting the third hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot3 (Hotbar slot 3 key) key KEY_KEY_3
-
-#    Key for selecting the fourth hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot4 (Hotbar slot 4 key) key KEY_KEY_4
-
-#    Key for selecting the fifth hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot5 (Hotbar slot 5 key) key KEY_KEY_5
-
-#    Key for selecting the sixth hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot6 (Hotbar slot 6 key) key KEY_KEY_6
-
-#    Key for selecting the seventh hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot7 (Hotbar slot 7 key) key KEY_KEY_7
-
-#    Key for selecting the eighth hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot8 (Hotbar slot 8 key) key KEY_KEY_8
-
-#    Key for selecting the ninth hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot9 (Hotbar slot 9 key) key KEY_KEY_9
-
-#    Key for selecting the tenth hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot10 (Hotbar slot 10 key) key KEY_KEY_0
-
-#    Key for selecting the 11th hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot11 (Hotbar slot 11 key) key
-
-#    Key for selecting the 12th hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot12 (Hotbar slot 12 key) key
-
-#    Key for selecting the 13th hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot13 (Hotbar slot 13 key) key
-
-#    Key for selecting the 14th hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot14 (Hotbar slot 14 key) key
-
-#    Key for selecting the 15th hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot15 (Hotbar slot 15 key) key
-
-#    Key for selecting the 16th hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot16 (Hotbar slot 16 key) key
-
-#    Key for selecting the 17th hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot17 (Hotbar slot 17 key) key
-
-#    Key for selecting the 18th hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot18 (Hotbar slot 18 key) key
-
-#    Key for selecting the 19th hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot19 (Hotbar slot 19 key) key
-
-#    Key for selecting the 20th hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot20 (Hotbar slot 20 key) key
-
-#    Key for selecting the 21st hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot21 (Hotbar slot 21 key) key
-
-#    Key for selecting the 22nd hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot22 (Hotbar slot 22 key) key
-
-#    Key for selecting the 23rd hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot23 (Hotbar slot 23 key) key
-
-#    Key for selecting the 24th hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot24 (Hotbar slot 24 key) key
-
-#    Key for selecting the 25th hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot25 (Hotbar slot 25 key) key
-
-#    Key for selecting the 26th hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot26 (Hotbar slot 26 key) key
-
-#    Key for selecting the 27th hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot27 (Hotbar slot 27 key) key
-
-#    Key for selecting the 28th hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot28 (Hotbar slot 28 key) key
-
-#    Key for selecting the 29th hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot29 (Hotbar slot 29 key) key
-
-#    Key for selecting the 30th hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot30 (Hotbar slot 30 key) key
-
-#    Key for selecting the 31st hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot31 (Hotbar slot 31 key) key
-
-#    Key for selecting the 32nd hotbar slot.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_slot32 (Hotbar slot 32 key) key
-
-#    Key for toggling the display of the HUD.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_toggle_hud (HUD toggle key) key KEY_F1
-
-#    Key for toggling the display of chat.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_toggle_chat (Chat toggle key) key KEY_F2
-
-#    Key for toggling the display of the large chat console.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_console (Large chat console key) key KEY_F10
-
-#    Key for toggling the display of fog.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_toggle_force_fog_off (Fog toggle key) key KEY_F3
-
-#    Key for toggling the camera update. Only used for development
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_toggle_update_camera (Camera update toggle key) key
-
-#    Key for toggling the display of debug info.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_toggle_debug (Debug info toggle key) key KEY_F5
-
-#    Key for toggling the display of the profiler. Used for development.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_toggle_profiler (Profiler toggle key) key KEY_F6
-
-#    Key for switching between first- and third-person camera.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_camera_mode (Toggle camera mode key) key KEY_KEY_C
-
-#    Key for increasing the viewing range.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_increase_viewing_range_min (View range increase key) key +
-
-#    Key for decreasing the viewing range.
-#    See http://irrlicht.sourceforge.net/docu/namespaceirr.html#a54da2a0e231901735e3da1b0edf72eb3
-keymap_decrease_viewing_range_min (View range decrease key) key -
-
-[Graphics]
-
-[*In-Game]
-
-[**Basic]
-
-#    Whether nametag backgrounds should be shown by default.
-#    Mods may still set a background.
-show_nametag_backgrounds (Show nametag backgrounds by default) bool true
-
-#    Enable vertex buffer objects.
-#    This should greatly improve graphics performance.
-enable_vbo (VBO) bool true
-
-#    Whether to fog out the end of the visible area.
-enable_fog (Fog) bool true
-
-#    Leaves style:
-#    -   Fancy:  all faces visible
-#    -   Simple: only outer faces, if defined special_tiles are used
-#    -   Opaque: disable transparency
-leaves_style (Leaves style) enum fancy fancy,simple,opaque
-
-#    Connects glass if supported by node.
-connected_glass (Connect glass) bool false
-
-#    Enable smooth lighting with simple ambient occlusion.
-#    Disable for speed or for different looks.
-smooth_lighting (Smooth lighting) bool true
-
-#    Clouds are a client side effect.
-enable_clouds (Clouds) bool true
-
-#    Use 3D cloud look instead of flat.
-enable_3d_clouds (3D clouds) bool true
-
-#    Method used to highlight selected object.
-node_highlighting (Node highlighting) enum box box,halo,none
-
-#    Adds particles when digging a node.
-enable_particles (Digging particles) bool true
-
-[**Filtering]
-
-#    Use mip mapping to scale textures. May slightly increase performance,
-#    especially when using a high resolution texture pack.
-#    Gamma correct downscaling is not supported.
-mip_map (Mipmapping) bool false
-
-#    Use anisotropic filtering when viewing at textures from an angle.
-anisotropic_filter (Anisotropic filtering) bool false
-
-#    Use bilinear filtering when scaling textures.
-bilinear_filter (Bilinear filtering) bool false
-
-#    Use trilinear filtering when scaling textures.
-trilinear_filter (Trilinear filtering) bool false
-
-#    Filtered textures can blend RGB values with fully-transparent neighbors,
-#    which PNG optimizers usually discard, sometimes resulting in a dark or
-#    light edge to transparent textures. Apply this filter to clean that up
-#    at texture load time.
-texture_clean_transparent (Clean transparent textures) bool false
-
-#    When using bilinear/trilinear/anisotropic filters, low-resolution textures
-#    can be blurred, so automatically upscale them with nearest-neighbor
-#    interpolation to preserve crisp pixels. This sets the minimum texture size
-#    for the upscaled textures; higher values look sharper, but require more
-#    memory.  Powers of 2 are recommended. Setting this higher than 1 may not
-#    have a visible effect unless bilinear/trilinear/anisotropic filtering is
-#    enabled.
-#    This is also used as the base node texture size for world-aligned
-#    texture autoscaling.
-texture_min_size (Minimum texture size) int 64
-
-#    Use multi-sample antialiasing (MSAA) to smooth out block edges.
-#    This algorithm smooths out the 3D viewport while keeping the image sharp,
-#    but it doesn't affect the insides of textures
-#    (which is especially noticeable with transparent textures).
-#    Visible spaces appear between nodes when shaders are disabled.
-#    If set to 0, MSAA is disabled.
-#    A restart is required after changing this option.
-fsaa (FSAA) enum 0 0,1,2,4,8,16
-
-#    Undersampling is similar to using a lower screen resolution, but it applies
-#    to the game world only, keeping the GUI intact.
-#    It should give a significant performance boost at the cost of less detailed image.
-#    Higher values result in a less detailed image.
-undersampling (Undersampling) int 1 1 8
-
-[**Shaders]
-
-#    Shaders allow advanced visual effects and may increase performance on some video
-#    cards.
-#    This only works with the OpenGL video backend.
-enable_shaders (Shaders) bool true
-
-#    Path to shader directory. If no path is defined, default location will be used.
-shader_path (Shader path) path
-
-[***Tone Mapping]
-
-#    Enables Hable's 'Uncharted 2' filmic tone mapping.
-#    Simulates the tone curve of photographic film and how this approximates the
-#    appearance of high dynamic range images. Mid-range contrast is slightly
-#    enhanced, highlights and shadows are gradually compressed.
-tone_mapping (Filmic tone mapping) bool false
-
-[***Waving Nodes]
-
-#    Set to true to enable waving liquids (like water).
-#    Requires shaders to be enabled.
-enable_waving_water (Waving liquids) bool false
-
-#    The maximum height of the surface of waving liquids.
-#    4.0 = Wave height is two nodes.
-#    0.0 = Wave doesn't move at all.
-#    Default is 1.0 (1/2 node).
-#    Requires waving liquids to be enabled.
-water_wave_height (Waving liquids wave height) float 1.0 0.0 4.0
-
-#    Length of liquid waves.
-#    Requires waving liquids to be enabled.
-water_wave_length (Waving liquids wavelength) float 20.0 0.1
-
-#    How fast liquid waves will move. Higher = faster.
-#    If negative, liquid waves will move backwards.
-#    Requires waving liquids to be enabled.
-water_wave_speed (Waving liquids wave speed) float 5.0
-
-#    Set to true to enable waving leaves.
-#    Requires shaders to be enabled.
-enable_waving_leaves (Waving leaves) bool false
-
-#    Set to true to enable waving plants.
-#    Requires shaders to be enabled.
-enable_waving_plants (Waving plants) bool false
-
-[**Advanced]
-
-#    Arm inertia, gives a more realistic movement of
-#    the arm when the camera moves.
-arm_inertia (Arm inertia) bool true
-
-#    If FPS would go higher than this, limit it by sleeping
-#    to not waste CPU power for no benefit.
-fps_max (Maximum FPS) int 60 1
-
-#    Maximum FPS when the window is not focused, or when the game is paused.
-fps_max_unfocused (FPS when unfocused or paused) int 20 1
-
-#    Open the pause menu when the window's focus is lost. Does not pause if a formspec is
-#    open.
-pause_on_lost_focus (Pause on lost window focus) bool false
-
-#    View distance in nodes.
-viewing_range (Viewing range) int 190 20 4000
-
-#   Camera 'near clipping plane' distance in nodes, between 0 and 0.25
-#   Only works on GLES platforms. Most users will not need to change this.
-#   Increasing can reduce artifacting on weaker GPUs.
-#   0.1 = Default, 0.25 = Good value for weaker tablets.
-near_plane (Near plane) float 0.1 0 0.25
-
-#    Width component of the initial window size.
-screen_w (Screen width) int 1024 1
-
-#    Height component of the initial window size.
-screen_h (Screen height) int 600 1
-
-#    Save window size automatically when modified.
-autosave_screensize (Autosave screen size) bool true
-
-#    Fullscreen mode.
-fullscreen (Full screen) bool false
-
-#    Bits per pixel (aka color depth) in fullscreen mode.
-fullscreen_bpp (Full screen BPP) int 24
-
-#    Vertical screen synchronization.
-vsync (VSync) bool false
-
-#    Field of view in degrees.
-fov (Field of view) int 72 45 160
-
-#    Alters the light curve by applying 'gamma correction' to it.
-#    Higher values make middle and lower light levels brighter.
-#    Value '1.0' leaves the light curve unaltered.
-#    This only has significant effect on daylight and artificial
-#    light, it has very little effect on natural night light.
-display_gamma (Light curve gamma) float 1.0 0.33 3.0
-
-#    Gradient of light curve at minimum light level.
-#    Controls the contrast of the lowest light levels.
-lighting_alpha (Light curve low gradient) float 0.0 0.0 3.0
-
-#    Gradient of light curve at maximum light level.
-#    Controls the contrast of the highest light levels.
-lighting_beta (Light curve high gradient) float 1.5 0.0 3.0
-
-#    Strength of light curve boost.
-#    The 3 'boost' parameters define a range of the light
-#    curve that is boosted in brightness.
-lighting_boost (Light curve boost) float 0.2 0.0 0.4
-
-#    Center of light curve boost range.
-#    Where 0.0 is minimum light level, 1.0 is maximum light level.
-lighting_boost_center (Light curve boost center) float 0.5 0.0 1.0
-
-#    Spread of light curve boost range.
-#    Controls the width of the range to be boosted.
-#    Standard deviation of the light curve boost Gaussian.
-lighting_boost_spread (Light curve boost spread) float 0.2 0.0 0.4
-
-#    Path to texture directory. All textures are first searched from here.
-texture_path (Texture path) path
-
-#    The rendering back-end for Irrlicht.
-#    A restart is required after changing this.
-#    Note: On Android, stick with OGLES1 if unsure! App may fail to start otherwise.
-#    On other platforms, OpenGL is recommended.
-#    Shaders are supported by OpenGL (desktop only) and OGLES2 (experimental)
-video_driver (Video driver) enum opengl null,software,burningsvideo,direct3d8,direct3d9,opengl,ogles1,ogles2
-
-#    Radius of cloud area stated in number of 64 node cloud squares.
-#    Values larger than 26 will start to produce sharp cutoffs at cloud area corners.
-cloud_radius (Cloud radius) int 12
-
-#    Enable view bobbing and amount of view bobbing.
-#    For example: 0 for no view bobbing; 1.0 for normal; 2.0 for double.
-view_bobbing_amount (View bobbing factor) float 1.0
-
-#    Multiplier for fall bobbing.
-#    For example: 0 for no view bobbing; 1.0 for normal; 2.0 for double.
-fall_bobbing_amount (Fall bobbing factor) float 0.03
-
-#    3D support.
-#    Currently supported:
-#    -    none: no 3d output.
-#    -    anaglyph: cyan/magenta color 3d.
-#    -    interlaced: odd/even line based polarisation screen support.
-#    -    topbottom: split screen top/bottom.
-#    -    sidebyside: split screen side by side.
-#    -    crossview: Cross-eyed 3d
-#    -    pageflip: quadbuffer based 3d.
-#    Note that the interlaced mode requires shaders to be enabled.
-3d_mode (3D mode) enum none none,anaglyph,interlaced,topbottom,sidebyside,crossview,pageflip
-
-#    Strength of 3D mode parallax.
-3d_paralax_strength (3D mode parallax strength) float 0.025
-
-#    In-game chat console height, between 0.1 (10%) and 1.0 (100%).
-console_height (Console height) float 0.6 0.1 1.0
-
-#    In-game chat message console height, between 0.1 (10%) and 1.0 (100%).
-console_message_height (Console message height) float 0.25 0.1 1.0
-
-#    In-game chat console background color (R,G,B).
-console_color (Console color) string (0,0,0)
-
-#    In-game chat console background alpha (opaqueness, between 0 and 255).
-console_alpha (Console alpha) int 200 0 255
-
-#    Formspec full-screen background opacity (between 0 and 255).
-formspec_fullscreen_bg_opacity (Formspec Full-Screen Background Opacity) int 140 0 255
-
-#    Formspec full-screen background color (R,G,B).
-formspec_fullscreen_bg_color (Formspec Full-Screen Background Color) string (0,0,0)
-
-#    Formspec default background opacity (between 0 and 255).
-formspec_default_bg_opacity (Formspec Default Background Opacity) int 140 0 255
-
-#    Formspec default background color (R,G,B).
-formspec_default_bg_color (Formspec Default Background Color) string (0,0,0)
-
-#    Selection box border color (R,G,B).
-selectionbox_color (Selection box color) string (0,0,0)
-
-#    Width of the selection box lines around nodes.
-selectionbox_width (Selection box width) int 2 1 5
-
-#    Crosshair color (R,G,B).
-#    Also controls the object crosshair color
-crosshair_color (Crosshair color) string (255,255,255)
-
-#    Crosshair alpha (opaqueness, between 0 and 255).
-#    Also controls the object crosshair color
-crosshair_alpha (Crosshair alpha) int 255 0 255
-
-#    Maximum number of recent chat messages to show
-recent_chat_messages (Recent Chat Messages) int 6 2 20
-
-#    Whether node texture animations should be desynchronized per mapblock.
-desynchronize_mapblock_texture_animation (Desynchronize block animation) bool false
-
-#    Maximum proportion of current window to be used for hotbar.
-#    Useful if there's something to be displayed right or left of hotbar.
-hud_hotbar_max_width (Maximum hotbar width) float 1.0
-
-#    Modifies the size of the hudbar elements.
-hud_scaling (HUD scale factor) float 1.0
-
-#    Enables caching of facedir rotated meshes.
-enable_mesh_cache (Mesh cache) bool false
-
-#    Delay between mesh updates on the client in ms. Increasing this will slow
-#    down the rate of mesh updates, thus reducing jitter on slower clients.
-mesh_generation_interval (Mapblock mesh generation delay) int 0 0 50
-
-#    Size of the MapBlock cache of the mesh generator. Increasing this will
-#    increase the cache hit %, reducing the data being copied from the main
-#    thread, thus reducing jitter.
-meshgen_block_cache_size (Mapblock mesh generator's MapBlock cache size in MB) int 20 0 1000
-
-#    Enables minimap.
-enable_minimap (Minimap) bool true
-
-#    Shape of the minimap. Enabled = round, disabled = square.
-minimap_shape_round (Round minimap) bool true
-
-#    True = 256
-#    False = 128
-#    Usable to make minimap smoother on slower machines.
-minimap_double_scan_height (Minimap scan height) bool true
-
-#    Make fog and sky colors depend on daytime (dawn/sunset) and view direction.
-directional_colored_fog (Colored fog) bool true
-
-#    The strength (darkness) of node ambient-occlusion shading.
-#    Lower is darker, Higher is lighter. The valid range of values for this
-#    setting is 0.25 to 4.0 inclusive. If the value is out of range it will be
-#    set to the nearest valid value.
-ambient_occlusion_gamma (Ambient occlusion gamma) float 2.2 0.25 4.0
-
-#    Enables animation of inventory items.
-inventory_items_animations (Inventory items animations) bool false
-
-#    Fraction of the visible distance at which fog starts to be rendered
-fog_start (Fog start) float 0.4 0.0 0.99
-
-#    Makes all liquids opaque
-opaque_water (Opaque liquids) bool false
-
-#    Textures on a node may be aligned either to the node or to the world.
-#    The former mode suits better things like machines, furniture, etc., while
-#    the latter makes stairs and microblocks fit surroundings better.
-#    However, as this possibility is new, thus may not be used by older servers,
-#    this option allows enforcing it for certain node types. Note though that
-#    that is considered EXPERIMENTAL and may not work properly.
-world_aligned_mode (World-aligned textures mode) enum enable disable,enable,force_solid,force_nodebox
-
-#    World-aligned textures may be scaled to span several nodes. However,
-#    the server may not send the scale you want, especially if you use
-#    a specially-designed texture pack; with this option, the client tries
-#    to determine the scale automatically basing on the texture size.
-#    See also texture_min_size.
-#    Warning: This option is EXPERIMENTAL!
-autoscale_mode (Autoscaling mode) enum disable disable,enable,force
-
-#    Show entity selection boxes
-#    A restart is required after changing this.
-show_entity_selectionbox (Show entity selection boxes) bool false
-
-#    Sort transparent materials from back to front for proper rendering
-#    Note: works on a per-chunk basis
-#    Note: different materials are sorted independently
-transparency_sorting (Transparency sorting) bool true
-
-[*Menus]
-
-#    Use a cloud animation for the main menu background.
-menu_clouds (Clouds in menu) bool true
-
-#    Scale GUI by a user specified value.
-#    Use a nearest-neighbor-anti-alias filter to scale the GUI.
-#    This will smooth over some of the rough edges, and blend
-#    pixels when scaling down, at the cost of blurring some
-#    edge pixels when images are scaled by non-integer sizes.
-gui_scaling (GUI scaling) float 1.0 0.001
-
-#    When gui_scaling_filter is true, all GUI images need to be
-#    filtered in software, but some images are generated directly
-#    to hardware (e.g. render-to-texture for nodes in inventory).
-gui_scaling_filter (GUI scaling filter) bool false
-
-#    When gui_scaling_filter_txr2img is true, copy those images
-#    from hardware to software for scaling.  When false, fall back
-#    to the old scaling method, for video drivers that don't
-#    properly support downloading textures back from hardware.
-gui_scaling_filter_txr2img (GUI scaling filter txr2img) bool true
-
-#    Delay showing tooltips, stated in milliseconds.
-tooltip_show_delay (Tooltip delay) int 400
-
-#    Append item name to tooltip.
-tooltip_append_itemname (Append item name) bool false
-
-#    Whether FreeType fonts are used, requires FreeType support to be compiled in.
-#    If disabled, bitmap and XML vectors fonts are used instead.
-freetype (FreeType fonts) bool true
-
-font_bold (Font bold by default) bool false
-
-font_italic (Font italic by default) bool false
-
-#    Shadow offset (in pixels) of the default font. If 0, then shadow will not be drawn.
-font_shadow (Font shadow) int 1
-
-#    Opaqueness (alpha) of the shadow behind the default font, between 0 and 255.
-font_shadow_alpha (Font shadow alpha) int 127 0 255
-
-#    Font size of the default font in point (pt).
-font_size (Font size) int 16 1
-
-#    Path to the default font.
-#    If “freetype” setting is enabled: Must be a TrueType font.
-#    If “freetype” setting is disabled: Must be a bitmap or XML vectors font.
-#    The fallback font will be used if the font cannot be loaded.
-font_path (Regular font path) filepath fonts/Arimo-Regular.ttf
-
-font_path_bold (Bold font path) filepath fonts/Arimo-Bold.ttf
-font_path_italic (Italic font path) filepath fonts/Arimo-Italic.ttf
-font_path_bolditalic (Bold and italic font path) filepath fonts/Arimo-BoldItalic.ttf
-
-#    Font size of the monospace font in point (pt).
-mono_font_size (Monospace font size) int 15 1
-
-#    Path to the monospace font.
-#    If “freetype” setting is enabled: Must be a TrueType font.
-#    If “freetype” setting is disabled: Must be a bitmap or XML vectors font.
-#    This font is used for e.g. the console and profiler screen.
-mono_font_path (Monospace font path) filepath fonts/Cousine-Regular.ttf
-
-mono_font_path_bold (Bold monospace font path) filepath fonts/Cousine-Bold.ttf
-mono_font_path_italic (Italic monospace font path) filepath fonts/Cousine-Italic.ttf
-mono_font_path_bolditalic (Bold and italic monospace font path) filepath fonts/Cousine-BoldItalic.ttf
-
-#    Font size of the fallback font in point (pt).
-fallback_font_size (Fallback font size) int 15 1
-
-#    Shadow offset (in pixels) of the fallback font. If 0, then shadow will not be drawn.
-fallback_font_shadow (Fallback font shadow) int 1
-
-#    Opaqueness (alpha) of the shadow behind the fallback font, between 0 and 255.
-fallback_font_shadow_alpha (Fallback font shadow alpha) int 128 0 255
-
-#    Path of the fallback font.
-#    If “freetype” setting is enabled: Must be a TrueType font.
-#    If “freetype” setting is disabled: Must be a bitmap or XML vectors font.
-#    This font will be used for certain languages or if the default font is unavailable.
-fallback_font_path (Fallback font path) filepath fonts/DroidSansFallbackFull.ttf
-
-#    Font size of the recent chat text and chat prompt in point (pt).
-#    Value 0 will use the default font size.
-chat_font_size (Chat font size) int 0
-
-#    Path to save screenshots at. Can be an absolute or relative path.
-#    The folder will be created if it doesn't already exist.
-screenshot_path (Screenshot folder) path screenshots
-
-#    Format of screenshots.
-screenshot_format (Screenshot format) enum png png,jpg,bmp,pcx,ppm,tga
-
-#    Screenshot quality. Only used for JPEG format.
-#    1 means worst quality; 100 means best quality.
-#    Use 0 for default quality.
-screenshot_quality (Screenshot quality) int 0 0 100
-
-[*Advanced]
-
-#    Adjust dpi configuration to your screen (non X11/Android only) e.g. for 4k screens.
-screen_dpi (DPI) int 72 1
-
-#    Adjust the detected display density, used for scaling UI elements.
-display_density_factor (Display Density Scaling Factor) float 1
-
-#    Windows systems only: Start Minetest with the command line window in the background.
-#    Contains the same information as the file debug.txt (default name).
+#    Windows systems only: Start SquareOne Core with the console window in the background.
+#    The console contains the same information as debug.txt.
 enable_console (Enable console window) bool false
 
-[Sound]
-
-#    Enables the sound system.
-#    If disabled, this completely disables all sounds everywhere and the in-game
-#    sound controls will be non-functional.
-#    Changing this setting requires a restart.
-enable_sound (Sound) bool true
-
-#    Volume of all sounds.
-#    Requires the sound system to be enabled.
-sound_volume (Volume) float 0.7 0.0 1.0
-
-#    Whether to mute sounds. You can unmute sounds at any time, unless the
-#    sound system is disabled (enable_sound=false).
-#    In-game, you can toggle the mute state with the mute key or by using the
-#    pause menu.
-mute_sound (Mute sound) bool false
-
-[Client]
-
-[*Network]
-
-#    Address to connect to.
-#    Leave this blank to start a local server.
-#    Note that the address field in the main menu overrides this setting.
-address (Server address) string
-
-#    Port to connect to (UDP).
-#    Note that the port field in the main menu overrides this setting.
-remote_port (Remote port) int 30000 1 65535
-
 #    Prometheus listener address.
-#    If minetest is compiled with ENABLE_PROMETHEUS option enabled,
-#    enable metrics listener for Prometheus on that address.
-#    Metrics can be fetch on http://127.0.0.1:30000/metrics
+#    If SquareOne Core is compiled with ENABLE_PROMETHEUS,
+#    enable the metrics listener at this address.
+#    Metrics can be fetched from http://127.0.0.1:30000/metrics.
 prometheus_listener_address (Prometheus listener address) string 127.0.0.1:30000
-
-#    Save the map received by the client on disk.
-enable_local_map_saving (Saving map received from server) bool false
-
-#    Enable usage of remote media server (if provided by server).
-#    Remote servers offer a significantly faster way to download media (e.g. textures)
-#    when connecting to the server.
-enable_remote_media_server (Connect to external media server) bool true
-
-#    Enable Lua modding support on client.
-#    This support is experimental and API can change.
-enable_client_modding (Client modding) bool false
-
-#    URL to the server list displayed in the Multiplayer Tab.
-serverlist_url (Serverlist URL) string https://servers.luanti.org
-
-#    File in client/serverlist/ that contains your favorite servers displayed in the
-#    Multiplayer Tab.
-serverlist_file (Serverlist file) string favoriteservers.json
-
-#    Maximum size of the out chat queue.
-#    0 to disable queueing and -1 to make the queue size unlimited.
-max_out_chat_queue_size (Maximum size of the out chat queue) int 20
-
-#    Enable register confirmation when connecting to server.
-#    If disabled, new account will be registered automatically.
-enable_register_confirmation (Enable register confirmation) bool true
-
-[*Advanced]
-
-#    Timeout for client to remove unused map data from memory.
-client_unload_unused_data_timeout (Mapblock unload timeout) int 600
-
-#    Maximum number of mapblocks for client to be kept in memory.
-#    Set to -1 for unlimited amount.
-client_mapblock_limit (Mapblock limit) int 7500
-
-#    Whether to show the client debug info (has the same effect as hitting F5).
-show_debug (Show debug info) bool false
-
-#    URL to JSON file which provides information about the newest SquareOne Core release.
-#    Leave empty to disable update checks.
-update_information_url (Update information URL) string
-
-#    Unix timestamp (integer) of when the client last checked for an update
-#    Set this value to "disabled" to never check for updates.
-update_last_checked (Last update check) string disabled
-
-#    Version number which was last seen during an update check.
-#
-#    Representation: MMMIIIPPP, where M=Major, I=Minor, P=Patch
-#    Ex: 5.5.0 is 005005000
-update_last_known (Last known version update) int 0
-
-[Server / Singleplayer]
 
 #    Name of the server, to be displayed when players join and in the serverlist.
 server_name (Server name) string Minetest server
@@ -1045,7 +105,6 @@ strip_color_codes (Strip color codes) bool true
 [*Network]
 
 #    Network port to listen (UDP).
-#    This value will be overridden when starting from the main menu.
 port (Server port) int 30000
 
 #    The network interface that the server listens on.
@@ -1096,7 +155,6 @@ map_compression_level_net (Map Compression Level for Network Transfer) int -1 -1
 [*Game]
 
 #    Default game when creating a new world.
-#    This will be overridden when creating a world from the main menu.
 default_game (Default game) string minetest
 
 #    Message of the day displayed to players connecting.
@@ -1106,7 +164,7 @@ motd (Message of the day) string
 max_users (Maximum users) int 15
 
 #    World directory (everything in the world is stored here).
-#    Not needed if starting from the main menu.
+#    The --world command-line option takes precedence.
 map-dir (Map directory) path
 
 #    Time in seconds for item entity (dropped items) to live.
@@ -1124,7 +182,6 @@ enable_damage (Damage) bool false
 creative_mode (Creative) bool false
 
 #    A chosen map seed for a new map, leave empty for random.
-#    Will be overridden when creating a new world in the main menu.
 fixed_map_seed (Fixed map seed) string
 
 #    New users need to input this password.
@@ -1414,12 +471,11 @@ instrument.builtin (Builtin) bool false
 #     * Instrument the sampler being used to update the statistics.
 instrument.profiler (Profiler) bool false
 
-[Client and Server]
+[General]
 
-#    Name of the player.
-#    When running a server, clients connecting with this name are admins.
-#    When starting from the main menu, this is overridden.
-name (Player name) string
+#    Name used by the terminal console to execute commands.
+#    This account receives server administrator privileges.
+name (Terminal administrator name) string
 
 #    Set the language. Leave empty to use the system language.
 #    A restart is required after changing this.
@@ -1444,7 +500,7 @@ debug_log_size_max (Debug log file size threshold) int 50
 #    Minimal level of logging to be written to chat.
 chat_log_level (Chat log level) enum error ,none,error,warning,action,info,verbose
 
-#    Enable IPv6 support (for both client and server).
+#    Enable IPv6 support.
 #    Required for IPv6 connections to work at all.
 enable_ipv6 (IPv6) bool true
 
@@ -1455,20 +511,10 @@ enable_ipv6 (IPv6) bool true
 curl_timeout (cURL timeout) int 5000
 
 #    Limits number of parallel HTTP requests. Affects:
-#    -    Media fetch if server uses remote_media setting.
-#    -    Serverlist download and server announcement.
-#    -    Downloads performed by main menu (e.g. mod manager).
+#    -    Serverlist announcement.
+#    -    HTTP requests made by mods.
 #    Only has an effect if compiled with cURL.
 curl_parallel_limit (cURL parallel limit) int 8
-
-#    Maximum time in ms a file download (e.g. a mod download) may take.
-curl_file_download_timeout (cURL file download timeout) int 300000
-
-#    Makes DirectX work with LuaJIT. Disable if it causes troubles.
-high_precision_fpu (High-precision FPU) bool true
-
-#    Replaces the default main menu with a custom one.
-main_menu_script (Main menu script) string
 
 #    Print the engine's profiling data in regular intervals (in seconds).
 #    0 = disable. Useful for developers.
@@ -1477,7 +523,6 @@ profiler_print_interval (Engine profiling data print interval) int 0
 [Mapgen]
 
 #    Name of map generator to be used when creating a new world.
-#    Creating a world in the main menu will override this.
 #    Current mapgens in a highly unstable state:
 #    -    The optional floatlands of v7 (disabled by default).
 mg_name (Mapgen name) enum v7 v7,valleys,carpathian,v5,flat,fractal,singlenode,v6
@@ -2223,26 +1268,9 @@ emergequeue_limit_generate (Per-player limit of queued blocks to generate) int 1
 #    -    Specifies the number of emerge threads, with a lower limit of 1.
 #    WARNING: Increasing the number of emerge threads increases engine mapgen
 #    speed, but this may harm game performance by interfering with other
-#    processes, especially in singleplayer and/or when running Lua code in
-#    'on_generated'. For many users the optimum setting may be '1'.
+#    processes, especially when running Lua code in 'on_generated'.
+#    For many servers the optimum setting may be '1'.
 num_emerge_threads (Number of emerge threads) int 1
-
-[Online Content Repository]
-
-#    The URL for the content repository
-contentdb_url (ContentDB URL) string https://content.minetest.net
-
-#    Comma-separated list of flags to hide in the content repository.
-#    "nonfree" can be used to hide packages which do not qualify as 'free software',
-#    as defined by the Free Software Foundation.
-#    You can also specify content ratings.
-#    These flags are independent from Minetest versions,
-#    so see a full list at https://content.minetest.net/help/content_flags/
-contentdb_flag_blacklist (ContentDB Flag Blacklist) string nonfree, desktop_default
-
-#    Maximum number of concurrent downloads. Downloads exceeding this limit will be queued.
-#    This should be lower than curl_parallel_limit.
-contentdb_max_concurrent_downloads (ContentDB Max Concurrent Downloads) int 3
 
 [Hunger]
 

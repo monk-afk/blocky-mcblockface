@@ -52,8 +52,7 @@ static inline int checkSettingSecurity(lua_State* L, const std::string &name)
 	}
 
 	const char *disallowed[] = {
-		"main_menu_script", "shader_path", "texture_path", "screenshot_path",
-		"serverlist_file", "serverlist_url", "map-dir", "contentdb_url",
+		"texture_path", "serverlist_url", "map-dir",
 	};
 	for (const char *name2 : disallowed) {
 		if (name == name2)
