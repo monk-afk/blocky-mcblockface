@@ -110,9 +110,5 @@ with this program; if not, write to the Free Software Foundation, Inc.,
     GUI related things
 */
 
-#if defined(__ANDROID__) || defined(__IOS__)
-#define TTF_DEFAULT_FONT_SIZE (13)
-#else
 #define TTF_DEFAULT_FONT_SIZE (18)
-#endif
 #define DEFAULT_FONT_SIZE (10)
