@@ -11,7 +11,7 @@
 
 #if defined USE_CMAKE_CONFIG_H
 	#include "cmake_config.h"
-#elif defined(__ANDROID__) || defined(__APPLE__)
+#elif defined(__APPLE__)
 	#define PROJECT_NAME "squareone"
 	#define PROJECT_NAME_C "SquareOne Core"
 	#define STATIC_SHAREDIR ""

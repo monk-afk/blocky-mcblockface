@@ -27,7 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <istream>
 #include "util/container.h"
 #include "util/numeric.h"
-#if !defined(__ANDROID__) && !defined(__APPLE__)
+#if !defined(__APPLE__)
 	#include "cmake_config.h"
 #endif
 #if USE_SPATIAL

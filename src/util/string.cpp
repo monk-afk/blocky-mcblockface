@@ -50,8 +50,7 @@ static bool parseHexColorString(const std::string &value, video::SColor &color,
 		unsigned char default_alpha = 0xff);
 static bool parseNamedColorString(const std::string &value, video::SColor &color);
 
-#if defined(__ANDROID__) || defined(__APPLE__)
-// On Android iconv disagrees how big a wchar_t is for whatever reason
+#if defined(__APPLE__)
 const char *DEFAULT_ENCODING = "UTF-32LE";
 #else
 const char *DEFAULT_ENCODING = "WCHAR_T";
@@ -61,7 +60,7 @@ const char *DEFAULT_ENCODING = "WCHAR_T";
 
 std::wstring utf8_to_wide(const std::string &input)
 {
-#if defined(__ANDROID__) || defined(__APPLE__)
+#if defined(__APPLE__)
 	SANITY_CHECK(sizeof(wchar_t) == 4);
 #endif
 
@@ -81,7 +80,7 @@ std::wstring utf8_to_wide(const std::string &input)
 
 std::string wide_to_utf8(const std::wstring &input)
 {
-#if defined(__ANDROID__) || defined(__APPLE__)
+#if defined(__APPLE__)
 	SANITY_CHECK(sizeof(wchar_t) == 4);
 #endif
 
@@ -142,7 +141,7 @@ std::wstring utf8_to_wide(const std::string &input)
 	std::wstring out;
 	out.resize(outbuf_size / sizeof(wchar_t));
 
-#if defined(__ANDROID__) || defined(__APPLE__)
+#if defined(__APPLE__)
 	SANITY_CHECK(sizeof(wchar_t) == 4);
 #endif
 

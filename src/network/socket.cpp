@@ -126,12 +126,6 @@ bool UDPSocket::init(bool ipv6, bool noExceptions)
 		setsockopt(m_handle, IPPROTO_IPV6, IPV6_V6ONLY,
 				reinterpret_cast<char *>(&value), sizeof(value));
 	}
-
-#ifdef __IOS__
-	int value = 1;
-	setsockopt(m_handle, SOL_SOCKET, SO_NOSIGPIPE, &value, sizeof(value));
-#endif
-
 	return true;
 }
 

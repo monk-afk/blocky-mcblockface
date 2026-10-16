@@ -87,13 +87,7 @@ Thread::~Thread()
 		TerminateThread((HANDLE) m_thread_obj->native_handle(), 0);
 		CloseHandle((HANDLE) m_thread_obj->native_handle());
 #else
-		// We need to pthread_kill instead on Android since NDKv5's pthread
-		// implementation is incomplete.
-# ifdef __ANDROID__
-		pthread_kill(getThreadHandle(), SIGKILL);
-# else
 		pthread_cancel(getThreadHandle());
-# endif
 		wait();
 #endif
 	}
@@ -259,11 +253,7 @@ unsigned int Thread::getNumberOfProcessors()
 
 bool Thread::bindToProcessor(unsigned int proc_number)
 {
-#if defined(__ANDROID__)
-
-	return false;
-
-#elif _MSC_VER
+#ifdef _MSC_VER
 
 	return SetThreadAffinityMask(getThreadHandle(), 1 << proc_number);
 
