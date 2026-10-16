@@ -342,7 +342,7 @@ endif()
 # This gives us the icon and file version information
 if(WIN32)
 	set(WINRESOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../misc/winresource.rc")
-	set(EXE_MANIFEST_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../misc/squareone.exe.manifest")
+	set(EXE_MANIFEST_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../misc/squareoneserver.exe.manifest")
 	if(MINGW)
 		if(NOT CMAKE_RC_COMPILER)
 			set(CMAKE_RC_COMPILER "windres.exe")
@@ -411,8 +411,6 @@ target_link_libraries(
 	luachacha
 	chacha
 )
-set_target_properties(${PROJECT_NAME}server PROPERTIES
-	COMPILE_DEFINITIONS "SERVER")
 if(NOT USE_LUAJIT)
 	set_target_properties(${PROJECT_NAME}server PROPERTIES
 		# This is necessary for dynamic Lua modules

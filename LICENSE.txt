@@ -11,10 +11,6 @@ Authors of media files
 Everything not listed in here:
 Copyright (C) 2010-2012 celeron55, Perttu Ahola <celeron55@gmail.com>
 
-erlehmann:
-  misc/minetest-icon-24x24.png
-  misc/minetest.svg
-
 License of Minetest source code
 -------------------------------
 
