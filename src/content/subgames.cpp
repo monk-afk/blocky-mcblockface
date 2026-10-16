@@ -27,10 +27,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "mapgen/mapgen.h"   // for MapgenParams
 #include "util/string.h"
 
-#ifndef SERVER
-#include "client/tile.h" // getImagePath
-#endif
-
 // The maximum number of identical world names allowed
 #define MAX_WORLD_NAMES 100
 
@@ -148,13 +144,8 @@ SubgameSpec findSubgame(const std::string &id)
 	if (conf.exists("hide_game"))
 		hide_game = conf.getBool("hide_game");
 
-	std::string menuicon_path;
-#ifndef SERVER
-	menuicon_path = getImagePath(
-			game_path + DIR_DELIM + "menu" + DIR_DELIM + "icon.png");
-#endif
 	return SubgameSpec(id, game_path, gamemod_path, mods_paths, game_name,
-			menuicon_path, game_author, game_release, moddable, hide_game);
+			game_author, game_release, moddable, hide_game);
 }
 
 SubgameSpec findWorldSubgame(const std::string &world_path)
