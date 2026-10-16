@@ -263,29 +263,6 @@ void set_default_settings()
 	settings->setDefault("enable_waving_leaves", "false");
 	settings->setDefault("enable_waving_plants", "false");
 
-
-	// Input
-	settings->setDefault("invert_mouse", "false");
-	settings->setDefault("mouse_sensitivity", "0.2");
-	settings->setDefault("repeat_place_time", "0.25");
-	settings->setDefault("safe_dig_and_place", "false");
-	settings->setDefault("random_input", "false");
-	settings->setDefault("aux1_descends", "false");
-	settings->setDefault("doubletap_jump", "false");
-	settings->setDefault("always_fly_fast", "true");
-	settings->setDefault("autojump", "false");
-	settings->setDefault("continuous_forward", "false");
-#if defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
-	settings->setDefault("enable_joysticks", "true");
-#else
-	settings->setDefault("enable_joysticks", "false");
-#endif
-	settings->setDefault("joystick_id", "0");
-	settings->setDefault("joystick_type", "");
-	settings->setDefault("repeat_joystick_button_time", "0.17");
-	settings->setDefault("joystick_frustum_sensitivity", "170");
-	settings->setDefault("joystick_deadzone", "4096");
-
 	// Server
 	settings->setDefault("compat_player_model", "character.b3d,3d_armor_character.b3d,skinsdb_3d_armor_character_5.b3d");
 	settings->setDefault("compat_send_original_model", "true");
