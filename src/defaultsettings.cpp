@@ -61,9 +61,6 @@ void set_default_settings()
 	settings->setDefault("pause_on_lost_focus", "true");
 	settings->setDefault("enable_register_confirmation", "true");
 
-	// Client connection
-	settings->setDefault("remote_port", "30000");
-
 	// Visuals
 #ifdef NDEBUG
 	settings->setDefault("show_debug", "false");
