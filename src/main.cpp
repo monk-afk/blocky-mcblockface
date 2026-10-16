@@ -70,7 +70,7 @@ static void list_game_ids();
 static void list_worlds(bool print_name, bool print_path);
 static bool setup_log_params(const Settings &cmd_args);
 static bool create_userdata_path();
-static bool init_common(const Settings &cmd_args, int argc, char *argv[]);
+static bool init_common(const Settings &cmd_args);
 static void startup_message();
 static bool read_config_file(const Settings &cmd_args);
 static void init_log_streams(const Settings &cmd_args);
@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-	if (!init_common(cmd_args, argc, argv))
+	if (!init_common(cmd_args))
 		return 1;
 
 	if (g_settings->getBool("enable_console"))
@@ -385,7 +385,7 @@ static bool create_userdata_path()
 	return fs::CreateDir(porting::path_user);
 }
 
-static bool init_common(const Settings &cmd_args, int argc, char *argv[])
+static bool init_common(const Settings &cmd_args)
 {
 	startup_message();
 	set_default_settings();
@@ -410,7 +410,7 @@ static bool init_common(const Settings &cmd_args, int argc, char *argv[])
 	httpfetch_init(g_settings->getS32("curl_parallel_limit"));
 
 	init_gettext(porting::path_locale.c_str(),
-		g_settings->get("language"), argc, argv);
+		g_settings->get("language"));
 
 	return true;
 }

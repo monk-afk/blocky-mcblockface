@@ -24,11 +24,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "gettext.h"
 #include "util/string.h"
 #include "log.h"
-#include "porting.h"
-
-#ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
-#include <SDL.h>
-#endif
 
 #if USE_GETTEXT && defined(_MSC_VER)
 #include <windows.h>
@@ -122,8 +117,7 @@ const char* MSVC_LocaleLookup(const char* raw_shortname) {
 #endif
 
 /******************************************************************************/
-void init_gettext(const char *path, const std::string &configured_language,
-	int argc, char *argv[])
+void init_gettext(const char *path, const std::string &configured_language)
 {
 #if USE_GETTEXT
 	// First, try to set user override environment
@@ -139,70 +133,13 @@ void init_gettext(const char *path, const std::string &configured_language,
 		// Reload locale with changed environment
 		setlocale(LC_ALL, "");
 #elif defined(_MSC_VER)
-		std::string current_language;
-		const char *env_lang = getenv("LANGUAGE");
-		if (env_lang)
-			current_language = env_lang;
-
 		_putenv(("LANGUAGE=" + configured_language).c_str());
 		SetEnvironmentVariableA("LANGUAGE", configured_language.c_str());
 
-#ifndef SERVER
-		// Hack to force gettext to see the right environment
-		if (current_language != configured_language) {
-			errorstream << "MSVC localization workaround active.  "
-				"Restarting " PROJECT_NAME_C " in a new environment!" << std::endl;
-
-			std::string parameters;
-
-			for (unsigned int i = 1; i < argc; i++) {
-				if (!parameters.empty())
-					parameters += ' ';
-
-				parameters += argv[i];
-			}
-
-			const char *ptr_parameters = NULL;
-
-			if (!parameters.empty())
-				ptr_parameters = parameters.c_str();
-
-			// Allow calling without an extension
-			std::string app_name = argv[0];
-			if (app_name.compare(app_name.size() - 4, 4, ".exe") != 0)
-				app_name += ".exe";
-
-			STARTUPINFO startup_info = {0};
-			PROCESS_INFORMATION process_info = {0};
-
-			bool success = CreateProcess(app_name.c_str(), (char *)ptr_parameters,
-				NULL, NULL, false, DETACHED_PROCESS | CREATE_UNICODE_ENVIRONMENT,
-				NULL, NULL, &startup_info, &process_info);
-
-			if (success) {
-				exit(0);
-				// NOTREACHED
-			} else {
-				char buffer[1024];
-
-				FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError(),
-					MAKELANGID(LANG_NEUTRAL,SUBLANG_DEFAULT), buffer,
-					sizeof(buffer) - 1, NULL);
-
-				errorstream << "*******************************************************" << std::endl;
-				errorstream << "CMD: " << app_name << std::endl;
-				errorstream << "Failed to restart with current locale: " << std::endl;
-				errorstream << buffer;
-				errorstream << "Expect language to be broken!" << std::endl;
-				errorstream << "*******************************************************" << std::endl;
-			}
-		}
-#else
 		errorstream << "*******************************************************" << std::endl;
 		errorstream << "Can't apply locale workaround for server!" << std::endl;
 		errorstream << "Expect language to be broken!" << std::endl;
 		errorstream << "*******************************************************" << std::endl;
-#endif
 
 		setlocale(LC_ALL, configured_language.c_str());
 #else // Mingw
@@ -212,20 +149,6 @@ void init_gettext(const char *path, const std::string &configured_language,
 	}
 	else {
 		 /* set current system default locale */
-#ifdef _IRR_COMPILE_WITH_SDL_DEVICE_
-		SDL_Locale* locale = SDL_GetPreferredLocales();
-
-		if (locale) {
-			if (locale[0].language) {
-				char lang[3] = {0};
-				strncpy(lang, locale[0].language, 2);
-				SDL_setenv("LANG", lang, 1);
-				SDL_setenv("LANGUAGE", lang, 1);
-			}
-
-			SDL_free(locale);
-		}
-#endif
 		setlocale(LC_ALL, "");
 	}
 

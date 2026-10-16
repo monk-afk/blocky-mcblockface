@@ -42,8 +42,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #define gettext_noop(String) (String)
 #define N_(String) gettext_noop((String))
 
-void init_gettext(const char *path, const std::string &configured_language,
-	int argc, char *argv[]);
+void init_gettext(const char *path, const std::string &configured_language);
 
 extern wchar_t *utf8_to_wide_c(const char *str);
 
