@@ -23,13 +23,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <unordered_map>
 
 
-#ifndef SERVER
-// Client translations
-Translations client_translations;
-Translations *g_client_translations = &client_translations;
-#endif
-
-
 void Translations::clear()
 {
 	m_translations.clear();

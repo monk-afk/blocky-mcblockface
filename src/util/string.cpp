@@ -860,14 +860,10 @@ std::wstring translate_string(const std::wstring &s, Translations *translations)
 	return res;
 }
 
-// Translate string client side
+// Translate a string without a mod-provided translation table.
 std::wstring translate_string(const std::wstring &s)
 {
-#ifdef SERVER
 	return translate_string(s, nullptr);
-#else
-	return translate_string(s, g_client_translations);
-#endif
 }
 
 static const std::array<std::wstring, 22> disallowed_dir_names = {

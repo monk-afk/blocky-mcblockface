@@ -22,11 +22,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <unordered_map>
 #include <string>
 
-class Translations;
-#ifndef SERVER
-extern Translations *g_client_translations;
-#endif
-
 class Translations
 {
 public:
