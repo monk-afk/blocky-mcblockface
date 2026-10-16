@@ -286,24 +286,6 @@ void set_default_settings()
 	settings->setDefault("joystick_frustum_sensitivity", "170");
 	settings->setDefault("joystick_deadzone", "4096");
 
-	// Main menu
-	settings->setDefault("main_menu_path", "");
-	settings->setDefault("serverlist_file", "favoriteservers.json");
-
-	// ContentDB
-	settings->setDefault("contentdb_url", "https://content.multicraft.world");
-	settings->setDefault("contentdb_max_concurrent_downloads", "3");
-
-	settings->setDefault("contentdb_flag_blacklist", "nonfree, desktop_default");
-
-	// Configure a SquareOne update feed before enabling update checks.
-	settings->setDefault("update_information_url", "");
-	#if ENABLE_UPDATE_CHECKER
-		settings->setDefault("update_last_checked", "");
-	#else
-		settings->setDefault("update_last_checked", "disabled");
-	#endif
-
 	// Server
 	settings->setDefault("compat_player_model", "character.b3d,3d_armor_character.b3d,skinsdb_3d_armor_character_5.b3d");
 	settings->setDefault("compat_send_original_model", "true");
