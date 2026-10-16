@@ -27,12 +27,8 @@ class ModApiUtil : public ModApiBase
 {
 private:
 	/*
-		NOTE:
-		The functions in this module are available in the in-game API
-		as well as in the mainmenu API.
-
-		All functions that don't require either a Server or
-		GUIEngine instance should be in here.
+		Utilities shared by server-side Lua API modules belong here when
+		they do not require a specific Server subsystem.
 	*/
 
 	// log([level,] text)
