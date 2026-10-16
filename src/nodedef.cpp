@@ -20,14 +20,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "nodedef.h"
 
 #include "itemdef.h"
-#ifndef SERVER
-#include "client/mesh.h"
-#include "client/shader.h"
-#include "client/client.h"
-#include "client/renderingengine.h"
-#include "client/tile.h"
-#include <IMeshManipulator.h>
-#endif
 #include "log.h"
 #include "nameidmapping.h"
 #include "util/numeric.h"
@@ -318,29 +310,10 @@ ContentFeatures::ContentFeatures()
 	reset();
 }
 
-ContentFeatures::~ContentFeatures()
-{
-#ifndef SERVER
-	for (u16 j = 0; j < 6; j++) {
-		delete tiles[j].layers[0].frames;
-		delete tiles[j].layers[1].frames;
-	}
-	for (u16 j = 0; j < CF_SPECIAL_COUNT; j++)
-		delete special_tiles[j].layers[0].frames;
-#endif
-}
+ContentFeatures::~ContentFeatures() = default;
 
 void ContentFeatures::reset()
 {
-	/*
-		Cached stuff
-	*/
-#ifndef SERVER
-	solidness = 2;
-	visual_solidness = 0;
-	backface_culling = true;
-
-#endif
 	has_on_construct = false;
 	has_on_destruct = false;
 	has_after_destruct = false;
@@ -356,11 +329,6 @@ void ContentFeatures::reset()
 	groups["dig_immediate"] = 2;
 	drawtype = NDT_NORMAL;
 	mesh = "";
-#ifndef SERVER
-	for (auto &i : mesh_ptr)
-		i = NULL;
-	minimap_color = video::SColor(0, 0, 0, 0);
-#endif
 	visual_scale = 1.0;
 	for (auto &i : tiledef)
 		i = TileDef();
@@ -1108,17 +1076,7 @@ NodeDefManager::NodeDefManager()
 }
 
 
-NodeDefManager::~NodeDefManager()
-{
-#ifndef SERVER
-	for (ContentFeatures &f : m_content_features) {
-		for (auto &j : f.mesh_ptr) {
-			if (j)
-				j->drop();
-		}
-	}
-#endif
-}
+NodeDefManager::~NodeDefManager() = default;
 
 
 void NodeDefManager::clear()

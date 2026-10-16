@@ -25,11 +25,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <map>
 #include "mapnode.h"
 #include "nameidmapping.h"
-#ifndef SERVER
-#include "client/tile.h"
-#include <IMeshManipulator.h>
-class Client;
-#endif
 #include "itemgroup.h"
 #include "sound.h" // SimpleSoundSpec
 #include "constants.h" // BS
@@ -40,8 +35,6 @@ class Client;
 static const u8 CONTENTFEATURES_VERSION = 13;
 
 class IItemDefManager;
-class ITextureSource;
-class IShaderSource;
 class NodeResolver;
 
 enum ContentParamType
@@ -129,39 +122,6 @@ struct NodeBox
 
 struct MapNode;
 class NodeMetadata;
-
-enum LeavesStyle {
-	LEAVES_FANCY,
-	LEAVES_SIMPLE,
-	LEAVES_OPAQUE,
-};
-
-enum AutoScale : u8 {
-	AUTOSCALE_DISABLE,
-	AUTOSCALE_ENABLE,
-	AUTOSCALE_FORCE,
-};
-
-enum WorldAlignMode : u8 {
-	WORLDALIGN_DISABLE,
-	WORLDALIGN_ENABLE,
-	WORLDALIGN_FORCE,
-	WORLDALIGN_FORCE_NODEBOX,
-};
-
-class TextureSettings {
-public:
-	LeavesStyle leaves_style;
-	WorldAlignMode world_aligned_mode;
-	AutoScale autoscale_mode;
-	int node_texture_size;
-	bool opaque_water;
-	bool connected_glass;
-	bool enable_mesh_cache;
-	bool enable_minimap;
-
-	TextureSettings() = default;
-};
 
 enum NodeDrawType
 {
@@ -274,21 +234,6 @@ struct TileDef
 
 struct ContentFeatures
 {
-	/*
-		Cached stuff
-	 */
-#ifndef SERVER
-	// 0     1     2     3     4     5
-	// up    down  right left  back  front
-	TileSpec tiles[6];
-	// Special tiles
-	// - Currently used for flowing liquids
-	TileSpec special_tiles[CF_SPECIAL_COUNT];
-	u8 solidness; // Used when choosing which face is drawn
-	u8 visual_solidness; // When solidness=0, this tells how it looks like
-	bool backface_culling;
-#endif
-
 	// Server-side cached callback existence for fast skipping
 	bool has_on_construct;
 	bool has_on_destruct;
@@ -311,10 +256,6 @@ struct ContentFeatures
 
 	enum NodeDrawType drawtype;
 	std::string mesh;
-#ifndef SERVER
-	scene::IMesh *mesh_ptr[24];
-	video::SColor minimap_color;
-#endif
 	float visual_scale; // Misc. scale parameter
 	TileDef tiledef[6];
 	// These will be drawn over the base tiles.
@@ -477,23 +418,7 @@ struct ContentFeatures
 	{
 		return itemgroup_get(groups, group);
 	}
-
-#ifndef SERVER
-	void updateTextures(ITextureSource *tsrc, IShaderSource *shdsrc,
-		scene::IMeshManipulator *meshmanip, Client *client, const TextureSettings &tsettings);
-#endif
-
 private:
-#ifndef SERVER
-	/*
-	 * Checks if any tile texture has any transparent pixels.
-	 * Prints a warning and returns true if that is the case, false otherwise.
-	 * This is supposed to be used for use_texture_alpha backwards compatibility.
-	 */
-	bool textureAlphaCheck(ITextureSource *tsrc, const TileDef *tiles,
-		int length);
-#endif
-
 	void setAlphaFromLegacy(u8 legacy_alpha);
 
 	u8 getAlphaForLegacy() const;
