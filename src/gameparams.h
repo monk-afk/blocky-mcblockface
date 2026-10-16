@@ -31,5 +31,4 @@ struct GameParams
 	u16 socket_port;
 	std::string world_path;
 	SubgameSpec game_spec;
-	bool is_dedicated_server;
 };

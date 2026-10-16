@@ -189,7 +189,6 @@ int main(int argc, char *argv[])
 
 	GameParams game_params;
 	porting::attachOrCreateConsole();
-	game_params.is_dedicated_server = true;
 
 	if (!game_configure(&game_params, cmd_args))
 		return 1;
@@ -664,7 +663,7 @@ static bool auto_select_world(GameParams *game_params)
 		dstream <<_("Automatically selecting world at") << " ["
 		        << world_path << "]" << std::endl;
 	// If there are multiple worlds, list them
-	} else if (worldspecs.size() > 1 && game_params->is_dedicated_server) {
+	} else if (worldspecs.size() > 1) {
 		std::cerr << _("Multiple worlds are available.") << std::endl;
 		std::cerr << _("Please select one using --worldname <name>"
 				" or --world <path>") << std::endl;
