@@ -29,7 +29,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "defaultsettings.h"
 #include "gettext.h"
 #include "log.h"
-#include "util/quicktune.h"
 #include "httpfetch.h"
 #include "gameparams.h"
 #include "database/database.h"
@@ -39,13 +38,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "network/socket.h"
 #if USE_CURSES
 	#include "terminal_chat_console.h"
-#endif
-#ifndef SERVER
-#include "gui/guiMainMenu.h"
-#include "client/clientlauncher.h"
-#include "gui/guiEngine.h"
-#include "gui/mainmenumanager.h"
-#include "translation.h"
 #endif
 // for version information only
 extern "C" {
@@ -80,7 +72,6 @@ static void print_allowed_options(const OptionList &allowed_options);
 static void print_version();
 static void print_worldspecs(const std::vector<WorldSpec> &worldspecs,
 	std::ostream &os, bool print_name = true, bool print_path = true);
-static void print_modified_quicktune_values();
 
 static void list_game_ids();
 static void list_worlds(bool print_name, bool print_path);
@@ -116,7 +107,6 @@ static OptionList allowed_options;
 
 int main(int argc, char *argv[])
 {
-	int retval;
 	debug_set_exception_handler();
 
 	g_logger.registerThread("Main");
@@ -197,44 +187,20 @@ int main(int argc, char *argv[])
 #endif
 	}
 
-	GameStartData game_params;
-#ifdef SERVER
+	GameParams game_params;
 	porting::attachOrCreateConsole();
 	game_params.is_dedicated_server = true;
-#else
-	const bool isServer = cmd_args.getFlag("server");
-	if (isServer)
-		porting::attachOrCreateConsole();
-	game_params.is_dedicated_server = isServer;
-#endif
 
 	if (!game_configure(&game_params, cmd_args))
 		return 1;
 
 	sanity_check(!game_params.world_path.empty());
 
-	if (game_params.is_dedicated_server)
-		return run_dedicated_server(game_params, cmd_args) ? 0 : 1;
-
-#ifndef SERVER
-	ClientLauncher launcher;
-	retval = launcher.run(game_params, cmd_args) ? 0 : 1;
-#else
-	retval = 0;
-#endif
-
-	// Update configuration file
-	if (!g_settings_path.empty())
-		g_settings->updateConfigFile(g_settings_path.c_str());
-
-	print_modified_quicktune_values();
-
-	// Stop httpfetch thread (if started)
-	httpfetch_cleanup();
+	return run_dedicated_server(game_params, cmd_args) ? 0 : 1;
 
 	END_DEBUG_EXCEPTION_HANDLER
 
-	return retval;
+	return 0;
 }
 
 #ifdef WIN32
@@ -394,23 +360,6 @@ static void print_worldspecs(const std::vector<WorldSpec> &worldspecs,
 		} else if (print_path) {
 			os << "\t" << path << std::endl;
 		}
-	}
-}
-
-static void print_modified_quicktune_values()
-{
-	bool header_printed = false;
-	std::vector<std::string> names = getQuicktuneNames();
-
-	for (const std::string &name : names) {
-		QuicktuneValue val = getQuicktuneValue(name);
-		if (!val.modified)
-			continue;
-		if (!header_printed) {
-			dstream << "Modified quicktune values:" << std::endl;
-			header_printed = true;
-		}
-		dstream << name << " = " << val.getString() << std::endl;
 	}
 }
 
