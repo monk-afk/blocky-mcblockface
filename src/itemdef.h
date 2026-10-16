@@ -27,14 +27,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "itemgroup.h"
 #include "sound.h"
 #include "texture_override.h" // TextureOverride
-class IGameDef;
-class Client;
 struct ToolCapabilities;
-#ifndef SERVER
-#include "client/tile.h"
-struct ItemMesh;
-struct ItemStack;
-#endif
 
 /*
 	Base item definition
@@ -116,21 +109,6 @@ public:
 	virtual void getAll(std::set<std::string> &result) const=0;
 	// Check if item is known
 	virtual bool isKnown(const std::string &name) const=0;
-#ifndef SERVER
-	// Get item inventory texture
-	virtual video::ITexture* getInventoryTexture(const std::string &name,
-			Client *client) const=0;
-	// Get item wield mesh
-	virtual ItemMesh* getWieldMesh(const std::string &name,
-		Client *client) const=0;
-	// Get item palette
-	virtual Palette* getPalette(const std::string &name,
-		Client *client) const = 0;
-	// Returns the base color of an item stack: the color of all
-	// tiles that do not define their own color.
-	virtual video::SColor getItemstackColor(const ItemStack &stack,
-		Client *client) const = 0;
-#endif
 
 	virtual void serialize(std::ostream &os, u16 protocol_version)=0;
 };
@@ -150,14 +128,6 @@ public:
 	virtual void getAll(std::set<std::string> &result) const=0;
 	// Check if item is known
 	virtual bool isKnown(const std::string &name) const=0;
-#ifndef SERVER
-	// Get item inventory texture
-	virtual video::ITexture* getInventoryTexture(const std::string &name,
-			Client *client) const=0;
-	// Get item wield mesh
-	virtual ItemMesh* getWieldMesh(const std::string &name,
-		Client *client) const=0;
-#endif
 
 	// Replace the textures of registered nodes with the ones specified in
 	// the texture pack's override.txt files
@@ -177,9 +147,6 @@ public:
 
 	virtual void serialize(std::ostream &os, u16 protocol_version)=0;
 	virtual void deSerialize(std::istream &is)=0;
-
-	// Do stuff asked by threads that can only be done in the main thread
-	virtual void processQueue(IGameDef *gamedef)=0;
 };
 
 IWritableItemDefManager* createItemDefManager();

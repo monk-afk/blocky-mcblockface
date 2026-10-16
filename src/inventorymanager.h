@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "inventory.h"
 #include <iostream>
 #include <string>
+class IGameDef;
 class ServerActiveObject;
 
 struct InventoryLocation

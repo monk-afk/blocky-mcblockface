@@ -22,19 +22,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "nodedef.h"
 #include "tool.h"
-#include "inventory.h"
-#ifndef SERVER
-#include "client/mapblock_mesh.h"
-#include "client/mesh.h"
-#include "client/wieldmesh.h"
-#include "client/tile.h"
-#include "client/client.h"
-#endif
 #include "log.h"
-#include "settings.h"
 #include "util/serialize.h"
-#include "util/container.h"
-#include "util/thread.h"
+#include "util/string.h"
 #include <map>
 #include <set>
 
@@ -248,40 +238,13 @@ void ItemDefinition::deSerialize(std::istream &is)
 
 class CItemDefManager: public IWritableItemDefManager
 {
-#ifndef SERVER
-	struct ClientCached
-	{
-		video::ITexture *inventory_texture;
-		ItemMesh wield_mesh;
-		Palette *palette;
-
-		ClientCached():
-			inventory_texture(NULL),
-			palette(NULL)
-		{}
-	};
-#endif
-
 public:
 	CItemDefManager()
 	{
-
-#ifndef SERVER
-		m_main_thread = std::this_thread::get_id();
-#endif
 		clear();
 	}
 	virtual ~CItemDefManager()
 	{
-#ifndef SERVER
-		const std::vector<ClientCached*> &values = m_clientcached.getValues();
-		for (ClientCached *cc : values) {
-			if (cc->wield_mesh.mesh)
-				cc->wield_mesh.mesh->drop();
-			delete cc;
-		}
-
-#endif
 		for (auto &item_definition : m_item_definitions) {
 			delete item_definition.second;
 		}
@@ -323,125 +286,6 @@ public:
 		// Get the definition
 		return m_item_definitions.find(name) != m_item_definitions.cend();
 	}
-#ifndef SERVER
-public:
-	ClientCached* createClientCachedDirect(const std::string &name,
-			Client *client) const
-	{
-		infostream<<"Lazily creating item texture and mesh for \""
-				<<name<<"\""<<std::endl;
-
-		// This is not thread-safe
-		sanity_check(std::this_thread::get_id() == m_main_thread);
-
-		// Skip if already in cache
-		ClientCached *cc = NULL;
-		m_clientcached.get(name, &cc);
-		if(cc)
-			return cc;
-
-		ITextureSource *tsrc = client->getTextureSource();
-		const ItemDefinition &def = get(name);
-
-		// Create new ClientCached
-		cc = new ClientCached();
-
-		// Create an inventory texture
-		cc->inventory_texture = NULL;
-		if (!def.inventory_image.empty())
-			cc->inventory_texture = tsrc->getTexture(def.inventory_image);
-
-		ItemStack item = ItemStack();
-		item.name = def.name;
-
-		getItemMesh(client, item, &(cc->wield_mesh));
-
-		cc->palette = tsrc->getPalette(def.palette_image);
-
-		// Put in cache
-		m_clientcached.set(name, cc);
-
-		return cc;
-	}
-	ClientCached* getClientCached(const std::string &name,
-			Client *client) const
-	{
-		ClientCached *cc = NULL;
-		m_clientcached.get(name, &cc);
-		if (cc)
-			return cc;
-
-		if (std::this_thread::get_id() == m_main_thread) {
-			return createClientCachedDirect(name, client);
-		}
-
-		// We're gonna ask the result to be put into here
-		static ResultQueue<std::string, ClientCached*, u8, u8> result_queue;
-
-		// Throw a request in
-		m_get_clientcached_queue.add(name, 0, 0, &result_queue);
-		try {
-			while(true) {
-				// Wait result for a second
-				GetResult<std::string, ClientCached*, u8, u8>
-					result = result_queue.pop_front(1000);
-
-				if (result.key == name) {
-					return result.item;
-				}
-			}
-		} catch(ItemNotFoundException &e) {
-			errorstream << "Waiting for clientcached " << name
-				<< " timed out." << std::endl;
-			return &m_dummy_clientcached;
-		}
-	}
-	// Get item inventory texture
-	virtual video::ITexture* getInventoryTexture(const std::string &name,
-			Client *client) const
-	{
-		ClientCached *cc = getClientCached(name, client);
-		if(!cc)
-			return NULL;
-		return cc->inventory_texture;
-	}
-	// Get item wield mesh
-	virtual ItemMesh* getWieldMesh(const std::string &name,
-			Client *client) const
-	{
-		ClientCached *cc = getClientCached(name, client);
-		if(!cc)
-			return NULL;
-		return &(cc->wield_mesh);
-	}
-
-	// Get item palette
-	virtual Palette* getPalette(const std::string &name,
-			Client *client) const
-	{
-		ClientCached *cc = getClientCached(name, client);
-		if(!cc)
-			return NULL;
-		return cc->palette;
-	}
-
-	virtual video::SColor getItemstackColor(const ItemStack &stack,
-		Client *client) const
-	{
-		// Look for direct color definition
-		const std::string &colorstring = stack.metadata.getString("color", 0);
-		video::SColor directcolor;
-		if (!colorstring.empty() && parseColorString(colorstring, directcolor, true))
-			return directcolor;
-		// See if there is a palette
-		Palette *palette = getPalette(stack.name, client);
-		const std::string &index = stack.metadata.getString("palette_index", 0);
-		if (palette && !index.empty())
-			return (*palette)[mystoi(index, 0, 255)];
-		// Fallback color
-		return get(stack.name).color;
-	}
-#endif
 	void applyTextureOverrides(const std::vector<TextureOverride> &overrides)
 	{
 		infostream << "ItemDefManager::applyTextureOverrides(): Applying "
@@ -579,35 +423,11 @@ public:
 			registerAlias(name, convert_to);
 		}
 	}
-	void processQueue(IGameDef *gamedef)
-	{
-#ifndef SERVER
-		//NOTE this is only thread safe for ONE consumer thread!
-		while(!m_get_clientcached_queue.empty())
-		{
-			GetRequest<std::string, ClientCached*, u8, u8>
-					request = m_get_clientcached_queue.pop();
-
-			m_get_clientcached_queue.pushResult(request,
-					createClientCachedDirect(request.key, (Client *)gamedef));
-		}
-#endif
-	}
 private:
 	// Key is name
 	std::map<std::string, ItemDefinition*> m_item_definitions;
 	// Aliases
 	StringMap m_aliases;
-#ifndef SERVER
-	// The id of the thread that is allowed to use irrlicht directly
-	std::thread::id m_main_thread;
-	// A reference to this can be returned when nothing is found, to avoid NULLs
-	mutable ClientCached m_dummy_clientcached;
-	// Cached textures and meshes
-	mutable MutexedMap<std::string, ClientCached*> m_clientcached;
-	// Queued clientcached fetches (to be processed by the main thread)
-	mutable RequestQueue<std::string, ClientCached*, u8, u8> m_get_clientcached_queue;
-#endif
 };
 
 IWritableItemDefManager* createItemDefManager()
