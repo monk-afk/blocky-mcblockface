@@ -481,27 +481,6 @@ void set_default_settings()
 	settings->setDefault("screen_dpi", "72");
 	settings->setDefault("display_density_factor", "1");
 
-	// Altered settings for macOS
-#if defined(__MACH__) && defined(__APPLE__)
-	settings->setDefault("screen_w", "0");
-	settings->setDefault("screen_h", "0");
-	settings->setDefault("keymap_camera_mode", "KEY_KEY_C");
-	settings->setDefault("vsync", "true");
-
-	int ScaleFactor = porting::getScreenScale();
-	settings->setDefault("screen_dpi", std::to_string(ScaleFactor * 72));
-	if (ScaleFactor >= 2) {
-		settings->setDefault("hud_scaling", "1.5");
-	} else {
-		settings->setDefault("font_size", std::to_string(TTF_DEFAULT_FONT_SIZE - 2));
-		settings->setDefault("hud_scaling", "1.25");
-		settings->setDefault("gui_scaling", "1.5");
-	}
-
-	// Shaders work but may reduce performance on iGPU
-	settings->setDefault("enable_shaders", "false");
-#endif
-
 #ifdef HAVE_TOUCHSCREENGUI
 	settings->setDefault("touchtarget", "true");
 	settings->setDefault("touchscreen_threshold", "20");
