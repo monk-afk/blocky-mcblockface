@@ -62,34 +62,8 @@ void set_default_settings()
 	settings->setDefault("enable_register_confirmation", "true");
 
 	// Visuals
-#ifdef NDEBUG
-	settings->setDefault("show_debug", "false");
-#else
-	settings->setDefault("show_debug", "true");
-#endif
-	settings->setDefault("fsaa", "0");
-	settings->setDefault("undersampling", "0");
 	settings->setDefault("world_aligned_mode", "enable");
 	settings->setDefault("autoscale_mode", "disable");
-	settings->setDefault("enable_fog", "true");
-	settings->setDefault("fog_start", "0.4");
-	settings->setDefault("3d_mode", "none");
-	settings->setDefault("3d_paralax_strength", "0.025");
-	settings->setDefault("tooltip_show_delay", "400");
-	settings->setDefault("tooltip_append_itemname", "false");
-	settings->setDefault("fps_max", "60");
-	settings->setDefault("fps_max_unfocused", "20");
-	settings->setDefault("viewing_range", "190");
-#if ENABLE_GLES
-	settings->setDefault("near_plane", "0.1");
-#endif
-	settings->setDefault("screen_w", "1024");
-	settings->setDefault("screen_h", "768");
-	settings->setDefault("autosave_screensize", "true");
-	settings->setDefault("fullscreen", "false");
-	settings->setDefault("fullscreen_bpp", "24");
-	settings->setDefault("vsync", "false");
-	settings->setDefault("fov", "72");
 	settings->setDefault("leaves_style", "fancy");
 	settings->setDefault("connected_glass", "false");
 	settings->setDefault("smooth_lighting", "true");
@@ -100,81 +74,15 @@ void set_default_settings()
 	settings->setDefault("lighting_boost_center", "0.5");
 	settings->setDefault("lighting_boost_spread", "0.2");
 	settings->setDefault("texture_path", "");
-	settings->setDefault("shader_path", "");
-#if ENABLE_GLES
-#ifdef _IRR_COMPILE_WITH_OGLES1_
-	settings->setDefault("video_driver", "ogles1");
-#else
-	settings->setDefault("video_driver", "ogles2");
-#endif
-#else
-	settings->setDefault("video_driver", "opengl");
-#endif
-	settings->setDefault("cinematic", "false");
-	settings->setDefault("camera_smoothing", "0");
-	settings->setDefault("cinematic_camera_smoothing", "0.7");
-	settings->setDefault("enable_clouds", "true");
-	settings->setDefault("view_bobbing_amount", "1.0");
-	settings->setDefault("fall_bobbing_amount", "1.0");
-	settings->setDefault("enable_3d_clouds", "true");
-	settings->setDefault("cloud_radius", "12");
-	settings->setDefault("menu_clouds", "true");
 	settings->setDefault("opaque_water", "false");
-	settings->setDefault("console_height", "0.6");
-	settings->setDefault("console_message_height", "0.25");
-	settings->setDefault("console_color", "(0,0,0)");
-	settings->setDefault("console_alpha", "200");
-	settings->setDefault("formspec_fullscreen_bg_color", "(0,0,0)");
-	settings->setDefault("formspec_fullscreen_bg_opacity", "140");
-	settings->setDefault("formspec_default_bg_color", "(0,0,0)");
-	settings->setDefault("formspec_default_bg_opacity", "140");
-	settings->setDefault("selectionbox_color", "(0,0,0)");
-	settings->setDefault("selectionbox_width", "4");
-	settings->setDefault("node_highlighting", "box");
-	settings->setDefault("crosshair_color", "(255,255,255)");
-	settings->setDefault("crosshair_alpha", "255");
 	settings->setDefault("recent_chat_messages", "10");
-	settings->setDefault("hud_scaling", "1.0");
-	settings->setDefault("gui_scaling", "1.0");
-	settings->setDefault("gui_scaling_filter", "false");
-	settings->setDefault("gui_scaling_filter_txr2img", "true");
-	settings->setDefault("desynchronize_mapblock_texture_animation", "false");
-	settings->setDefault("hud_hotbar_max_width", "1.0");
-	settings->setDefault("hud_move_upwards", "0");
-	settings->setDefault("round_screen", "0");
-	settings->setDefault("enable_local_map_saving", "false");
-	settings->setDefault("show_entity_selectionbox", "false");
-	settings->setDefault("transparency_sorting", "true");
-	settings->setDefault("texture_clean_transparent", "false");
 	settings->setDefault("texture_min_size", "0");
-	settings->setDefault("ambient_occlusion_gamma", "1.8");
 #if ENABLE_GLES
 	settings->setDefault("enable_shaders", "false");
 #else
 	settings->setDefault("enable_shaders", "true");
 #endif
-	settings->setDefault("enable_particles", "true");
-	settings->setDefault("arm_inertia", "true");
-	settings->setDefault("show_nametag_backgrounds", "false");
-
 	settings->setDefault("enable_minimap", "true");
-	settings->setDefault("minimap_shape_round", "true");
-	settings->setDefault("minimap_double_scan_height", "false");
-
-	// Effects
-	settings->setDefault("directional_colored_fog", "true");
-	settings->setDefault("inventory_items_animations", "false");
-	settings->setDefault("mip_map", "false");
-	settings->setDefault("anisotropic_filter", "false");
-	settings->setDefault("bilinear_filter", "false");
-	settings->setDefault("trilinear_filter", "false");
-	settings->setDefault("tone_mapping", "false");
-	settings->setDefault("enable_waving_water", "false");
-	settings->setDefault("water_wave_height", "1.0");
-	settings->setDefault("water_wave_length", "20.0");
-	settings->setDefault("water_wave_speed", "5.0");
-	settings->setDefault("enable_waving_leaves", "false");
-	settings->setDefault("enable_waving_plants", "false");
 
 	// Server
 	settings->setDefault("compat_player_model", "character.b3d,3d_armor_character.b3d,skinsdb_3d_armor_character_5.b3d");
