@@ -1507,17 +1507,3 @@ void ModApiEnvMod::Initialize(lua_State *L, int top)
 	API_FCT(get_world_spawnpoint);
 	API_FCT(set_world_spawnpoint);
 }
-
-void ModApiEnvMod::InitializeClient(lua_State *L, int top)
-{
-	API_FCT(get_node_light);
-	API_FCT(get_timeofday);
-	API_FCT(get_node_max_level);
-	API_FCT(get_node_level);
-	API_FCT(find_nodes_with_meta);
-	API_FCT(find_node_near);
-	API_FCT(find_nodes_in_area);
-	API_FCT(find_nodes_in_area_under_air);
-	API_FCT(line_of_sight);
-	API_FCT(raycast);
-}
