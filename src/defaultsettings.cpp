@@ -44,9 +44,6 @@ void set_default_settings()
 	settings->setDefault("mesh_generation_interval", "0");
 	settings->setDefault("meshgen_block_cache_size", "20");
 	settings->setDefault("enable_vbo", "true");
-	settings->setDefault("free_move", "false");
-	settings->setDefault("pitch_move", "false");
-	settings->setDefault("fast_move", "false");
 	settings->setDefault("noclip", "false");
 	settings->setDefault("screenshot_path", "screenshots");
 	settings->setDefault("screenshot_format", "png");
