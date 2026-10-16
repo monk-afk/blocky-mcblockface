@@ -719,14 +719,6 @@ bool open_url(const std::string &url)
 	return open_uri(url);
 }
 
-#if defined(__APPLE__)
-float getScreenScale()
-{
-	static const float retval = get_screen_scale();
-	return retval;
-}
-#endif
-
 float getTotalSystemMemory()
 {
 #if defined(_IRR_COMPILE_WITH_SDL_DEVICE_)
