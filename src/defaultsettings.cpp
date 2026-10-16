@@ -301,7 +301,7 @@ void set_default_settings()
 	settings->setDefault("freetype", "true");
 	std::string MultiCraftFont = porting::getDataPath("fonts" DIR_DELIM "MultiCraftFont.ttf");
 
-#if !defined(__ANDROID__) && !defined(__APPLE__)
+#if !defined(__APPLE__)
 	settings->setDefault("font_path", porting::getDataPath("fonts" DIR_DELIM "Arimo-Regular.ttf"));
 	settings->setDefault("font_path_italic", porting::getDataPath("fonts" DIR_DELIM "Arimo-Italic.ttf"));
 	settings->setDefault("font_path_bold", porting::getDataPath("fonts" DIR_DELIM "Arimo-Bold.ttf"));
@@ -323,7 +323,7 @@ void set_default_settings()
 	settings->setDefault("mono_font_path_bold", MultiCraftFont);
 	settings->setDefault("mono_font_path_bold_italic", MultiCraftFont);
 
-#if !defined(__ANDROID__) && !defined(__APPLE__)
+#if !defined(__APPLE__)
 	settings->setDefault("fallback_font_path", porting::getDataPath("fonts" DIR_DELIM "DroidSansFallbackFull.ttf"));
 #else
 	settings->setDefault("fallback_font_path", MultiCraftFont);
@@ -351,11 +351,7 @@ void set_default_settings()
 	settings->setDefault("contentdb_url", "https://content.multicraft.world");
 	settings->setDefault("contentdb_max_concurrent_downloads", "3");
 
-#ifdef __ANDROID__
-	settings->setDefault("contentdb_flag_blacklist", "nonfree, android_default");
-#else
 	settings->setDefault("contentdb_flag_blacklist", "nonfree, desktop_default");
-#endif
 
 	// Configure a SquareOne update feed before enabling update checks.
 	settings->setDefault("update_information_url", "");
@@ -494,7 +490,7 @@ void set_default_settings()
 #endif
 
 	// Altered settings for macOS
-#if defined(__MACH__) && defined(__APPLE__) && !defined(__IOS__)
+#if defined(__MACH__) && defined(__APPLE__)
 	settings->setDefault("screen_w", "0");
 	settings->setDefault("screen_h", "0");
 	settings->setDefault("keymap_camera_mode", "KEY_KEY_C");
