@@ -19,10 +19,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include <IrrCompileConfig.h>
 #include "settings.h"
-#include "porting.h"
-#include "filesys.h"
 #include "config.h"
-#include "constants.h"
 #include "mapgen/mapgen.h" // Mapgen::setDefaultSettings
 #include "util/string.h"
 
@@ -292,56 +289,6 @@ void set_default_settings()
 	// Main menu
 	settings->setDefault("main_menu_path", "");
 	settings->setDefault("serverlist_file", "favoriteservers.json");
-
-#if USE_FREETYPE
-	settings->setDefault("freetype", "true");
-	std::string MultiCraftFont = porting::getDataPath("fonts" DIR_DELIM "MultiCraftFont.ttf");
-
-#if !defined(__APPLE__)
-	settings->setDefault("font_path", porting::getDataPath("fonts" DIR_DELIM "Arimo-Regular.ttf"));
-	settings->setDefault("font_path_italic", porting::getDataPath("fonts" DIR_DELIM "Arimo-Italic.ttf"));
-	settings->setDefault("font_path_bold", porting::getDataPath("fonts" DIR_DELIM "Arimo-Bold.ttf"));
-	settings->setDefault("font_path_bold_italic", porting::getDataPath("fonts" DIR_DELIM "Arimo-BoldItalic.ttf"));
-#else
-	settings->setDefault("font_path", MultiCraftFont);
-	settings->setDefault("font_path_italic", MultiCraftFont);
-	settings->setDefault("font_path_bold", MultiCraftFont);
-	settings->setDefault("font_path_bold_italic", MultiCraftFont);
-#endif
-
-	settings->setDefault("font_bold", "false");
-	settings->setDefault("font_italic", "false");
-	settings->setDefault("font_shadow", "1");
-	settings->setDefault("font_shadow_alpha", "127");
-
-	settings->setDefault("mono_font_path", MultiCraftFont);
-	settings->setDefault("mono_font_path_italic", MultiCraftFont);
-	settings->setDefault("mono_font_path_bold", MultiCraftFont);
-	settings->setDefault("mono_font_path_bold_italic", MultiCraftFont);
-
-#if !defined(__APPLE__)
-	settings->setDefault("fallback_font_path", porting::getDataPath("fonts" DIR_DELIM "DroidSansFallbackFull.ttf"));
-#else
-	settings->setDefault("fallback_font_path", MultiCraftFont);
-#endif
-
-	settings->setDefault("fallback_font_shadow", "1");
-	settings->setDefault("fallback_font_shadow_alpha", "128");
-
-	std::string font_size_str = std::to_string(TTF_DEFAULT_FONT_SIZE);
-
-	settings->setDefault("font_size", font_size_str); // fallback_font_size
-#else
-	settings->setDefault("freetype", "false");
-	settings->setDefault("font_path", porting::getDataPath("fonts" DIR_DELIM "mono_dejavu_sans"));
-	settings->setDefault("mono_font_path", porting::getDataPath("fonts" DIR_DELIM "mono_dejavu_sans"));
-
-	std::string font_size_str = std::to_string(DEFAULT_FONT_SIZE);
-#endif
-	// General font settings
-	settings->setDefault("font_size", font_size_str);
-	settings->setDefault("mono_font_size", font_size_str);
-	settings->setDefault("chat_font_size", "0"); // Default "font_size"
 
 	// ContentDB
 	settings->setDefault("contentdb_url", "https://content.multicraft.world");
