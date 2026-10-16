@@ -441,5 +441,5 @@ if collection then
 				collect_items(player)
 			end
 		end
-	end, core.is_singleplayer()) -- Force step in singlplayer mode only
+	end)
 end

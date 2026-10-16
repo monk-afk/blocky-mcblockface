@@ -22,15 +22,8 @@ core.builtin_auth_handler = {
 		for priv, _ in pairs(auth_entry.privileges) do
 			privileges[priv] = true
 		end
-		-- If singleplayer, give all privileges except those marked as give_to_singleplayer = false
-		if core.is_singleplayer() then
-			for priv, def in pairs(core.registered_privileges) do
-				if def.give_to_singleplayer then
-					privileges[priv] = true
-				end
-			end
 		-- For the admin, give everything
-		elseif name == core.settings:get("name") then
+		if name == core.settings:get("name") then
 			for priv, def in pairs(core.registered_privileges) do
 				if def.give_to_admin then
 					privileges[priv] = true
