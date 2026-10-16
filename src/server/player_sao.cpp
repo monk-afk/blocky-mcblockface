@@ -25,12 +25,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "server.h"
 #include "serverenvironment.h"
 
-PlayerSAO::PlayerSAO(ServerEnvironment *env_, RemotePlayer *player_, session_t peer_id_,
-		bool is_singleplayer):
+PlayerSAO::PlayerSAO(ServerEnvironment *env_, RemotePlayer *player_, session_t peer_id_):
 	UnitSAO(env_, v3f(0,0,0)),
 	m_player(player_),
-	m_peer_id(peer_id_),
-	m_is_singleplayer(is_singleplayer)
+	m_peer_id(peer_id_)
 {
 	SANITY_CHECK(m_peer_id != PEER_ID_INEXISTENT);
 
@@ -177,7 +175,7 @@ void PlayerSAO::step(float dtime, bool send_recommended)
 		MapNode n = m_env->getMap().getNode(p);
 		const ContentFeatures &c = m_env->getGameDef()->ndef()->get(n);
 		// If node generates drown
-		const bool noclip = m_privs.count("noclip") && (!m_is_singleplayer || g_settings->getBool("noclip"));
+		const bool noclip = m_privs.count("noclip");
 		int drowning = (c.walkable && c.drawtype != NDT_NODEBOX && c.drawtype != NDT_AIRLIKE && c.drawtype != NDT_PLANTLIKE) ? 1 : c.drowning;
 		if (drowning > 0 && m_hp > 0 && !noclip) {
 			if (m_breath > 0)
@@ -623,8 +621,7 @@ void PlayerSAO::setMaxSpeedOverride(const v3f &vel)
 
 bool PlayerSAO::checkMovementCheat()
 {
-	if (m_is_singleplayer ||
-			isAttached() ||
+	if (isAttached() ||
 			g_settings->getBool("disable_anticheat")) {
 		m_last_good_position = m_base_position;
 		return false;

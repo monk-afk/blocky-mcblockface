@@ -162,9 +162,7 @@ public:
 	Server(
 		const std::string &path_world,
 		const SubgameSpec &gamespec,
-		bool simple_singleplayer_mode,
 		Address bind_addr,
-		bool dedicated,
 		ChatInterface *iface = nullptr,
 		std::string *on_shutdown_errmsg = nullptr
 	);
@@ -308,8 +306,9 @@ public:
 	virtual std::string getWorldPath() const { return m_path_world; }
 	virtual std::string getModStoragePath() const;
 
-	inline bool isSingleplayer()
-			{ return m_simple_singleplayer_mode; }
+	// Retained for Lua API compatibility; this server-only engine never runs
+	// an embedded singleplayer server.
+	inline bool isSingleplayer() const { return false; }
 
 	inline void setAsyncFatalError(const std::string &error)
 			{ m_async_fatal_error.set(error); }
@@ -547,12 +546,7 @@ private:
 	std::string m_path_world;
 	// Subgame specification
 	SubgameSpec m_gamespec;
-	// If true, do not allow multiple players and hide some multiplayer
-	// functionality
-	bool m_simple_singleplayer_mode;
 	u16 m_max_chatmessage_length;
-	// For "dedicated" server list flag
-	bool m_dedicated;
 	Settings *m_game_settings = nullptr;
 
 	// Thread can set; step() will throw as ServerError

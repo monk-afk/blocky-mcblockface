@@ -88,11 +88,11 @@ void TestServerActiveObjectMgr::testLuaEntityDescription()
 
 void TestServerActiveObjectMgr::testPlayerPrivilegeCache()
 {
-	PlayerSAO player(nullptr, nullptr, 1, false);
+	PlayerSAO player(nullptr, nullptr, 1);
 	UASSERT(!player.hasCachedPrivileges());
 
 	std::set<std::string> privileges = {"interact", "shout"};
-	player.updatePrivileges(privileges, false);
+	player.updatePrivileges(privileges);
 	UASSERT(player.hasCachedPrivileges());
 	UASSERT(player.getCachedPrivileges() == privileges);
 

@@ -84,15 +84,6 @@ void Server::handleCommand_Init(NetworkPacket* pkt)
 	verbosestream << "Server: Got TOSERVER_INIT from " << addr_s <<
 		" (peer_id=" << peer_id << ")" << std::endl;
 
-	// Do not allow multiple players in simple singleplayer mode.
-	// This isn't a perfect way to do it, but will suffice for now
-	if (m_simple_singleplayer_mode && m_clients.getClientIDs().size() > 1) {
-		infostream << "Server: Not allowing another client (" << addr_s <<
-			") to connect in simple singleplayer mode" << std::endl;
-		DenyAccess(peer_id, SERVER_ACCESSDENIED_SINGLEPLAYER);
-		return;
-	}
-
 	// First byte after command is maximum supported
 	// serialization version
 	u8 client_max;
@@ -180,7 +171,7 @@ void Server::handleCommand_Init(NetworkPacket* pkt)
 
 	std::string legacyPlayerNameCasing = playerName;
 
-	if (!isSingleplayer() && strcasecmp(playername, "Player") == 0) {
+	if (strcasecmp(playername, "Player") == 0) {
 		actionstream << "Server: Player with the name \"Player\" tried "
 			"to connect from " << addr_s << std::endl;
 		DenyAccess(peer_id, SERVER_ACCESSDENIED_WRONG_NAME);
@@ -1117,7 +1108,7 @@ void Server::handleCommand_Interact(NetworkPacket *pkt)
 
 	if ((action == INTERACT_START_DIGGING || action == INTERACT_DIGGING_COMPLETED ||
 			action == INTERACT_PLACE || action == INTERACT_USE) &&
-			enable_anticheat && !isSingleplayer()) {
+			enable_anticheat) {
 		v3f target_pos = player_pos;
 		if (pointed.type == POINTEDTHING_NODE) {
 			target_pos = intToFloat(pointed.node_undersurface, BS);
@@ -1235,7 +1226,7 @@ void Server::handleCommand_Interact(NetworkPacket *pkt)
 
 		/* Cheat prevention */
 		bool is_valid_dig = true;
-		if (enable_anticheat && !isSingleplayer()) {
+		if (enable_anticheat) {
 			v3s16 nocheat_p = playersao->getNoCheatDigPos();
 			float nocheat_t = playersao->getNoCheatDigTime();
 			playersao->noCheatDigEnd();
@@ -1592,7 +1583,7 @@ void Server::handleCommand_FirstSrp(NetworkPacket* pkt)
 	verbosestream << "Server: Got TOSERVER_FIRST_SRP from " << addr_s
 		<< ", with is_empty=" << (is_empty == 1) << std::endl;
 
-	const bool empty_disallowed = !isSingleplayer() && is_empty == 1 &&
+	const bool empty_disallowed = is_empty == 1 &&
 		g_settings->getBool("disallow_empty_password");
 
 	// Either this packet is sent because the user is new or to change the password

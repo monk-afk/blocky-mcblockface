@@ -27,8 +27,8 @@ class FakeServer : public Server
 {
 public:
 	// clang-format off
-	FakeServer() : Server("fakeworld", SubgameSpec("fakespec", "fakespec"), true,
-					Address(), true, nullptr)
+	FakeServer() : Server("fakeworld", SubgameSpec("fakespec", "fakespec"),
+					Address(), nullptr)
 	{
 	}
 	// clang-format on

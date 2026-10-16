@@ -594,9 +594,9 @@ void ServerEnvironment::savePlayer(RemotePlayer *player)
 }
 
 PlayerSAO *ServerEnvironment::loadPlayer(RemotePlayer *player, bool *new_player,
-	session_t peer_id, bool is_singleplayer)
+	session_t peer_id)
 {
-	PlayerSAO *playersao = new PlayerSAO(this, player, peer_id, is_singleplayer);
+	PlayerSAO *playersao = new PlayerSAO(this, player, peer_id);
 	// Create player if it doesn't exist
 	if (!m_player_database->loadPlayer(player, playersao)) {
 		*new_player = true;
@@ -2252,7 +2252,7 @@ bool ServerEnvironment::migratePlayersDatabase(const GameParams &game_params,
 			it != player_list.end(); ++it) {
 			actionstream << "Migrating player " << it->c_str() << std::endl;
 			RemotePlayer player(it->c_str(), NULL);
-			PlayerSAO playerSAO(NULL, &player, 15000, false);
+			PlayerSAO playerSAO(NULL, &player, 15000);
 
 			srcdb->loadPlayer(&player, &playerSAO);
 

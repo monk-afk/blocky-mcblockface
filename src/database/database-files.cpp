@@ -266,7 +266,7 @@ void PlayerDatabaseFiles::listPlayers(std::vector<std::string> &res)
 
 		RemotePlayer player(filename.c_str(), NULL);
 		// Null env & dummy peer_id
-		PlayerSAO playerSAO(NULL, &player, 15789, false);
+		PlayerSAO playerSAO(NULL, &player, 15789);
 
 		deSerialize(&player, is, "", &playerSAO);
 		is.close();

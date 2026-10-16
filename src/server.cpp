@@ -212,17 +212,13 @@ std::wstring Server::ShutdownState::getShutdownTimerMessage() const
 Server::Server(
 		const std::string &path_world,
 		const SubgameSpec &gamespec,
-		bool simple_singleplayer_mode,
 		Address bind_addr,
-		bool dedicated,
 		ChatInterface *iface,
 		std::string *on_shutdown_errmsg
 	):
 	m_bind_addr(bind_addr),
 	m_path_world(path_world),
 	m_gamespec(gamespec),
-	m_simple_singleplayer_mode(simple_singleplayer_mode),
-	m_dedicated(dedicated),
 	m_async_fatal_error(""),
 	m_con(std::make_shared<con::Connection>(PROTOCOL_ID,
 			512,
@@ -366,11 +362,8 @@ Server::~Server()
 
 void Server::init()
 {
-	infostream << "Server created for gameid \"" << m_gamespec.id << "\"";
-	if (m_simple_singleplayer_mode)
-		infostream << " in simple singleplayer mode" << std::endl;
-	else
-		infostream << std::endl;
+	infostream << "Server created for gameid \"" << m_gamespec.id << "\""
+			<< std::endl;
 	infostream << "- world:  " << m_path_world << std::endl;
 	infostream << "- game:   " << m_gamespec.path << std::endl;
 
@@ -424,7 +417,7 @@ void Server::init()
 	player_models.erase(std::remove_if(player_models.begin(),
 			player_models.end(), static_cast<int(*)(int)>(&std::isspace)),
 			player_models.end());
-	if (player_models.empty() || isSingleplayer())
+	if (player_models.empty())
 		FATAL_ERROR_IF(!m_compat_player_models.empty(), "Compat player models list not empty");
 	else
 		m_compat_player_models = str_split(player_models, ',');
@@ -546,11 +539,9 @@ void Server::step(float dtime)
 	// Throw if fatal error occurred in thread
 	std::string async_err = m_async_fatal_error.get();
 	if (!async_err.empty()) {
-		if (!m_simple_singleplayer_mode) {
-			m_env->kickAllPlayers(SERVER_ACCESSDENIED_CRASH,
-				g_settings->get("kick_msg_crash"),
-				g_settings->getBool("ask_reconnect_on_crash"));
-		}
+		m_env->kickAllPlayers(SERVER_ACCESSDENIED_CRASH,
+			g_settings->get("kick_msg_crash"),
+			g_settings->getBool("ask_reconnect_on_crash"));
 		throw ServerError("AsyncErr: " + async_err);
 	}
 }
@@ -684,7 +675,7 @@ void Server::AsyncRunStep(bool initial_step)
 	// send masterserver announce
 	{
 		float &counter = m_masterserver_timer;
-		if (!isSingleplayer() && (!counter || counter >= 60.0) &&
+		if ((!counter || counter >= 60.0) &&
 				g_settings->getBool("server_announce")) {
 			ServerList::sendAnnounce(counter ? ServerList::AA_UPDATE :
 						ServerList::AA_START,
@@ -696,7 +687,7 @@ void Server::AsyncRunStep(bool initial_step)
 					m_gamespec.id,
 					Mapgen::getMapgenName(m_emerge->mgparams->mgtype),
 					m_modmgr->getMods(),
-					m_dedicated);
+					true);
 			counter = 0.01;
 		}
 		counter += dtime;
@@ -3357,7 +3348,7 @@ std::set<std::string> Server::getPlayerEffectivePrivs(const std::string &name)
 	std::set<std::string> privs;
 	m_script->getAuth(name, NULL, &privs);
 	if (sao)
-		sao->updatePrivileges(privs, isSingleplayer());
+		sao->updatePrivileges(privs);
 	return privs;
 }
 
@@ -3386,9 +3377,7 @@ void Server::reportPrivsModified(const std::string &name)
 		SendPlayerPrivileges(player->getPeerId());
 		if(!sao)
 			return;
-		sao->updatePrivileges(
-				getPlayerEffectivePrivs(name),
-				isSingleplayer());
+		sao->updatePrivileges(getPlayerEffectivePrivs(name));
 	}
 }
 
@@ -3977,7 +3966,7 @@ PlayerSAO* Server::emergePlayer(const char *name, session_t peer_id, u16 proto_v
 	bool newplayer = false;
 
 	// Load player
-	PlayerSAO *playersao = m_env->loadPlayer(player, &newplayer, peer_id, isSingleplayer());
+	PlayerSAO *playersao = m_env->loadPlayer(player, &newplayer, peer_id);
 
 	// Complete init with server parts
 	playersao->finalize(player, getPlayerEffectivePrivs(player->getName()));

@@ -69,8 +69,7 @@ class RemotePlayer;
 class PlayerSAO : public UnitSAO
 {
 public:
-	PlayerSAO(ServerEnvironment *env_, RemotePlayer *player_, session_t peer_id_,
-			bool is_singleplayer);
+	PlayerSAO(ServerEnvironment *env_, RemotePlayer *player_, session_t peer_id_);
 
 	ActiveObjectType getType() const { return ACTIVEOBJECT_TYPE_PLAYER; }
 	ActiveObjectType getSendType() const { return ACTIVEOBJECT_TYPE_GENERIC; }
@@ -161,10 +160,9 @@ public:
 
 	// Other
 
-	void updatePrivileges(const std::set<std::string> &privs, bool is_singleplayer)
+	void updatePrivileges(const std::set<std::string> &privs)
 	{
 		m_privs = privs;
-		m_is_singleplayer = is_singleplayer;
 		m_privs_cache_valid = true;
 	}
 	const std::set<std::string> &getCachedPrivileges() const { return m_privs; }
@@ -213,8 +211,6 @@ private:
 	// Cached privileges for enforcement
 	std::set<std::string> m_privs;
 	bool m_privs_cache_valid = false;
-	bool m_is_singleplayer;
-
 	u16 m_breath = PLAYER_MAX_BREATH_DEFAULT;
 	f32 m_pitch = 0.0f;
 	f32 m_fov = 0.0f;

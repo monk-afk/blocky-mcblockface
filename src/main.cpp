@@ -230,9 +230,9 @@ static void set_allowed_options(OptionList *allowed_options)
 	allowed_options->insert(std::make_pair("map-dir", ValueSpec(VALUETYPE_STRING,
 			_("Same as --world (deprecated)"))));
 	allowed_options->insert(std::make_pair("world", ValueSpec(VALUETYPE_STRING,
-			_("Set world path (implies local game if used with option --go)"))));
+			_("Set world path"))));
 	allowed_options->insert(std::make_pair("worldname", ValueSpec(VALUETYPE_STRING,
-			_("Set world by name (implies local game if used with option --go)"))));
+			_("Set world by name"))));
 	allowed_options->insert(std::make_pair("worldlist", ValueSpec(VALUETYPE_STRING,
 			_("Get list of worlds ('path' lists paths, "
 			"'name' lists names, 'both' lists both)"))));
@@ -252,13 +252,13 @@ static void set_allowed_options(OptionList *allowed_options)
 	allowed_options->insert(std::make_pair("gameid", ValueSpec(VALUETYPE_STRING,
 			_("Set gameid (\"--gameid list\" prints available ones)"))));
 	allowed_options->insert(std::make_pair("migrate", ValueSpec(VALUETYPE_STRING,
-			_("Migrate from current map backend to another (Only works when using squareoneserver or with --server)"))));
+			_("Migrate from current map backend to another"))));
 	allowed_options->insert(std::make_pair("migrate-players", ValueSpec(VALUETYPE_STRING,
-		_("Migrate from current players backend to another (Only works when using squareoneserver or with --server)"))));
+		_("Migrate from current players backend to another"))));
 	allowed_options->insert(std::make_pair("migrate-auth", ValueSpec(VALUETYPE_STRING,
-		_("Migrate from current auth backend to another (Only works when using squareoneserver or with --server)"))));
+		_("Migrate from current auth backend to another"))));
 	allowed_options->insert(std::make_pair("terminal", ValueSpec(VALUETYPE_FLAG,
-			_("Feature an interactive terminal (Only works when using squareoneserver or with --server)"))));
+			_("Feature an interactive terminal"))));
 
 }
 
@@ -810,7 +810,7 @@ static bool run_dedicated_server(const GameParams &game_params, const Settings &
 		try {
 			// Create server
 			Server server(game_params.world_path, game_params.game_spec,
-					false, bind_addr, true, &iface);
+					bind_addr, &iface);
 
 			g_term_console.setup(&iface, &kill, admin_nick);
 
@@ -843,8 +843,7 @@ static bool run_dedicated_server(const GameParams &game_params, const Settings &
 #endif
 		try {
 			// Create server
-			Server server(game_params.world_path, game_params.game_spec, false,
-				bind_addr, true);
+			Server server(game_params.world_path, game_params.game_spec, bind_addr);
 			server.start();
 
 			// Run server
