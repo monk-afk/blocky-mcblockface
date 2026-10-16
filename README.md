@@ -235,7 +235,6 @@ General options and their default values:
     ENABLE_SYSTEM_JSONCPP=OFF  - Use JsonCPP from system
     OPENGL_GL_PREFERENCE=LEGACY - Linux client build only; See CMake Policy CMP0072 for reference
     RUN_IN_PLACE=FALSE         - Create a portable install (worlds, settings etc. in current directory)
-    ENABLE_UPDATE_CHECKER=TRUE - Whether to enable update checks by default
     USE_GPROF=FALSE            - Enable profiling using GProf
     VERSION_EXTRA=S1           - Text to append to version (e.g. VERSION_EXTRA=S1 -> SquareOne Core 2.0.6-S1)
     ENABLE_TOUCH=FALSE         - Enable Touchscreen support (requires support by IrrlichtMt)
