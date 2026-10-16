@@ -131,8 +131,6 @@ src/pathfinder.cpp
 src/pathfinder.h
 src/player.cpp
 src/player.h
-src/porting_android.cpp
-src/porting_android.h
 src/porting.cpp
 src/porting.h
 src/profiler.h
