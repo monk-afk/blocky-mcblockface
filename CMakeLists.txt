@@ -149,9 +149,6 @@ install(FILES
 	"${CMAKE_CURRENT_SOURCE_DIR}/builtin/init.lua"
 	"${CMAKE_CURRENT_SOURCE_DIR}/builtin/settingtypes.txt"
 	DESTINATION "${SHAREDIR}/builtin")
-if(RUN_IN_PLACE)
-	install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/mods/mods_here.txt" DESTINATION "${SHAREDIR}/mods")
-endif()
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/games/minetest_game" DESTINATION "${SHAREDIR}/games/"
 	COMPONENT "SUBGAME_MINETEST_GAME" OPTIONAL PATTERN ".git*" EXCLUDE )
