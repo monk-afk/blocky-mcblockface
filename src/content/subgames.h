@@ -36,7 +36,8 @@ struct SubgameSpec
 			const std::string &gamemods_path = "",
 			const std::set<std::string> &addon_mods_paths =
 					std::set<std::string>()) :
-			id(id), path(path), gamemods_path(gamemods_path),
+			id(id),
+			path(path), gamemods_path(gamemods_path),
 			addon_mods_paths(addon_mods_paths)
 	{
 	}
