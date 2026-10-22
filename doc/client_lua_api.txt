@@ -1,11 +1,11 @@
-SquareOne Core Server-Sent Client Lua API Reference
+Blocky McBlockface Server-Sent Client Lua API Reference
 ====================================================
 
 Introduction
 ------------
 
 This document describes the client-side Lua environment expected by code that
-SquareOne Core distributes through SSCSM. The graphical client and its Lua
+Blocky McBlockface distributes through SSCSM. The graphical client and its Lua
 runtime are not part of this repository. API availability and behavior depend
 on the compatible client receiving the code.
 
@@ -14,7 +14,7 @@ on the compatible client receiving the code.
 See the SSCSM section in `lua_api.txt` for registration, transfer, restriction,
 and server/client communication details.
 
-The APIs below run on the connected client, not inside `squareoneserver`.
+The APIs below run on the connected client, not inside `mcblockface`.
 
 Programming in Lua
 ------------------

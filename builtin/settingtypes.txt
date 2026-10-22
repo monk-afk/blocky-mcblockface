@@ -1,4 +1,4 @@
-# This file documents the built-in SquareOne Core server settings.
+# This file documents the built-in Blocky McBlockface server settings.
 #
 # General format:
 #    name (Readable name) type type_args
@@ -70,12 +70,12 @@ texture_path (Texture override path) path
 #    Maximum number of recent chat messages retained by the terminal console.
 recent_chat_messages (Recent terminal chat messages) int 6 2 20
 
-#    Windows systems only: Start SquareOne Core with the console window in the background.
+#    Windows systems only: Start Blocky McBlockface with the console window in the background.
 #    The console contains the same information as debug.txt.
 enable_console (Enable console window) bool false
 
 #    Prometheus listener address.
-#    If SquareOne Core is compiled with ENABLE_PROMETHEUS,
+#    If Blocky McBlockface is compiled with ENABLE_PROMETHEUS,
 #    enable the metrics listener at this address.
 #    Metrics can be fetched from http://127.0.0.1:30000/metrics.
 prometheus_listener_address (Prometheus listener address) string 127.0.0.1:30000

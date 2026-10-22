@@ -69,7 +69,7 @@ VERSION_PATCH=$(grep -E '^set\(VERSION_PATCH [0-9]+\)$' CMakeLists.txt | tr -dC 
 
 RELEASE_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH"
 
-echo "Current SquareOne Core version: $RELEASE_VERSION"
+echo "Current Blocky McBlockface version: $RELEASE_VERSION"
 
 ########################
 # Perform release

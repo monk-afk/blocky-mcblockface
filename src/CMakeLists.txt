@@ -1,4 +1,4 @@
-project(squareone)
+project(mcblockface)
 
 INCLUDE(CheckIncludeFiles)
 INCLUDE(CheckLibraryExists)
@@ -342,7 +342,7 @@ endif()
 # This gives us the icon and file version information
 if(WIN32)
 	set(WINRESOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../misc/winresource.rc")
-	set(EXE_MANIFEST_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../misc/squareoneserver.exe.manifest")
+	set(EXE_MANIFEST_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../misc/mcblockface.exe.manifest")
 	if(MINGW)
 		if(NOT CMAKE_RC_COMPILER)
 			set(CMAKE_RC_COMPILER "windres.exe")
@@ -397,10 +397,10 @@ endif()
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/bin")
 
 
-add_executable(${PROJECT_NAME}server ${server_SRCS} ${extra_windows_SRCS})
-add_dependencies(${PROJECT_NAME}server GenerateVersion)
+add_executable(${PROJECT_NAME} ${server_SRCS} ${extra_windows_SRCS})
+add_dependencies(${PROJECT_NAME} GenerateVersion)
 target_link_libraries(
-	${PROJECT_NAME}server
+	${PROJECT_NAME}
 	${ZLIB_LIBRARIES}
 	${SQLITE3_LIBRARY}
 	${JSON_LIBRARY}
@@ -412,7 +412,7 @@ target_link_libraries(
 	chacha
 )
 if(NOT USE_LUAJIT)
-	set_target_properties(${PROJECT_NAME}server PROPERTIES
+	set_target_properties(${PROJECT_NAME} PROPERTIES
 		# This is necessary for dynamic Lua modules
 		# to work when Lua is statically linked (issue #10806)
 		ENABLE_EXPORTS 1
@@ -420,29 +420,29 @@ if(NOT USE_LUAJIT)
 endif()
 
 if (USE_GETTEXT)
-	target_link_libraries(${PROJECT_NAME}server ${GETTEXT_LIBRARY})
+	target_link_libraries(${PROJECT_NAME} ${GETTEXT_LIBRARY})
 endif()
 if (USE_CURSES)
-	target_link_libraries(${PROJECT_NAME}server ${CURSES_LIBRARIES})
+	target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARIES})
 endif()
 if (USE_POSTGRESQL)
-	target_link_libraries(${PROJECT_NAME}server ${PostgreSQL_LIBRARIES})
+	target_link_libraries(${PROJECT_NAME} ${PostgreSQL_LIBRARIES})
 endif()
 if (USE_LEVELDB)
-	target_link_libraries(${PROJECT_NAME}server ${LEVELDB_LIBRARY})
+	target_link_libraries(${PROJECT_NAME} ${LEVELDB_LIBRARY})
 endif()
 if (USE_REDIS)
-	target_link_libraries(${PROJECT_NAME}server ${REDIS_LIBRARY})
+	target_link_libraries(${PROJECT_NAME} ${REDIS_LIBRARY})
 endif()
 if (USE_PROMETHEUS)
-	target_link_libraries(${PROJECT_NAME}server ${PROMETHEUS_LIBRARIES})
+	target_link_libraries(${PROJECT_NAME} ${PROMETHEUS_LIBRARIES})
 endif()
 if (USE_SPATIAL)
-	target_link_libraries(${PROJECT_NAME}server ${SPATIAL_LIBRARY})
+	target_link_libraries(${PROJECT_NAME} ${SPATIAL_LIBRARY})
 endif()
 if(USE_CURL)
 	target_link_libraries(
-		${PROJECT_NAME}server
+		${PROJECT_NAME}
 		${CURL_LIBRARY}
 	)
 endif()
@@ -605,7 +605,7 @@ if(WIN32)
 	endif()
 endif()
 
-install(TARGETS ${PROJECT_NAME}server DESTINATION ${BINDIR})
+install(TARGETS ${PROJECT_NAME} DESTINATION ${BINDIR})
 
 if (USE_GETTEXT)
 	set(MO_FILES)

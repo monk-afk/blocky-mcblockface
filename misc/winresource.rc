@@ -16,11 +16,11 @@
 #endif
 
 #ifdef __MINGW32__
-CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "squareoneserver.exe.manifest"
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "mcblockface.exe.manifest"
 #endif
 
 LANGUAGE 0, SUBLANG_NEUTRAL
-130        ICON         "squareone-icon.ico"
+130        ICON         "mcblockface-icon.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -51,7 +51,7 @@ BEGIN
         VALUE "InternalName", PROJECT_NAME
         VALUE "LegalCopyright", "(c) 2011-2015 celeron55"
         VALUE "LegalTrademarks", ""
-        VALUE "OriginalFilename", PROJECT_NAME "server.exe"
+        VALUE "OriginalFilename", PROJECT_NAME ".exe"
         VALUE "PrivateBuild", VERSION_EXTRA
         VALUE "ProductName", PROJECT_NAME_C
         VALUE "ProductVersion", PRODUCT_VERSION_STRING

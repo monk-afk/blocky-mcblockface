@@ -1,13 +1,13 @@
-#    This file contains a list of all available settings and their default value for squareone.conf
+#    This file contains a list of all available settings and their default value for mcblockface.conf
 
 #    By default, all the settings are commented and not functional.
 #    Uncomment settings by removing the preceding #.
 
-#    squareone.conf is read from the user-data directory and its parent directory.
+#    mcblockface.conf is read from the user-data directory and its parent directory.
 #    Run-in-place builds also search the grandparent directory.
-#    If no squareone.conf is found, minetest.conf is tried in the same locations.
+#    If no mcblockface.conf is found, minetest.conf is tried in the same locations.
 #    Any other path can be chosen by passing the path as a parameter
-#    to the program, eg. "squareoneserver.exe --config ../squareone.conf.example".
+#    to the program, eg. "mcblockface.exe --config ../mcblockface.conf.example".
 
 #    Further documentation:
 #    http://wiki.minetest.net/
@@ -24,13 +24,13 @@
 #    type: int min: 2 max: 20
 # recent_chat_messages = 6
 
-#    Windows systems only: Start SquareOne Core with the console window in the background.
+#    Windows systems only: Start Blocky McBlockface with the console window in the background.
 #    The console contains the same information as debug.txt.
 #    type: bool
 # enable_console = false
 
 #    Prometheus listener address.
-#    If SquareOne Core is compiled with ENABLE_PROMETHEUS,
+#    If Blocky McBlockface is compiled with ENABLE_PROMETHEUS,
 #    enable the metrics listener at this address.
 #    Metrics can be fetched from http://127.0.0.1:30000/metrics.
 #    type: string

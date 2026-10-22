@@ -1,12 +1,12 @@
-# Contributing to SquareOne Core
+# Contributing to Blocky McBlockface
 
-SquareOne Core is dedicated server software that preserves compatibility with
-supported Minetest 0.4 and 5.x clients. Contributions should keep that server
-and protocol focus; this repository does not maintain a graphical client.
+Blocky McBlockface is dedicated server software that preserves compatibility
+with supported Minetest 0.4 and 5.x clients. Contributions should keep that
+server and protocol focus; this repository does not maintain a graphical client.
 
 ## Before coding
 
-Search the [existing issues](https://github.com/monk-afk/squareone-core/issues)
+Search the [existing issues](https://github.com/monk-afk/blocky-mcblockface/issues)
 first. For substantial behavior, protocol, persistence, or compatibility
 changes, open an issue before implementation so the design and migration risks
 can be discussed.
@@ -32,7 +32,7 @@ cmake -S . -B build \
     -DRUN_IN_PLACE=TRUE \
     -DBUILD_UNITTESTS=TRUE
 cmake --build build -j2
-./bin/squareoneserver --run-unittests
+./bin/mcblockface --run-unittests
 ```
 
 The C++ formatting check follows clang-format 11. Do not apply a newer
@@ -45,7 +45,7 @@ the affected behavior with a temporary world and compatible clients.
 ## Pull requests
 
 Open the pull request against
-[`main`](https://github.com/monk-afk/squareone-core/compare). Include:
+[`main`](https://github.com/monk-afk/blocky-mcblockface/compare). Include:
 
 - the problem and intended outcome;
 - the implementation and compatibility impact;

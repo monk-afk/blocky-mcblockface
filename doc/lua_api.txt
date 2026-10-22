@@ -1,21 +1,21 @@
-SquareOne Core Lua Server Modding API Reference
+Blocky McBlockface Lua Server Modding API Reference
 ================================================
 
 This API retains compatibility with the Minetest and MultiCraft server APIs on
-which SquareOne Core is based. SquareOne Core does not provide a graphical
-client or a main-menu Lua environment.
+which Blocky McBlockface is based. Blocky McBlockface does not provide a
+graphical client or a main-menu Lua environment.
 
-* Source and issues: <https://github.com/monk-afk/squareone-core>
+* Source and issues: <https://github.com/monk-afk/blocky-mcblockface>
 * Minetest Modding Book by rubenwardy: <https://rubenwardy.com/minetest_modding_book/>
 
 Introduction
 ------------
 
-Content and functionality can be added to SquareOne Core using Lua scripting
-in run-time loaded mods.
+Content and functionality can be added to Blocky McBlockface using Lua
+scripting in run-time loaded mods.
 
 A mod is a self-contained bunch of scripts, textures and other related
-things, which is loaded by and interfaces with SquareOne Core.
+things, which is loaded by and interfaces with Blocky McBlockface.
 
 Mods are contained and run solely on the server side. Definitions and media
 files are automatically transferred to the client.
@@ -42,8 +42,8 @@ Paths
     * `$path_user`: `<build directory>`
     * `$path_share`: `<build directory>`
 * `RUN_IN_PLACE=0` (installed Unix build)
-    * `$path_share`: `/usr/share/squareone` by default
-    * `$path_user`: `$HOME/.squareone`
+    * `$path_share`: `/usr/share/mcblockface` by default
+    * `$path_user`: `$HOME/.mcblockface`
 
 The detected paths are written to the startup log. Build-time installation
 options can change these defaults.
@@ -64,9 +64,9 @@ Where `<gameid>` is unique to each game.
 The game directory can contain the following files:
 
 * `game.conf`: Marks the directory as a game for game-ID discovery.
-* `squareone.conf`: Sets default settings when running this game.
+* `mcblockface.conf`: Sets default settings when running this game.
 * `minetest.conf`: Legacy-compatible game defaults loaded before
-  `squareone.conf`.
+  `mcblockface.conf`.
 * If the game contains a folder called `textures` the server will load it as a
   texturepack, overriding mod textures.
   Any server texturepack will override mod textures and the game texturepack.
@@ -102,8 +102,8 @@ Modpacks
 
 Mods can be put in a subdirectory, if the parent directory, which otherwise
 should be a mod, contains a file named `modpack.conf`.
-Its presence marks the directory as a modpack; SquareOne Core does not consume
-client-facing display metadata from this file.
+Its presence marks the directory as a modpack; Blocky McBlockface does not
+consume client-facing display metadata from this file.
 
 Note: to support 0.4.x, please also create an empty modpack.txt file.
 
@@ -3167,9 +3167,10 @@ angles in radians.
 SSCSM
 =====
 
-SquareOne Core has a built-in SSCSM implementation that distributes client-side
-Lua to compatible connected clients. The receiving client supplies the runtime;
-SquareOne Core does not include one.
+Blocky McBlockface has a built-in SSCSM implementation that distributes
+client-side Lua to compatible connected clients. The receiving client supplies
+the runtime;
+Blocky McBlockface does not include one.
 
 
 Server-side API
@@ -4400,7 +4401,7 @@ Utilities
 * `minetest.get_current_modname()`: returns the currently loading mod's name,
   when loading a mod.
 * `minetest.get_modpath(modname)`: returns the directory path for a mod,
-  e.g. `"/home/user/.squareone/worlds/world/worldmods/modname"`.
+  e.g. `"/home/user/.mcblockface/worlds/world/worldmods/modname"`.
     * Returns nil if the mod is not enabled or does not exist (not installed).
     * Works regardless of whether the mod has been loaded yet.
     * Useful for loading additional `.lua` modules or static data from a mod,
@@ -4408,10 +4409,10 @@ Utilities
 * `minetest.get_modnames()`: returns a list of enabled mods, sorted alphabetically.
     * Does not include disabled mods, even if they are installed.
 * `minetest.get_worldpath()`: returns e.g.
-  `"/home/user/.squareone/worlds/world"`
+  `"/home/user/.mcblockface/worlds/world"`
     * Useful for storing custom data
 * `minetest.is_singleplayer()`
-    * Always returns `false` in SquareOne Core. The function is retained for
+    * Always returns `false` in Blocky McBlockface. The function is retained for
       compatibility with server mods shared with client-capable engines.
 * `minetest.features`: Table containing API feature flags
 
@@ -4618,7 +4619,7 @@ Call these functions only at load time!
     * `definition` can be a description or a definition table (see [Privilege
       definition]).
     * If it is a description, `give_to_admin` defaults to `true` through the
-      legacy `give_to_singleplayer` default. SquareOne Core has no embedded
+      legacy `give_to_singleplayer` default. Blocky McBlockface has no embedded
       singleplayer mode.
     * To allow players with `basic_privs` to grant, see the `basic_privs`
       server setting.
@@ -6657,7 +6658,7 @@ object you are working with still exists.
         * `day_opacity`: Minimum star opacity during daytime, from `0` to `1`
             (default: `0`).
         * `star_seed`: Unsigned integer seed for generating stars. `0` lets the
-            client choose a random seed, matching Luanti's API. SquareOne Core
+            client choose a random seed, matching Luanti's API. Blocky McBlockface
             defaults to the mapgen seed (world seed `0` uses `1`). Omitted fields
             retain their current values. Lua numbers cannot represent every
             integer above `2^53` exactly; the automatic world-seed default is
@@ -6856,7 +6857,7 @@ secure random device cannot be found on the system.
 `Settings`
 ----------
 
-An interface to read SquareOne Core setting files.
+An interface to read Blocky McBlockface setting files.
 
 It can be created via `Settings(filename)`.
 
@@ -8239,7 +8240,7 @@ Used by `minetest.register_privilege`.
         -- Privilege description
 
         give_to_singleplayer = true,
-        -- Compatibility field. SquareOne Core has no embedded singleplayer
+        -- Compatibility field. Blocky McBlockface has no embedded singleplayer
         -- mode, but this remains the default source for give_to_admin.
 
         give_to_admin = true,

@@ -6,11 +6,11 @@ labels: Unconfirmed bug
 assignees: ''
 ---
 
-##### SquareOne Core version
+##### Blocky McBlockface version
 <!--
-Paste the SquareOne Core version in the block below.
+Paste the Blocky McBlockface version in the block below.
 If you are on a devel version, please add git commit hash
-You can use `squareoneserver --version` to find it.
+You can use `mcblockface --version` to find it.
 -->
 ```
 

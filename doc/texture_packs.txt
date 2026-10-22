@@ -1,7 +1,7 @@
-SquareOne Core Server Texture Override Reference
+Blocky McBlockface Server Texture Override Reference
 ================================================
 
-SquareOne Core can replace textures named by registered node and item
+Blocky McBlockface can replace textures named by registered node and item
 definitions without changing the corresponding mods. This is server-side
 configuration: the server applies the resulting definitions and sends the
 referenced media to connecting clients.

@@ -1,6 +1,6 @@
 /*
 Minetest
-Copyright (C) 2026 SquareOne Core contributors
+Copyright (C) 2026 Blocky McBlockface contributors
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by

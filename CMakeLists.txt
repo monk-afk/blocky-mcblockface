@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.12)
 
 # This can be read from ${PROJECT_NAME} after project() is called
-project(squareone)
-set(PROJECT_NAME_CAPITALIZED "SquareOne Core")
-set(PROJECT_PACKAGE_NAME "squareone-core")
+project(mcblockface)
+set(PROJECT_NAME_CAPITALIZED "Blocky McBlockface")
+set(PROJECT_PACKAGE_NAME "blocky-mcblockface")
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
@@ -12,8 +12,8 @@ set(CLANG_MINIMUM_VERSION "3.5")
 
 # Also remember to set PROTOCOL_VERSION in network/networkprotocol.h when releasing
 set(VERSION_MAJOR 1)
-set(VERSION_MINOR 0)
-set(VERSION_PATCH 6)
+set(VERSION_MINOR 1)
+set(VERSION_PATCH 0)
 set(VERSION_EXTRA "" CACHE STRING "Stuff to append to version string")
 
 # Change to false for releases
@@ -44,7 +44,7 @@ set(RUN_IN_PLACE ${DEFAULT_RUN_IN_PLACE} CACHE BOOL
 
 
 if(BUILD_CLIENT)
-	message(FATAL_ERROR "SquareOne Core is server-only; client builds are no longer supported")
+	message(FATAL_ERROR "Blocky McBlockface is server-only; client builds are no longer supported")
 endif()
 set(BUILD_CLIENT FALSE)
 set(BUILD_UNITTESTS FALSE CACHE BOOL "Build unittests")
@@ -158,10 +158,10 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/games/devtest" DESTINATION "${SHA
 install(FILES "README.md" DESTINATION "${DOCDIR}" COMPONENT "Docs")
 install(FILES "doc/lua_api.txt" DESTINATION "${DOCDIR}" COMPONENT "Docs")
 install(FILES "doc/world_format.txt" DESTINATION "${DOCDIR}" COMPONENT "Docs")
-install(FILES "squareone.conf.example" DESTINATION "${EXAMPLE_CONF_DIR}")
+install(FILES "mcblockface.conf.example" DESTINATION "${EXAMPLE_CONF_DIR}")
 
 if(UNIX)
-	install(FILES "doc/squareoneserver.6" DESTINATION "${MANDIR}/man6")
+	install(FILES "doc/mcblockface.6" DESTINATION "${MANDIR}/man6")
 endif()
 
 # Library pack
@@ -202,13 +202,13 @@ set(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${VERSION_PATCH})
 set(CPACK_PACKAGE_NAME "${PROJECT_PACKAGE_NAME}")
-set(CPACK_PACKAGE_VENDOR "SquareOne Core contributors")
+set(CPACK_PACKAGE_VENDOR "Blocky McBlockface contributors")
 
 include(CPackComponent)
 
 cpack_add_component(Docs
 	DISPLAY_NAME "Documentation"
-	DESCRIPTION "Documentation about SquareOne Core and Minetest-compatible modding"
+	DESCRIPTION "Documentation about Blocky McBlockface and Minetest-compatible modding"
 )
 
 cpack_add_component(SUBGAME_MINETEST_GAME
@@ -225,7 +225,7 @@ cpack_add_component(SUBGAME_MINIMAL
 )
 
 cpack_add_component_group(Subgames
-	DESCRIPTION "Games for SquareOne Core."
+	DESCRIPTION "Games for Blocky McBlockface."
 )
 
 if(WIN32)
@@ -247,7 +247,7 @@ if(WIN32)
 		set(CPACK_PACKAGE_INSTALL_DIRECTORY ".")
 		set(CPACK_PACKAGING_INSTALL_PREFIX "/${PROJECT_NAME_CAPITALIZED}")
 
-		set(CPACK_WIX_PRODUCT_ICON "${CMAKE_CURRENT_SOURCE_DIR}/misc/squareone-icon.ico")
+		set(CPACK_WIX_PRODUCT_ICON "${CMAKE_CURRENT_SOURCE_DIR}/misc/mcblockface-icon.ico")
 		# Supported languages can be found at
 		# http://wixtoolset.org/documentation/manual/v3/wixui/wixui_localization.html
 		#set(CPACK_WIX_CULTURES "ar-SA,bg-BG,ca-ES,hr-HR,cs-CZ,da-DK,nl-NL,en-US,et-EE,fi-FI,fr-FR,de-DE")

@@ -2,18 +2,18 @@ FROM alpine:3.14
 
 ENV MINETEST_GAME_VERSION master
 
-COPY .git /usr/src/squareone-core/.git
-COPY CMakeLists.txt /usr/src/squareone-core/CMakeLists.txt
-COPY README.md /usr/src/squareone-core/README.md
-COPY squareone.conf.example /usr/src/squareone-core/squareone.conf.example
-COPY builtin /usr/src/squareone-core/builtin
-COPY cmake /usr/src/squareone-core/cmake
-COPY doc /usr/src/squareone-core/doc
-COPY lib /usr/src/squareone-core/lib
-COPY po /usr/src/squareone-core/po
-COPY src /usr/src/squareone-core/src
+COPY .git /usr/src/blocky-mcblockface/.git
+COPY CMakeLists.txt /usr/src/blocky-mcblockface/CMakeLists.txt
+COPY README.md /usr/src/blocky-mcblockface/README.md
+COPY mcblockface.conf.example /usr/src/blocky-mcblockface/mcblockface.conf.example
+COPY builtin /usr/src/blocky-mcblockface/builtin
+COPY cmake /usr/src/blocky-mcblockface/cmake
+COPY doc /usr/src/blocky-mcblockface/doc
+COPY lib /usr/src/blocky-mcblockface/lib
+COPY po /usr/src/blocky-mcblockface/po
+COPY src /usr/src/blocky-mcblockface/src
 
-WORKDIR /usr/src/squareone-core
+WORKDIR /usr/src/blocky-mcblockface
 
 RUN apk add --no-cache git build-base irrlicht-dev cmake sqlite-dev curl-dev \
 		zlib-dev gmp-dev jsoncpp-dev postgresql-dev luajit-dev ca-certificates && \
@@ -32,7 +32,7 @@ RUN git clone --branch v1.2.4 --depth 1 --recursive https://github.com/jupp0r/pr
 	make -j2 && \
 	make install
 
-WORKDIR /usr/src/squareone-core
+WORKDIR /usr/src/blocky-mcblockface
 RUN mkdir build && \
 	cd build && \
 	cmake .. \
@@ -46,17 +46,17 @@ RUN mkdir build && \
 FROM alpine:3.14
 
 RUN apk add --no-cache sqlite-libs curl gmp libstdc++ libgcc libpq luajit && \
-	adduser -D squareone --uid 30000 -h /var/lib/squareone && \
-	chown -R squareone:squareone /var/lib/squareone
+	adduser -D mcblockface --uid 30000 -h /var/lib/mcblockface && \
+	chown -R mcblockface:mcblockface /var/lib/mcblockface
 
-WORKDIR /var/lib/squareone
+WORKDIR /var/lib/mcblockface
 
-COPY --from=0 /usr/local/share/squareone /usr/local/share/squareone
-COPY --from=0 /usr/local/bin/squareoneserver /usr/local/bin/squareoneserver
-COPY --from=0 /usr/local/share/doc/squareone/squareone.conf.example /etc/squareone/squareone.conf
+COPY --from=0 /usr/local/share/mcblockface /usr/local/share/mcblockface
+COPY --from=0 /usr/local/bin/mcblockface /usr/local/bin/mcblockface
+COPY --from=0 /usr/local/share/doc/mcblockface/mcblockface.conf.example /etc/mcblockface/mcblockface.conf
 
-USER squareone:squareone
+USER mcblockface:mcblockface
 
 EXPOSE 30000/udp 30000/tcp
 
-CMD ["/usr/local/bin/squareoneserver", "--config", "/etc/squareone/squareone.conf"]
+CMD ["/usr/local/bin/mcblockface", "--config", "/etc/mcblockface/mcblockface.conf"]

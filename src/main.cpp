@@ -438,9 +438,10 @@ static bool read_config_file(const Settings &cmd_args)
 		g_settings_path = cmd_args.get("config");
 	} else {
 		std::vector<std::string> filenames;
-		// Prefer SquareOne configuration at every supported location before
-		// falling back to Minetest configuration. New files use squareone.conf.
-		for (const char *name : {"squareone.conf", "minetest.conf"}) {
+		// Prefer Blocky McBlockface configuration at every supported location
+		// before falling back to Minetest configuration. New files use
+		// mcblockface.conf.
+		for (const char *name : {"mcblockface.conf", "minetest.conf"}) {
 			filenames.push_back(porting::path_user + DIR_DELIM + name);
 			filenames.push_back(porting::path_user +
 					DIR_DELIM + ".." + DIR_DELIM + name);

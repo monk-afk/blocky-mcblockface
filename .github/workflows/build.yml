@@ -43,7 +43,7 @@ jobs:
 
       - name: Test
         run: |
-          ./bin/squareoneserver --run-unittests
+          ./bin/mcblockface --run-unittests
 
   # This is the current clang version
   clang_11:
@@ -65,7 +65,7 @@ jobs:
 
       - name: Test
         run: |
-          ./bin/squareoneserver --run-unittests
+          ./bin/mcblockface --run-unittests
 
   docker:
     name: "Docker image"
@@ -157,5 +157,5 @@ jobs:
 
       - uses: actions/upload-artifact@v7
         with:
-          name: squareone-core-msvc-${{ matrix.config.arch }}-${{ matrix.type }}
+          name: blocky-mcblockface-msvc-${{ matrix.config.arch }}-${{ matrix.type }}
           path: .\Package\

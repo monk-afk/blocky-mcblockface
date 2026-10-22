@@ -12,8 +12,8 @@
 #if defined USE_CMAKE_CONFIG_H
 	#include "cmake_config.h"
 #elif defined(__APPLE__)
-	#define PROJECT_NAME "squareone"
-	#define PROJECT_NAME_C "SquareOne Core"
+	#define PROJECT_NAME "mcblockface"
+	#define PROJECT_NAME_C "Blocky McBlockface"
 	#define STATIC_SHAREDIR ""
 	#define VERSION_STRING STR(VERSION_MAJOR) "." STR(VERSION_MINOR) "." STR(VERSION_PATCH) STR(VERSION_EXTRA)
 #ifdef NDEBUG

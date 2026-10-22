@@ -2,13 +2,13 @@
 
 ## Supported versions
 
-Security fixes are provided for the latest SquareOne Core release. Older
+Security fixes are provided for the latest Blocky McBlockface release. Older
 releases should be upgraded before requesting a separate backport.
 
 ## Reporting a vulnerability
 
 Do not open a public issue for a suspected vulnerability. Report it privately
-to the SquareOne Core maintainer at `admin@monk.moe` and include:
+to the Blocky McBlockface maintainer at `admin@monk.moe` and include:
 
 - the affected version or commit;
 - reproduction steps or a proof of concept;
