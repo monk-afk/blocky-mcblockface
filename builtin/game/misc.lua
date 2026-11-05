@@ -252,22 +252,25 @@ end
 
 -- HTTP callback interface
 
-function core.http_add_fetch(httpenv)
-	httpenv.fetch = function(req, callback)
-		local handle = httpenv.fetch_async(req)
+if core.set_http_api_lua then
+	core.set_http_api_lua(function(httpenv)
+		httpenv.fetch = function(req, callback)
+			local handle = httpenv.fetch_async(req)
 
-		local function update_http_status()
-			local res = httpenv.fetch_async_get(handle)
-			if res.completed then
-				callback(res)
-			else
-				core.after(0, update_http_status)
+			local function update_http_status()
+				local res = httpenv.fetch_async_get(handle)
+				if res.completed then
+					callback(res)
+				else
+					core.after(0, update_http_status)
+				end
 			end
+			core.after(0, update_http_status)
 		end
-		core.after(0, update_http_status)
-	end
 
-	return httpenv
+		return httpenv
+	end)
+	core.set_http_api_lua = nil
 end
 
 

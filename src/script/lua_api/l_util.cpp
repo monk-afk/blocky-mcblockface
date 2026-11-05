@@ -400,6 +400,13 @@ int ModApiUtil::l_request_insecure_environment(lua_State *L)
 	// We have to make sure that this function is being called directly by
 	// a mod, otherwise a malicious mod could override this function and
 	// steal its return value.
+	// Coroutines have a separate stack and could otherwise pass the checks
+	// below while retaining the current mod name of a trusted mod.
+	bool coro = lua_pushthread(L) != 1;
+	lua_pop(L, 1);
+	if (coro)
+		return 0;
+
 	lua_Debug info;
 	// Make sure there's only one item below this function on the stack...
 	if (lua_getstack(L, 2, &info)) {

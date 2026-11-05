@@ -165,6 +165,19 @@ int ModApiHttp::l_http_fetch_async_get(lua_State *L)
 	return 1;
 }
 
+int ModApiHttp::l_set_http_api_lua(lua_State *L)
+{
+	NO_MAP_LOCK_REQUIRED;
+
+	// Builtin calls this before mods load to give us the function that adds
+	// the callback-based fetch method to an HTTP API table. Keep the function
+	// in the registry so mods cannot replace it through the global core table.
+	luaL_checktype(L, 1, LUA_TFUNCTION);
+	lua_rawseti(L, LUA_REGISTRYINDEX, CUSTOM_RIDX_HTTP_API_LUA);
+
+	return 0;
+}
+
 int ModApiHttp::l_request_http_api(lua_State *L)
 {
 	NO_MAP_LOCK_REQUIRED;
@@ -172,6 +185,13 @@ int ModApiHttp::l_request_http_api(lua_State *L)
 	// We have to make sure that this function is being called directly by
 	// a mod, otherwise a malicious mod could override this function and
 	// steal its return value.
+	// Coroutines have a separate stack and could otherwise pass the checks
+	// below while retaining the current mod name of a trusted mod.
+	bool coro = lua_pushthread(L) != 1;
+	lua_pop(L, 1);
+	if (coro)
+		return 0;
+
 	lua_Debug info;
 
 	// Make sure there's only one item below this function on the stack...
@@ -207,16 +227,16 @@ int ModApiHttp::l_request_http_api(lua_State *L)
 		return 1;
 	}
 
-	lua_getglobal(L, "core");
-	lua_getfield(L, -1, "http_add_fetch");
+	lua_rawgeti(L, LUA_REGISTRYINDEX, CUSTOM_RIDX_HTTP_API_LUA);
+	assert(lua_isfunction(L, -1));
 
 	lua_newtable(L);
 	HTTP_API(fetch_async);
 	HTTP_API(fetch_async_get);
 
 	// Stack now looks like this:
-	// <core.http_add_fetch> <table with fetch_async, fetch_async_get>
-	// Now call core.http_add_fetch to append .fetch(request, callback) to table
+	// <function> <table with fetch_async, fetch_async_get>
+	// Call the registered builtin function to append .fetch(request, callback).
 	lua_call(L, 1, 1);
 
 	return 1;
@@ -240,6 +260,7 @@ void ModApiHttp::Initialize(lua_State *L, int top)
 {
 #if USE_CURL
 	API_FCT(request_http_api);
+	API_FCT(set_http_api_lua);
 
 #endif
 }
