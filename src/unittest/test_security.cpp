@@ -163,7 +163,8 @@ void TestSecurity::testInsecureEnvironmentRejectsCoroutine()
 	loadTestMod(script, path, "attacker",
 			"local original = core.request_insecure_environment\n"
 			"core.request_insecure_environment = function()\n"
-			"  local thread = coroutine.create(function() return original() end)\n"
+			"  local thread = coroutine.create(function() return original() "
+			"end)\n"
 			"  local ok, result = coroutine.resume(thread)\n"
 			"  assert(ok)\n"
 			"  stolen_insecure_environment = result\n"
@@ -186,12 +187,13 @@ void TestSecurity::testHttpApiAuthorization()
 
 	std::string error;
 	UTEST(runLua(L,
-			"core.set_http_api_lua(function(httpenv)\n"
-			"  httpenv.registered_helper = true\n"
-			"  return httpenv\n"
-			"end)\n"
-			"core.set_http_api_lua = nil\n",
-			&error), "HTTP API setup failed: %s", error.c_str());
+			      "core.set_http_api_lua(function(httpenv)\n"
+			      "  httpenv.registered_helper = true\n"
+			      "  return httpenv\n"
+			      "end)\n"
+			      "core.set_http_api_lua = nil\n",
+			      &error),
+			"HTTP API setup failed: %s", error.c_str());
 
 	const std::string path = getTestTempFile();
 	loadTestMod(script, path, "trusted",
